@@ -6,10 +6,11 @@ export interface TestResult {
   date: Date;
   storybookVersion: string;
   ciLink: string;
+  result: 'success' | 'failure' | 'indecisive'
   features: Feature[];
 }
 
 export interface Feature {
     category: string;
-    status: 'success' | 'failure' | 'unsupported';
+    status: 'success' | 'failure' | 'unsupported' | 'indecisive';
 }
