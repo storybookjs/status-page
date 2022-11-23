@@ -21,6 +21,11 @@
     "react-dom": "18.2.0",
     "typescript": "4.9.3"
   },
+  "pnpm": { 
+    "overrides": {
+      "enhanced-resolve": "5.10.0"
+    }
+  },
   "devDependencies": {
     "@storybook/addon-essentials": "^7.0.0-alpha.52",
     "@storybook/addon-interactions": "^7.0.0-alpha.52",
