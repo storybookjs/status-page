@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@types/node": "18.11.9",
@@ -21,7 +22,7 @@
     "react-dom": "18.2.0",
     "typescript": "4.9.3"
   },
-  "pnpm": { 
+  "pnpm": {
     "overrides": {
       "enhanced-resolve": "5.10.0"
     }
@@ -30,12 +31,18 @@
     "@storybook/addon-essentials": "^7.0.0-alpha.52",
     "@storybook/addon-interactions": "^7.0.0-alpha.52",
     "@storybook/addon-links": "^7.0.0-alpha.52",
+    "@storybook/linter-config": "^3.1.2",
     "@storybook/nextjs": "^7.0.0-alpha.52",
     "@storybook/react": "^7.0.0-alpha.52",
     "@storybook/testing-library": "^0.0.13",
+    "@typescript-eslint/eslint-plugin": "^5.44.0",
     "css-loader": "^6.7.2",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-storybook": "^0.6.7",
+    "husky": ">=7",
+    "lint-staged": ">=10",
     "postcss-loader": "^7.0.1",
+    "prettier": "^2.8.0",
     "storybook": "^7.0.0-alpha.52",
     "style-loader": "^3.3.1"
   }

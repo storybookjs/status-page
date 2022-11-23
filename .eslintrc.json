@@ -1,6 +1,10 @@
 {
-  "extends": [
-    "next/core-web-vitals",
-    "plugin:storybook/recommended"
+  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended", "prettier"],
+  "plugins": ["storybook"],
+  "overrides": [
+    {
+      "files": ["./app/**/*.stories.@(js|jsx|ts|tsx)"],
+      "extends": ["plugin:storybook/recommended", "plugin:storybook/csf-strict"]
+    }
   ]
 }
