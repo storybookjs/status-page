@@ -2,8 +2,30 @@ import { Meta, StoryObj } from '@storybook/react';
 import { TemplateTests, TestResult } from '../model/types';
 import { StatusRow } from './StatusRow';
 
+const viewports = {
+  small: {
+    name: '600px',
+    styles: {
+      width: '600px',
+      height: '100%',
+    },
+  },
+  medium: {
+    name: '850px',
+    styles: {
+      width: '850px',
+      height: '100%',
+    },
+  },
+};
+
 const meta = {
   component: StatusRow,
+  parameters: {
+    viewport: {
+      viewports,
+    },
+  },
 } as Meta<typeof StatusRow>;
 
 export default meta;
@@ -40,8 +62,32 @@ const createMock = (lastResult: TestResult['result']): TemplateTests => {
   };
 };
 
-export const Success: Story = {
+export const NinetyDayView: Story = {
   args: createMock('success'),
+};
+
+export const SixtyDayView: Story = {
+  ...NinetyDayView,
+  parameters: {
+    viewport: {
+      defaultViewport: 'medium',
+    },
+    chromatic: {
+      viewports: [850],
+    },
+  },
+};
+
+export const ThirtyDayView: Story = {
+  ...NinetyDayView,
+  parameters: {
+    viewport: {
+      defaultViewport: 'small',
+    },
+    chromatic: {
+      viewports: [600],
+    },
+  },
 };
 
 export const Failure: Story = {
