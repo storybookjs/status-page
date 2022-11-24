@@ -20,7 +20,7 @@ const viewBoxByDayView = {
 export const StatusRow = memo(({ results, name }: TemplateTests) => {
   const [chartRef, { width }] = useElementSize();
 
-  const mostRecentStatus = results[0].status;
+  const mostRecentStatus = results.at(-1)?.status || 'no-data';
   const templateStatus = statusByResult[mostRecentStatus];
 
   const daysToDisplay = width >= 850 ? 90 : width >= 600 ? 60 : 30;
