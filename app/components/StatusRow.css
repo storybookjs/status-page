@@ -1,0 +1,42 @@
+.result-box {
+  border: 1px solid var(--border-subtle);
+  padding: var(--spacing-l);
+  border-radius: 4px;
+  color: var(--text-secondary);
+}
+
+.result-heading,
+.result-footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.result-footer {
+  padding-top: var(--spacing-xs);
+}
+
+.heartbeat-chart {
+  padding-top: var(--spacing-s);
+  width: 100%;
+  overflow: hidden;
+}
+
+.heartbeat-chart rect {
+  cursor: pointer;
+}
+
+[data-status='success'] {
+  color: var(--status-success);
+}
+
+[data-status='failure'] {
+  color: var(--status-failure);
+}
+
+[data-status='indecisive'] {
+  color: var(--status-indecisive);
+}
+
+[data-status='no-data'] {
+  color: var(--status-no-data);
+}
