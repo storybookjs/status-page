@@ -9,6 +9,7 @@
 /coverage
 /app/mock
 __snapshots__
+.storybook/preview-head.html
 
 # next.js
 /.next/
