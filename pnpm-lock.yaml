@@ -17,6 +17,7 @@ specifiers:
   '@types/react': 18.0.25
   '@types/react-dom': 18.0.9
   '@typescript-eslint/eslint-plugin': ^5.44.0
+  chromatic: ^6.11.4
   css-loader: ^6.7.2
   date-fns: ^2.29.3
   dotenv: ^16.0.3
@@ -64,6 +65,7 @@ devDependencies:
   '@storybook/testing-library': 0.0.13_biqbaboplfbrettd7655fr4n2y
   '@types/prettier': 2.7.1
   '@typescript-eslint/eslint-plugin': 5.44.0_hsf322ms6xhhd4b5ne6lb74y4a
+  chromatic: 6.11.4
   css-loader: 6.7.2
   dotenv: 16.0.3
   eslint-config-prettier: 8.5.0_eslint@8.28.0
@@ -4834,6 +4836,17 @@ packages:
   /chownr/2.0.0:
     resolution: {integrity: sha512-bIomtDF5KGpdogkLd9VspvFzk9KfpyyGlS8YFVZl7TGPBHL5snIOnxeshwVgPteQ9b4Eydl+pVbIyE1DcvCWgQ==}
     engines: {node: '>=10'}
+    dev: true
+
+  /chromatic/6.11.4:
+    resolution:
+      {
+        integrity: sha512-f1TcuIXKjGUuOjPuwFF44kzbuEcESFcDxHzrzWPLmHuC90dV8HLxbufqYaTOBYMO/rJ32Zftb7S9pXuF/Rhfog==,
+      }
+    hasBin: true
+    dependencies:
+      '@discoveryjs/json-ext': 0.5.7
+      '@types/webpack-env': 1.18.0
     dev: true
 
   /chrome-trace-event/1.0.3:

@@ -43,6 +43,7 @@
     "@storybook/testing-library": "^0.0.13",
     "@typescript-eslint/eslint-plugin": "^5.44.0",
     "@types/prettier": "^2.7.1",
+    "chromatic": "^6.11.4",
     "css-loader": "^6.7.2",
     "eslint-config-prettier": "^8.5.0",
     "dotenv": "^16.0.3",
@@ -60,5 +61,7 @@
   },
   "engines": {
     "node": ">=18"
-  }
+  },
+  "readme": "ERROR: No README data found!",
+  "_id": "storybook-status-page@0.1.0"
 }
