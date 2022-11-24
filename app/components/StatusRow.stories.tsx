@@ -1,5 +1,8 @@
+import { addDays } from 'date-fns';
 import { Meta, StoryObj } from '@storybook/react';
+
 import { TemplateTests, TestResult } from '../model/types';
+import { getFormattedDate } from '../util';
 import { StatusRow } from './StatusRow';
 
 const viewports = {
@@ -34,7 +37,7 @@ type Story = StoryObj<typeof meta>;
 
 const testResult: TestResult = {
   ciLink: 'http://google.com',
-  date: new Date().toISOString().split('T')[0],
+  date: getFormattedDate(new Date()),
   features: [{ category: 'addon-docs', status: 'success' }],
   result: 'success',
   storybookVersion: '7.0.0-alpha.51',
@@ -46,18 +49,10 @@ const createMock = (lastResult: TestResult['result']): TemplateTests => {
     name: 'React Vite (Typescript)',
     results: new Array(90).fill(testResult).map((res, index) => ({
       ...res,
-      date: new Date(new Date().setDate(new Date().getDate() - index)).toISOString().split('T')[0],
+      date: getFormattedDate(addDays(new Date(), -index)),
       // just to have predictable but different data
       result:
-        index === 0
-          ? lastResult
-          : index > 80
-          ? 'no-data'
-          : index % 30 === 0
-          ? 'failure'
-          : index % 32 === 0
-          ? 'indecisive'
-          : 'success',
+        index === 0 ? lastResult : index > 80 ? 'no-data' : index % 30 === 0 ? 'failure' : index % 32 === 0 ? 'indecisive' : 'success',
     })),
   };
 };
