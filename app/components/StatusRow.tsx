@@ -1,11 +1,10 @@
-import { memo, useMemo } from 'react';
+import { memo } from 'react';
 import { useElementSize } from 'usehooks-ts';
-
 import type { TemplateTests, TestResult } from '../model/types';
-import { get90DaysFromToday } from '../util';
+import { getFormattedDate } from '../util';
 import './StatusRow.css';
 
-const statusByResult: Record<TestResult['result'], string> = {
+const statusByResult: Record<TestResult['status'], string> = {
   'no-data': '',
   success: 'All good',
   failure: 'Problems!',
@@ -18,30 +17,15 @@ const viewBoxByDayView = {
   30: '300 0 148 34',
 };
 
-const DAYS_FROM_TODAY = get90DaysFromToday().reverse();
-
 export const StatusRow = memo(({ results, name }: TemplateTests) => {
   const [chartRef, { width }] = useElementSize();
 
-  const mostRecentStatus = results[0].result;
+  const mostRecentStatus = results[0].status;
   const templateStatus = statusByResult[mostRecentStatus];
 
   const daysToDisplay = width >= 850 ? 90 : width >= 600 ? 60 : 30;
   // svg always render 90 days, but changes viewBox to show 90, 60 or 30 days data based on container size
   const viewBox = viewBoxByDayView[daysToDisplay];
-
-  const heartbeats = useMemo(
-    () =>
-      DAYS_FROM_TODAY.map((day, index) => {
-        // map days in reverse to results. 89 because we always use 90 days.
-        const heartbeat = results[89 - index];
-        return {
-          day,
-          status: heartbeat?.result || 'no-data',
-        };
-      }),
-    [results]
-  );
 
   return (
     <section className="result-box" ref={chartRef}>
@@ -54,7 +38,8 @@ export const StatusRow = memo(({ results, name }: TemplateTests) => {
         </div>
 
         <svg className="heartbeat-chart" preserveAspectRatio="none" height={34} viewBox={viewBox}>
-          {heartbeats.map(({ day, status }, index) => {
+          {results.map(({ date, status }, index) => {
+            const day = getFormattedDate(date);
             return (
               <rect
                 key={day}

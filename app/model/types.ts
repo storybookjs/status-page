@@ -4,15 +4,16 @@ export interface StorybookTemplate {
 }
 
 export interface Feature {
-  category: string;
+  category: 'addons' | 'core';
+  name: string;
   status: 'success' | 'failure' | 'unsupported' | 'indecisive';
 }
 
 export interface TestResult {
-  date: string;
+  date: Date;
   storybookVersion: string;
   ciLink: string;
-  result: 'success' | 'failure' | 'indecisive' | 'no-data';
+  status: 'success' | 'failure' | 'indecisive' | 'no-data';
   features: Feature[];
 }
 

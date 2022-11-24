@@ -2,7 +2,7 @@ import { addDays } from 'date-fns';
 import { Meta, StoryObj } from '@storybook/react';
 
 import { TemplateTests, TestResult } from '../model/types';
-import { getFormattedDate } from '../util';
+import { startOfDay } from 'date-fns';
 import { StatusRow } from './StatusRow';
 
 const viewports = {
@@ -36,23 +36,23 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const testResult: TestResult = {
-  ciLink: 'http://google.com',
-  date: getFormattedDate(new Date()),
-  features: [{ category: 'addon-docs', status: 'success' }],
-  result: 'success',
+  ciLink: 'http://app.circleci.com/pipelines/github/storybookjs/storybook/12345/workflows/12345',
+  date: new Date(),
+  features: [{ category: 'addons', name: 'addon-docs', status: 'success' }],
+  status: 'success',
   storybookVersion: '7.0.0-alpha.51',
 };
 
-const createMock = (lastResult: TestResult['result']): TemplateTests => {
+const createMock = (lastStatus: TestResult['status']): TemplateTests => {
   return {
     id: 'react-vite/default-ts',
     name: 'React Vite (Typescript)',
     results: new Array(90).fill(testResult).map((res, index) => ({
       ...res,
-      date: getFormattedDate(addDays(new Date(), -index)),
+      date: addDays(startOfDay(new Date()), -(90 + index)),
       // just to have predictable but different data
-      result:
-        index === 0 ? lastResult : index > 80 ? 'no-data' : index % 30 === 0 ? 'failure' : index % 32 === 0 ? 'indecisive' : 'success',
+      status:
+        index === 89 ? lastStatus : index < 10 ? 'no-data' : index % 30 === 0 ? 'failure' : index % 32 === 0 ? 'indecisive' : 'success',
     })),
   };
 };
@@ -96,6 +96,6 @@ export const Indecisive: Story = {
 export const RecentlyAdded: Story = {
   args: {
     ...createMock('indecisive'),
-    results: [testResult],
+    results: createMock('indecisive').results.map((r, index) => ({ ...r, status: index === 89 ? 'success' : 'no-data' })),
   },
 };
