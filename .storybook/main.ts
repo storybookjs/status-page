@@ -10,6 +10,9 @@ const config: StorybookConfig = {
   docs: {
     docsPage: true,
   },
+  features: {
+    interactionsDebugger: true,
+  },
 };
 
 export default config;
