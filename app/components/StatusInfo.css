@@ -1,0 +1,31 @@
+.status-info {
+  display: grid;
+  flex-direction: row;
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  gap: 0.25rem;
+  padding: 0.75rem;
+}
+
+.features-block {
+  display: grid;
+  margin-top: 0.5rem;
+  gap: 0.25rem;
+}
+
+.features-block > * {
+  background: var(--background-secondary);
+  padding: 0.5rem;
+}
+
+.feature {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  text-transform: capitalize;
+}
+
+.feature svg {
+  color: var(--status-failure);
+}
