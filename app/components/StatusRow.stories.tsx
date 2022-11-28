@@ -82,6 +82,7 @@ const hoverOnHeartbeat: PlayFunction = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
   const hearbeat = await canvas.getByText('25 Nov 2022');
   await userEvent.hover(hearbeat);
+  // @ts-expect-error TODO: investigate what is going on here. Missing dep from pnpm?
   await expect(await canvas.findByText('Storybook version: 7.0.0-alpha.51')).toBeInTheDocument();
 };
 
