@@ -21,22 +21,22 @@
   overflow: hidden;
 }
 
-.heartbeat-chart rect {
+rect {
   cursor: pointer;
 }
 
-[data-status='success'] {
+rect[data-status='success'] {
   color: var(--status-success);
 }
 
-[data-status='failure'] {
+rect[data-status='failure'] {
   color: var(--status-failure);
 }
 
-[data-status='indecisive'] {
+rect[data-status='indecisive'] {
   color: var(--status-indecisive);
 }
 
-[data-status='no-data'] {
+rect[data-status='no-data'] {
   color: var(--status-no-data);
 }

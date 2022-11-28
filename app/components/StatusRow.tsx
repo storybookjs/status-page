@@ -1,14 +1,16 @@
 import { memo } from 'react';
 import { useElementSize } from 'usehooks-ts';
 import type { TemplateTests, TestResult } from '../model/types';
+import { WithTooltip } from '@storybook/design-system';
 import { getFormattedDate } from '../util';
+import { StatusInfo } from './StatusInfo';
 import './StatusRow.css';
 
 const statusByResult: Record<TestResult['status'], string> = {
-  'no-data': '',
-  success: 'All good',
-  failure: 'Problems!',
-  indecisive: 'Weird Stuff 🤔',
+  'no-data': 'No recent data',
+  success: 'Operational',
+  failure: 'Issues',
+  indecisive: 'Inconclusive results',
 };
 
 const viewBoxByDayView = {
@@ -19,6 +21,11 @@ const viewBoxByDayView = {
 
 export const StatusRow = memo(({ results, name }: TemplateTests) => {
   const [chartRef, { width }] = useElementSize();
+
+  // Not that it will ever happen, but just in case so we don't break the website because of malformed data.
+  if (!results?.length) {
+    return <div>There was a problem processing this data. Please try again later.</div>;
+  }
 
   const mostRecentStatus = results.at(-1)?.status || 'no-data';
   const templateStatus = statusByResult[mostRecentStatus];
@@ -38,21 +45,24 @@ export const StatusRow = memo(({ results, name }: TemplateTests) => {
         </div>
 
         <svg className="heartbeat-chart" preserveAspectRatio="none" height={34} viewBox={viewBox}>
-          {results.map(({ date, status }, index) => {
+          {results.map((result, index) => {
+            const { date, status } = result;
             const day = getFormattedDate(date);
             return (
-              <rect
-                key={day}
-                height={34}
-                width={3}
-                y={0}
-                x={index * 5}
-                fill="currentColor"
-                data-status={status}
-                aria-label={`Status for ${day} is: ${status}`}
-              >
-                {day}
-              </rect>
+              <WithTooltip key={day} tagName="g" role="" tooltip={<StatusInfo {...result} />} trigger="hover">
+                <rect
+                  key={day}
+                  height={34}
+                  width={3}
+                  y={0}
+                  x={index * 5}
+                  fill="currentColor"
+                  data-status={status}
+                  aria-label={`Status for ${day} is: ${status}`}
+                >
+                  {day}
+                </rect>
+              </WithTooltip>
             );
           })}
         </svg>
