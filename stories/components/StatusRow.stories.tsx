@@ -47,8 +47,6 @@ const hoverOnHeartbeat: PlayFunction = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
   const hearbeat = await canvas.getByText('25 Nov 2022');
   await userEvent.hover(hearbeat);
-  // @ts-expect-error TODO: investigate what is going on here. Missing dep from pnpm?
-  await expect(await canvas.findByText('Storybook version: 7.0.0-alpha.51')).toBeInTheDocument();
 };
 
 export const Success: Story = {
@@ -57,7 +55,13 @@ export const Success: Story = {
 
 export const SuccessHovered: Story = {
   ...Success,
-  play: hoverOnHeartbeat,
+  play: async (context) => {
+    await hoverOnHeartbeat(context);
+    const canvas = within(context.canvasElement);
+
+    // @ts-expect-error TODO: investigate what is going on here. Missing dep from pnpm?
+    await expect(await canvas.findByText('Storybook version: 7.0.0-alpha.51')).toBeInTheDocument();
+  },
 };
 
 export const Failure: Story = {
@@ -66,7 +70,13 @@ export const Failure: Story = {
 
 export const FailureHovered: Story = {
   ...Failure,
-  play: hoverOnHeartbeat,
+  play: async (context) => {
+    await hoverOnHeartbeat(context);
+    const canvas = within(context.canvasElement);
+
+    // @ts-expect-error TODO: investigate what is going on here. Missing dep from pnpm?
+    await expect(await canvas.findByText('Storybook version: 7.0.0-alpha.51')).toBeInTheDocument();
+  },
 };
 
 export const Indecisive: Story = {
@@ -75,7 +85,13 @@ export const Indecisive: Story = {
 
 export const IndecisiveHovered: Story = {
   ...Indecisive,
-  play: hoverOnHeartbeat,
+  play: async (context) => {
+    await hoverOnHeartbeat(context);
+    const canvas = within(context.canvasElement);
+
+    // @ts-expect-error TODO: investigate what is going on here. Missing dep from pnpm?
+    await expect(await canvas.findByText('Storybook version: 7.0.0-alpha.51')).toBeInTheDocument();
+  },
 };
 
 export const NoData: Story = {
@@ -84,7 +100,13 @@ export const NoData: Story = {
 
 export const NoDataHovered: Story = {
   ...NoData,
-  play: hoverOnHeartbeat,
+  play: async (context) => {
+    await hoverOnHeartbeat(context);
+    const canvas = within(context.canvasElement);
+
+    // @ts-expect-error TODO: investigate what is going on here. Missing dep from pnpm?
+    await expect(await canvas.findByText('There is no data for this day')).toBeInTheDocument();
+  },
 };
 
 export const RecentlyAddedTemplate: Story = {
