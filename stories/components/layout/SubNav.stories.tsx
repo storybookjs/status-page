@@ -1,6 +1,6 @@
 import { StoryObj, Meta } from '@storybook/react';
 
-import { SubNav, PAGE_TYPES } from '../../../app/components/layout/SubNav';
+import { SubNav, PAGE_TYPES } from '~/components/layout/SubNav';
 
 const meta = {
   component: SubNav,

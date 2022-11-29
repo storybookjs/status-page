@@ -1,6 +1,6 @@
 import { styled } from '@storybook/theming';
 import { memo } from 'react';
-import type { TemplateTests } from '../model/types';
+import type { TemplateTests } from '~/model/types';
 import { StatusRow } from './StatusRow';
 
 const ResultGrid = styled.div`

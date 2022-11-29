@@ -1,9 +1,9 @@
 import { memo } from 'react';
 import { useElementSize } from 'usehooks-ts';
-import type { TemplateTests, TestResult } from '../model/types';
+import type { TemplateTests, TestResult } from '~/model/types';
 import { WithTooltip } from '@storybook/design-system';
 import { styled } from '@storybook/theming';
-import { getFormattedDate } from '../util';
+import { getFormattedDate } from '~/util';
 import { StatusInfo } from './StatusInfo';
 
 const statusByResult: Record<TestResult['status'], string> = {

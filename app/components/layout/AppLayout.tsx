@@ -5,7 +5,7 @@ import { styles } from '@storybook/design-system';
 import { styled } from '@storybook/theming';
 import NextLink from 'next/link';
 import { Header, HeaderProps } from './Header';
-import { GlobalStyles } from '../../styles/GlobalStyles';
+import { GlobalStyles } from '~/styles/GlobalStyles';
 
 type FooterProps = React.ComponentProps<typeof MarketingFooter>;
 export interface AppLayoutProps {

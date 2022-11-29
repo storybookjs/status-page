@@ -1,6 +1,6 @@
 import { memo } from 'react';
-import type { TestResult } from '../model/types';
-import { getFormattedDate } from '../util';
+import type { TestResult } from '~/model/types';
+import { getFormattedDate } from '~/util';
 import { Icon } from '@storybook/design-system';
 import { styled } from '@storybook/theming';
 import { Link } from './Link';

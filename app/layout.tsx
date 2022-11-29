@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppLayout as Layout } from './components/layout/AppLayout';
+import { AppLayout as Layout } from '~/components/layout/AppLayout';
 
 const LAYOUT_DATA_ENDPOINT = 'https://storybook-dx.netlify.app/.netlify/functions/dx-data';
 
