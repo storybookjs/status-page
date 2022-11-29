@@ -20,6 +20,7 @@ export default function StatusPage() {
           or notices disruptions, you can reach out on <Link href="https://discord.gg/storybook">discord</Link>.
         </p>
       </header>
+      {/* @ts-expect-error use real data here isntead */}
       <StatusRowGroup {...Three.args} />
     </>
   );
