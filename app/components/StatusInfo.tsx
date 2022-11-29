@@ -2,14 +2,45 @@ import { memo } from 'react';
 import type { TestResult } from '../model/types';
 import { getFormattedDate } from '../util';
 import { Icon } from '@storybook/design-system';
-import './StatusInfo.css';
+import { styled } from '@storybook/theming';
 import { Link } from './Link';
+
+const StatusInfoWrapper = styled.article`
+  display: grid;
+  flex-direction: row;
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  gap: 0.25rem;
+  padding: 0.75rem;
+`;
+
+const FeaturesBlockWrapper = styled.div`
+  display: grid;
+  margin-top: 0.5rem;
+  gap: 0.25rem;
+  & > * {
+    background: var(--background-secondary);
+    padding: 0.5rem;
+  }
+`;
+
+const Feature = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  text-transform: capitalize;
+
+  & svg {
+    color: var(--status-failure);
+  }
+`;
 
 export const StatusInfo = memo(({ storybookVersion, date, ciLink, features, status }: TestResult) => {
   const day = getFormattedDate(date);
 
   return (
-    <article className="status-info">
+    <StatusInfoWrapper>
       <div className="template-date">{day}</div>
       {status === 'no-data' ? (
         <div>There is no data for this day</div>
@@ -23,21 +54,21 @@ export const StatusInfo = memo(({ storybookVersion, date, ciLink, features, stat
           {status === 'failure' && <FeaturesBlock features={features} />}
         </>
       )}
-    </article>
+    </StatusInfoWrapper>
   );
 });
 
 export const FeaturesBlock = ({ features }: { features: TestResult['features'] }) => {
   return (
-    <div className="features-block">
+    <FeaturesBlockWrapper>
       {features
         .filter(({ status }) => status === 'failure')
         .map(({ name }) => (
-          <div key={name} className="feature">
+          <Feature key={name}>
             <Icon icon={'cross'} />
             <div>{name}</div>
-          </div>
+          </Feature>
         ))}
-    </div>
+    </FeaturesBlockWrapper>
   );
 };
