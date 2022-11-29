@@ -59,9 +59,7 @@ export const SubNav: React.FC<SubNavProps> = ({ pageType }) => {
   return pageType !== PAGE_TYPES.NOT_FOUND ? (
     <MarketingSubNav>
       <SubNavTabs label="Status page nav" items={subNavItems(pageType)} />
-      {/* @ts-expect-error TODO: weird type error from the component, expecting a theme */}
       <SubNavDivider />
-      {/* @ts-expect-error TODO: weird type error from the component, expecting a theme */}
       <SubNavMenus>
         <Menu
           label="7.0 (alpha)"
@@ -80,7 +78,6 @@ export const SubNav: React.FC<SubNavProps> = ({ pageType }) => {
           primary
         ></Menu>
       </SubNavMenus>
-      {/* @ts-expect-error TODO: weird type error from the component, expecting a theme */}
       <SubNavRight>
         <SubNavLinkList label="Get support:" items={supportItems} />
       </SubNavRight>

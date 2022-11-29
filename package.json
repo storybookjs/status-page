@@ -19,7 +19,7 @@
     "@next/env": "^13.0.4",
     "@storybook/components-marketing": "^2.0.41",
     "@storybook/design-system": "^7.9.1",
-    "@storybook/theming": "7.0.0-alpha.52",
+    "@storybook/theming": "latest",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.9",

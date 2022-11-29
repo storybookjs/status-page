@@ -12,7 +12,7 @@ specifiers:
   '@storybook/nextjs': 7.0.0-alpha.52
   '@storybook/react': 7.0.0-alpha.52
   '@storybook/testing-library': next
-  '@storybook/theming': 7.0.0-alpha.52
+  '@storybook/theming': latest
   '@types/node': 18.11.9
   '@types/prettier': ^2.7.1
   '@types/react': 18.0.25
@@ -47,9 +47,9 @@ specifiers:
 
 dependencies:
   '@next/env': 13.0.4
-  '@storybook/components-marketing': 2.0.41_62nnm5cps2zckw6mbucxq6ynnu
+  '@storybook/components-marketing': 2.0.41_4pmzlqmwlaod7qhjjizvrfe5hu
   '@storybook/design-system': 7.9.1_biqbaboplfbrettd7655fr4n2y
-  '@storybook/theming': 7.0.0-alpha.52_biqbaboplfbrettd7655fr4n2y
+  '@storybook/theming': 6.5.13_biqbaboplfbrettd7655fr4n2y
   '@types/node': 18.11.9
   '@types/react': 18.0.25
   '@types/react-dom': 18.0.9
@@ -1690,6 +1690,7 @@ packages:
       react: '>=16.8.0'
     dependencies:
       react: 18.2.0
+    dev: true
 
   /@emotion/weak-memoize/0.2.5:
     resolution: { integrity: sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA== }
@@ -2872,6 +2873,7 @@ packages:
     resolution: { integrity: sha512-VZy8BO67X3mmz1oBYQgax2X1XBL+ZMQZ+c4nnrcX4IoBzNikvTSeF0Pw46/Ohz0wjGt8vOBs0MaRBt+qRSGmDA== }
     dependencies:
       global: 4.4.0
+    dev: true
 
   /@storybook/codemod/7.0.0-alpha.52_@babel+preset-env@7.20.2:
     resolution: { integrity: sha512-JSBLfR8vNlj3vh0kCMNWcB+XVvw0uHSDT94CSXHqwv8tQCk0LJWHdp4aSb5zOrwiSA7N1uvh8sHD+2KXreAp3g== }
@@ -2893,7 +2895,7 @@ packages:
       - supports-color
     dev: true
 
-  /@storybook/components-marketing/2.0.41_62nnm5cps2zckw6mbucxq6ynnu:
+  /@storybook/components-marketing/2.0.41_4pmzlqmwlaod7qhjjizvrfe5hu:
     resolution: { integrity: sha512-MqappKiNbk1zrzOep5fL8wbqBOfb7J4rqvZ0EIvAP16SLonUZMn9oJFAL/yb4n0vakrdS8JTPJs/xcu8NKHRwA== }
     engines: { node: '>=10', npm: '>=5' }
     peerDependencies:
@@ -2908,7 +2910,7 @@ packages:
       '@floating-ui/react-dom-interactions': 0.6.6_2zx2umvpluuhvlq44va5bta2da
       '@storybook/api': 6.5.13_biqbaboplfbrettd7655fr4n2y
       '@storybook/design-system': 7.9.1_biqbaboplfbrettd7655fr4n2y
-      '@storybook/theming': 7.0.0-alpha.52_biqbaboplfbrettd7655fr4n2y
+      '@storybook/theming': 6.5.13_biqbaboplfbrettd7655fr4n2y
       formik: 2.2.9_react@18.2.0
       framer-motion: 7.6.12_biqbaboplfbrettd7655fr4n2y
       human-format: 0.11.0
@@ -3588,6 +3590,7 @@ packages:
       memoizerific: 1.11.3
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+    dev: true
 
   /@storybook/types/7.0.0-alpha.52:
     resolution: { integrity: sha512-AEqoy5aombH5yHpVaZKKJdLXS4AM7bVDfuv4wMAVPVuMMIXySZVBgRZ2X9CuxWutK9K8/0RU+wkdcGk8qn182g== }
