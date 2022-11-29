@@ -1,6 +1,6 @@
 import { StoryObj, Meta } from '@storybook/react';
 
-import { AppLayout } from './AppLayout';
+import { AppLayout } from '../../../app/components/layout/AppLayout';
 
 const pageProps = {
   contributors: [

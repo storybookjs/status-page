@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { createMock } from './StatusRow.stories';
 
-import { StatusRowGroup } from './StatusRowGroup';
+import { StatusRowGroup } from '../../app/components/StatusRowGroup';
 
 const meta = {
   component: StatusRowGroup,

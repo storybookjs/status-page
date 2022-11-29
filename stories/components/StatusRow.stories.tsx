@@ -1,9 +1,9 @@
 import { addDays } from 'date-fns';
 import { Meta, StoryObj } from '@storybook/react';
 
-import { TemplateTests, TestResult } from '../model/types';
+import { TemplateTests, TestResult } from '../../app/model/types';
 import { startOfDay } from 'date-fns';
-import { StatusRow } from './StatusRow';
+import { StatusRow } from '../../app/components/StatusRow';
 import { userEvent, within } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
 
