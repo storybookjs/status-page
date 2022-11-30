@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { createMock } from './StatusRow.stories';
+import { createMock } from '~/mock';
 
-import { StatusRowGroup } from './StatusRowGroup';
+import { StatusRowGroup } from '~/components/StatusRowGroup';
 
 const meta = {
   component: StatusRowGroup,
@@ -12,9 +12,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const mocks = [
-  createMock({ name: 'React Vite (Typescript) ' }),
-  createMock({ name: 'Angular Webpack5 (Typescript) ' }),
-  createMock({ name: 'Vue Vite (Javascript) ' }),
+  createMock({ name: 'React Vite (Typescript)' }),
+  createMock({ name: 'Angular Webpack5 (Typescript)' }),
+  createMock({ name: 'Vue Vite (Javascript)' }),
 ];
 
 export const Single: Story = {

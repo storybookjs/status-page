@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import { TestResult } from '../model/types';
-import { StatusInfo } from './StatusInfo';
+import { TestResult } from '~/model/types';
+import { StatusInfo } from '~/components/StatusInfo';
 
 const meta = {
   component: StatusInfo,
