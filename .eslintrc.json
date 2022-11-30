@@ -6,7 +6,7 @@
   },
   "overrides": [
     {
-      "files": ["./app/**/*.stories.@(js|jsx|ts|tsx)"],
+      "files": ["./stories/**/*.stories.@(js|jsx|ts|tsx)"],
       "extends": ["plugin:storybook/recommended", "plugin:storybook/csf-strict"]
     }
   ]
