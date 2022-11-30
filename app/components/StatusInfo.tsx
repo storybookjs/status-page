@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import type { TestResult, Feature } from '~/model/types';
+import type { TestResult, Feature as TFeature } from '~/model/types';
 import { getFormattedDate } from '~/util';
 import { Icon } from '@storybook/design-system';
 import { styled } from '@storybook/theming';
@@ -64,7 +64,7 @@ export const StatusInfo = memo((result: TestResult) => {
   );
 });
 
-export const FeaturesBlock = ({ features }: { features: Feature[] }) => {
+export const FeaturesBlock = ({ features }: { features: TFeature[] }) => {
   return (
     <FeaturesBlockWrapper>
       {features
