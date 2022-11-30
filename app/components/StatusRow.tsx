@@ -34,7 +34,6 @@ const ResultHeading = styled.div`
 const ResultFooter = styled.div`
   display: flex;
   justify-content: space-between;
-  padding-top: var(--spacing-xs);
 `;
 
 const HeartBeatChart = styled.svg`
@@ -61,6 +60,11 @@ const HeartBeat = styled.rect`
   }
 `;
 
+const Container = styled.article`
+  display: grid;
+  gap: var(--spacing-s);
+`;
+
 export const StatusRow = memo(({ results, name }: TemplateTests) => {
   const [chartRef, { width }] = useElementSize();
 
@@ -72,13 +76,15 @@ export const StatusRow = memo(({ results, name }: TemplateTests) => {
   const mostRecentStatus = results.at(-1)?.status || 'no-data';
   const templateStatus = statusByResult[mostRecentStatus];
 
-  const daysToDisplay = width < 600 ? 30 : width <= 850 ? 60 : 90;
+  // by default width is 0, so we assume the default view which is 90 days
+  const daysToDisplay = width === 0 || width >= 850 ? 90 : width >= 600 ? 60 : 30;
+
   // svg always render 90 days, but changes viewBox to show 90, 60 or 30 days data based on container size
   const viewBox = viewBoxByDayView[daysToDisplay];
 
   return (
     <ResultBox ref={chartRef} className="result-box">
-      <article>
+      <Container>
         <ResultHeading>
           <div>{name}</div>
           <div data-status={mostRecentStatus}>{templateStatus}</div>
@@ -110,7 +116,7 @@ export const StatusRow = memo(({ results, name }: TemplateTests) => {
           <div>{daysToDisplay} days ago</div>
           <div>Today</div>
         </ResultFooter>
-      </article>
+      </Container>
     </ResultBox>
   );
 });

@@ -9,21 +9,21 @@ const ResultGrid = styled.div`
     border-radius: 0px;
   }
 
-  .result-box:first-child {
+  .result-box:first-of-type {
     border-top-width: 1px;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
   }
 
-  .result-box:not(:first-child) {
+  .result-box:not(:first-of-type) {
     border-top: none;
   }
 
-  .result-box:first-child:last-child {
+  .result-box:first-child:last-of-type {
     border-radius: 4px;
   }
 
-  .result-box:last-child {
+  .result-box:last-of-type {
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
   }
