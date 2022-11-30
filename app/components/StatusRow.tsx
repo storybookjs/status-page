@@ -38,7 +38,6 @@ const ResultFooter = styled.div`
 `;
 
 const HeartBeatChart = styled.svg`
-  padding-top: var(--spacing-s);
   width: 100%;
   overflow: hidden;
 `;
