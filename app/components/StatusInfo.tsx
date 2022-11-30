@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import type { TestResult } from '~/model/types';
+import type { TestResult, Feature } from '~/model/types';
 import { getFormattedDate } from '~/util';
 import { Icon } from '@storybook/design-system';
 import { styled } from '@storybook/theming';
@@ -36,29 +36,35 @@ const Feature = styled.div`
   }
 `;
 
-export const StatusInfo = memo(({ storybookVersion, date, ciLink, features, status }: TestResult) => {
-  const day = getFormattedDate(date);
+export const StatusInfo = memo((result: TestResult) => {
+  const day = getFormattedDate(result.date);
 
+  if (result.status === 'no-data') {
+    return (
+      <StatusInfoWrapper>
+        <div className="template-date">{day}</div>
+        <div>There is no data for this day</div>
+      </StatusInfoWrapper>
+    );
+  }
+
+  const { storybookVersion, features, ciLink, status } = result;
   return (
     <StatusInfoWrapper>
       <div className="template-date">{day}</div>
-      {status === 'no-data' ? (
-        <div>There is no data for this day</div>
-      ) : (
-        <>
-          {status === 'indecisive' && <div>There are inconclusive results for this day</div>}
-          <div className="template-name">Storybook version: {storybookVersion}</div>
-          <div className="template-link">
-            See <Link href={ciLink}>pipeline</Link> in CI
-          </div>
-          {status === 'failure' && <FeaturesBlock features={features} />}
-        </>
-      )}
+      <>
+        {status === 'indecisive' && <div>There are inconclusive results for this day</div>}
+        <div className="template-name">Storybook version: {storybookVersion}</div>
+        <div className="template-link">
+          See <Link href={ciLink}>pipeline</Link> in CI
+        </div>
+        {status === 'failure' && <FeaturesBlock features={features} />}
+      </>
     </StatusInfoWrapper>
   );
 });
 
-export const FeaturesBlock = ({ features }: { features: TestResult['features'] }) => {
+export const FeaturesBlock = ({ features }: { features: Feature[] }) => {
   return (
     <FeaturesBlockWrapper>
       {features
