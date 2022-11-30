@@ -72,7 +72,7 @@ export const StatusRow = memo(({ results, name }: TemplateTests) => {
   const mostRecentStatus = results.at(-1)?.status || 'no-data';
   const templateStatus = statusByResult[mostRecentStatus];
 
-  const daysToDisplay = width >= 850 ? 90 : width >= 600 ? 60 : 30;
+  const daysToDisplay = width < 600 ? 30 : width <= 850 ? 60 : 90;
   // svg always render 90 days, but changes viewBox to show 90, 60 or 30 days data based on container size
   const viewBox = viewBoxByDayView[daysToDisplay];
 
