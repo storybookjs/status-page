@@ -1,7 +1,7 @@
 import { addDays } from 'date-fns';
 import { getJobs, getPipelines, getTestData, getWorkflows, Pipeline } from '~/client/circle-ci';
 
-export async function getDailyPipelines(branch = 'next-release', since?: Date) {
+export async function getDailyPipelines(branch = 'next-release', since?: Date): Promise<EnrichedPipeline[]> {
   async function getNextPageRecursively(
     pipelines: Pipeline[] = [],
     enrichedPipelines: Promise<EnrichedPipeline>[] = [],
@@ -30,7 +30,7 @@ export async function getDailyPipelines(branch = 'next-release', since?: Date) {
   return await getNextPageRecursively();
 }
 
-type EnrichedPipeline = Awaited<ReturnType<typeof enrichPipeline>>;
+export type EnrichedPipeline = Awaited<ReturnType<typeof enrichPipeline>>;
 
 async function enrichPipeline(pipeline: Pipeline) {
   const workflows = await getWorkflows({ 'pipeline-id': pipeline.id });
