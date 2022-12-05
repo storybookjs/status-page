@@ -56,7 +56,11 @@ export const StatusInfo = memo((result: TestResult) => {
         {status === 'indecisive' && <div>There are inconclusive results for this day</div>}
         <div className="template-name">Storybook version: {storybookVersion}</div>
         <div className="template-link">
-          See <Link href={ciLink}>pipeline</Link> in CI
+          See{' '}
+          <Link href={ciLink} target="_blank">
+            pipeline
+          </Link>{' '}
+          in CI
         </div>
         {status === 'failure' && <FeaturesBlock features={features} />}
       </>
