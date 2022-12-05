@@ -16,15 +16,16 @@ const meta = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+// TODO seems the new StoryObj with meta bugs with memo components
+type Story = StoryObj<typeof StatusInfo>;
 
 const TODAY = new Date(1669383837565);
 const testResult: TestResult = {
   ciLink: 'http://app.circleci.com/pipelines/github/storybookjs/storybook/12345/workflows/12345',
   date: TODAY,
   features: [
-    { category: 'addons', name: 'addon docs', status: 'failure' },
-    { category: 'addons', name: 'addon controls', status: 'failure' },
+    { category: 'addon', name: 'addon docs', status: 'failure' },
+    { category: 'addon', name: 'addon controls', status: 'failure' },
   ],
   status: 'failure',
   storybookVersion: '7.0.0-alpha.51',

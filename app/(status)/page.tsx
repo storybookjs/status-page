@@ -6,17 +6,12 @@ import Head from 'next/head';
 import { Link } from '../components/Link';
 import { StatusRowGroup } from '../components/StatusRowGroup';
 // TODO: replace with actual data, use mocks for now
-import { createMock } from '~/mock';
+import mocks from '~/mock/template-tests.json';
+import { TemplateTests } from '~/model/types';
 
 const Container = styled.div`
   margin-top: 40px;
 `;
-
-const mocks = [
-  createMock({ name: 'React Vite (Typescript) ' }),
-  createMock({ name: 'Angular Webpack5 (Typescript) ' }),
-  createMock({ name: 'Vue Vite (Javascript) ' }),
-];
 
 export default function StatusPage() {
   return (
@@ -33,7 +28,14 @@ export default function StatusPage() {
       </header>
       <Container>
         {/* TODO use real data here instead */}
-        <StatusRowGroup data={mocks} />
+        <StatusRowGroup
+          data={
+            mocks.map((template) => ({
+              ...template,
+              results: template.results.map((result) => ({ ...result, date: new Date(result.date) })),
+            })) as TemplateTests[]
+          }
+        />
       </Container>
     </>
   );

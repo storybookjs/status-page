@@ -1,16 +1,21 @@
-import { memo } from 'react';
+import { ComponentProps, memo } from 'react';
 import { useElementSize } from 'usehooks-ts';
 import type { TemplateTests, TestResult } from '~/model/types';
-import { WithTooltip } from '@storybook/design-system';
+import { WithTooltip, Badge } from '@storybook/design-system';
 import { styled } from '@storybook/theming';
 import { getFormattedDate } from '~/util';
 import { StatusInfo } from './StatusInfo';
 
-const statusByResult: Record<TestResult['status'], string> = {
-  'no-data': 'No recent data',
-  success: 'Operational',
-  failure: 'Issues',
-  indecisive: 'Inconclusive results',
+type BadgeProps = ComponentProps<typeof Badge>;
+
+const statusByResult: Record<TestResult['status'], { type: BadgeProps['status']; label: string }> = {
+  'no-data': {
+    type: 'neutral',
+    label: 'No recent data',
+  },
+  success: { type: 'positive', label: 'Operational' },
+  failure: { type: 'negative', label: 'Issues' },
+  indecisive: { type: 'warning', label: 'Inconclusive results' },
 };
 
 const viewBoxByDayView = {
@@ -29,6 +34,13 @@ const ResultBox = styled.section`
 const ResultHeading = styled.div`
   display: flex;
   justify-content: space-between;
+`;
+
+const TemplateName = styled.div`
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  color: #333333;
 `;
 
 const ResultFooter = styled.div`
@@ -74,7 +86,7 @@ export const StatusRow = memo(({ results, name }: TemplateTests) => {
   }
 
   const mostRecentStatus = results.at(-1)?.status || 'no-data';
-  const templateStatus = statusByResult[mostRecentStatus];
+  const { label: statusLabel, type: statusType } = statusByResult[mostRecentStatus];
 
   // by default width is 0, so we assume the default view which is 90 days
   const daysToDisplay = width === 0 || width >= 850 ? 90 : width >= 600 ? 60 : 30;
@@ -86,8 +98,8 @@ export const StatusRow = memo(({ results, name }: TemplateTests) => {
     <ResultBox ref={chartRef} className="result-box">
       <Container>
         <ResultHeading>
-          <div>{name}</div>
-          <div data-status={mostRecentStatus}>{templateStatus}</div>
+          <TemplateName>{name}</TemplateName>
+          <Badge status={statusType}>{statusLabel}</Badge>
         </ResultHeading>
 
         <HeartBeatChart preserveAspectRatio="none" height={34} viewBox={viewBox}>
