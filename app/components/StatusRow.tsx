@@ -43,11 +43,6 @@ const TemplateName = styled.div`
   color: #333333;
 `;
 
-const ResultFooter = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
 const HeartBeatChart = styled.svg`
   width: 100%;
   overflow: hidden;
@@ -124,10 +119,6 @@ export const StatusRow = memo(({ results, name }: TemplateTests) => {
             );
           })}
         </HeartBeatChart>
-        <ResultFooter>
-          <div>{daysToDisplay} days ago</div>
-          <div>Today</div>
-        </ResultFooter>
       </Container>
     </ResultBox>
   );
