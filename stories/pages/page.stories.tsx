@@ -1,6 +1,6 @@
 import { StoryObj, Meta } from '@storybook/react';
 
-import { StatusPage } from '~/pages/StatusPage';
+import StatusPage from '~/pages/index';
 import layoutMocks from '~/mock/layout.json';
 import templateMocks from '~/mock/template-tests.json';
 import { TemplateTests } from '~/model/types';

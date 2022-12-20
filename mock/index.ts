@@ -1,6 +1,6 @@
 import { addDays } from 'date-fns';
 
-import { Feature, StorybookTemplate, TemplateTests, TestResult } from "~/model/types";
+import { TemplateTests, TestResult } from '~/model/types';
 import { startOfDay } from 'date-fns';
 import { range } from '~/util/index';
 
@@ -26,17 +26,29 @@ export const createMock = ({
     results: range(0, 90)
       .map(() => testResult)
       .map((res, index) => {
-        const status = index === 89 ? lastStatus : index < 10 ? "no-data" : index % 30 === 0 ? "failure" : index % 32 === 0 ? "indecisive" : "success" as const;
-        return ({
+        const status =
+          index === 89
+            ? lastStatus
+            : index < 10
+            ? 'no-data'
+            : index % 30 === 0
+            ? 'failure'
+            : index % 32 === 0
+            ? 'indecisive'
+            : ('success' as const);
+        return {
           ...res,
-          features: status === 'failure' ?  [
-            { category: 'addon', name: 'addon docs', status: 'failure' },
-            { category: 'addon', name: 'addon controls', status: 'failure' },
-          ] : [],
+          features:
+            status === 'failure'
+              ? [
+                  { category: 'addon', name: 'addon docs', status: 'failure' },
+                  { category: 'addon', name: 'addon controls', status: 'failure' },
+                ]
+              : [],
           date: addDays(startOfDay(TODAY), -(89 - index)),
           // just to have predictable but different data
           status,
-        });
+        };
       }),
   });
 };

@@ -11,7 +11,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "generate-api-definitions": "openapi-typescript circle-ci-open-api.json --output open-api/circle-ci.d.ts",
-    "generate-mock-data": "tsx ./scripts/generate-mock-data.ts",
+    "generate-mock-data": "tsx ./scripts/generate-circle-ci-data-mocks.ts",
     "postinstall": "pnpm run generate-api-definitions",
     "prepare": "husky install"
   },

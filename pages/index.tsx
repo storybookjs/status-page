@@ -7,7 +7,7 @@ import Head from 'next/head';
 import { Link } from '~/components/Link';
 import { StatusRowGroup } from '~/components/StatusRowGroup';
 import { TemplateTests } from '~/model/types';
-import { AppLayout } from '~/components/layout/AppLayout';
+import { AppLayout, PageProps } from '~/components/layout/AppLayout';
 import templateMocks from '~/mock/template-tests.json';
 import layoutMocks from '~/mock/layout.json';
 import { fetchCircleCiData } from '../scripts/fetch-circle-ci-data';
@@ -17,7 +17,7 @@ const Container = styled.div`
 `;
 
 type Props = {
-  pageProps: any;
+  pageProps: PageProps;
   templateData: TemplateTests[];
 };
 
@@ -35,7 +35,6 @@ export default function StatusPage({ pageProps, templateData }: Props) {
         </p>
       </header>
       <Container>
-        {/* TODO use real data here instead */}
         <StatusRowGroup
           data={
             templateData.map((template) => ({
@@ -56,15 +55,16 @@ const MOCK_DATA = {
   templateData: templateMocks,
 };
 
-const useMocks = false;
+// DO NOT COMMIT THIS AS TRUE
+const USE_MOCKS = false;
 
 export const getStaticProps: GetStaticProps = async () => {
-  if (useMocks) {
+  if (USE_MOCKS) {
     return { props: MOCK_DATA };
   }
 
   const res = await fetch(LAYOUT_DATA_ENDPOINT);
-  const pageProps = await res.json();
+  const pageProps = (await res.json()) as PageProps;
 
   const templateData = await fetchCircleCiData();
   return { props: { pageProps, templateData } };

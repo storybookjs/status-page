@@ -1,5 +1,5 @@
 import { addDays } from 'date-fns';
-import { getJobs, getPipelines, getTestData, getWorkflows, Pipeline } from 'client/circle-ci';
+import { getJobs, getPipelines, getTestData, getWorkflows, Pipeline } from '~/client/circle-ci';
 
 export async function getDailyPipelines(branch = 'next-release', since?: Date): Promise<EnrichedPipeline[]> {
   async function getNextPageRecursively(
