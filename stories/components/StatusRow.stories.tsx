@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { StatusRow } from '~/components/StatusRow';
 import { userEvent, within } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
-import { createMock } from '~/mock';
+import { createMock } from '~/mock/index';
 
 const viewports = {
   small: {

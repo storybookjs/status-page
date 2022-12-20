@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { createMock } from '~/mock';
+import { createMock } from '~/mock/index';
 
 import { StatusRowGroup } from '~/components/StatusRowGroup';
 

@@ -8,9 +8,12 @@ import { Header, HeaderProps } from './Header';
 import { GlobalStyles } from '~/styles/GlobalStyles';
 
 type FooterProps = React.ComponentProps<typeof MarketingFooter>;
+
+export type PageProps = Partial<HeaderProps> & Pick<FooterProps, 'subscriberCount'>;
+
 export interface AppLayoutProps {
   children: React.ReactNode;
-  pageProps: Partial<HeaderProps> & Pick<FooterProps, 'subscriberCount'>;
+  pageProps: PageProps;
 }
 
 const navLinks: Links = {

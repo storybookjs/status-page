@@ -1,4 +1,4 @@
-import { paths } from '../../open-api/circle-ci';
+import { paths } from '../open-api/circle-ci';
 import { Fetcher } from 'openapi-typescript-fetch';
 
 const fetcher = Fetcher.for<paths>();
