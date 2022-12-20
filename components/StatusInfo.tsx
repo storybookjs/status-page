@@ -70,7 +70,7 @@ export const StatusInfo = memo((result: TestResult) => {
       <div className="template-date">{day}</div>
       <>
         {status === 'indecisive' && <div>There are inconclusive results for this day</div>}
-        <div className="template-name">Storybook version: {storybookVersion}</div>
+        {storybookVersion && <div className="template-name">Storybook version: {storybookVersion}</div>}
         {templateLink}
         <FeaturesBlock features={features} />
       </>
