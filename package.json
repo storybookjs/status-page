@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@next/env": "^13.0.4",
-    "@storybook/components-marketing": "^2.0.41",
+    "@storybook/components-marketing": "2.0.42--canary.57.cc58286.0",
     "@storybook/design-system": "^7.9.1",
     "@storybook/theming": "latest",
     "@types/node": "18.11.9",
