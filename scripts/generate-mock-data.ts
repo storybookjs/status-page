@@ -11,13 +11,10 @@ import { parseArgs } from 'node:util';
   let pipelines: EnrichedPipeline[];
 
   if (!args.values.useMock) {
-    pipelines = await getDailyPipelines('next', addDays(new Date(), -90));
-
-    console.log('Applying prettier on downloaded data');
-    const prettyPipelines = format(JSON.stringify(pipelines), { parser: 'json' });
+    pipelines = await getDailyPipelines('next-release', addDays(new Date(), -30));
 
     console.log('Writing data to ./app/mock/data.json');
-    await writeFile('./app/mock/data.json', prettyPipelines);
+    await writeFile('./app/mock/data.json', JSON.stringify(pipelines));
   } else {
     console.log('Reading mock data');
     pipelines = await JSON.parse(await readFile('./app/mock/data.json', { encoding: 'utf-8' }));

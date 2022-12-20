@@ -25,17 +25,22 @@ export async function getLatestTestResults(ctx: Context): Promise<TemplateTests[
   }));
 }
 
+function getCiLink(pipeline?: EnrichedPipeline): string | undefined {
+  return pipeline != null ? `https://app.circleci.com/pipelines/github/storybookjs/storybook/${pipeline.number}` : undefined;
+}
+
 function getTestResultFromDay(enrichedDay: ReturnType<typeof enrichDayWithData>, template: string): TestResult {
-  if (enrichedDay.status === 'incomplete') return { status: 'no-data', date: enrichedDay.date };
+  const ciLink = getCiLink(enrichedDay.pipeline);
+  if (enrichedDay.status === 'incomplete') return { status: 'no-data', date: enrichedDay.date, ciLink };
 
   const templateResult = enrichedDay.templates.find((it) => it.template === template);
-  if (templateResult == null) return { status: 'no-data', date: enrichedDay.date };
+  if (templateResult == null || ciLink == null) return { status: 'no-data', date: enrichedDay.date, ciLink };
 
   const features = templateResult.features;
   return {
     date: enrichedDay.date,
-    ciLink: `https://app.circleci.com/pipelines/github/storybookjs/storybook/${enrichedDay.pipeline.number}`,
-    storybookVersion: 'TODO',
+    ciLink,
+    storybookVersion: undefined,
     features: features,
     status: getStatusOfTestResult(features),
   };
@@ -47,7 +52,7 @@ function enrichDayWithData(date: Date, pipelines: EnrichedPipeline[]) {
 
   const templateNames = getAllTemplatesNames(pipeline);
   const isCompleted = isPipelineCompleted(pipeline);
-  if (templateNames == null || !isCompleted) return { status: 'incomplete' as const, date };
+  if (templateNames == null || !isCompleted) return { pipeline, status: 'incomplete' as const, date };
 
   const tests = getRelevantTests(pipeline, templateNames);
 
@@ -84,9 +89,19 @@ function getFeaturesOfTemplate(name: string, tests: ReturnType<typeof getRelevan
 function getStatusOfFeature(feature: string, tests: ReturnType<typeof getRelevantTests>): Feature['status'] {
   const featureTests = tests.filter((it) => it.feature === feature);
   if (featureTests.length === 0) return 'unsupported';
-  if (featureTests.every((it) => it.result === 'success')) return 'success';
-  // TODO find out why we have system-out results
-  if (featureTests.some((it) => it.result === 'failure' || it.result === 'skipped' || it.result === 'system-out')) return 'failure';
+  if (featureTests.every((it) => it.result === 'success' || it.result === 'system-out')) return 'success';
+  if (featureTests.some((it) => it.result === 'system-out')) {
+    console.log(`Found flaky tests in feature ${feature} for ${tests[0]?.template} (${tests[0]?.date})`);
+  }
+
+  if (featureTests.some((it) => it.result === 'failure')) return 'failure';
+  if (featureTests.some((it) => it.result === 'skipped')) {
+    console.log(`Marked feature ${feature} for ${tests[0]?.template} as unsupported (${tests[0]?.date})`);
+    return 'unsupported';
+  }
+
+  console.log(`Marked feature ${feature} for ${tests[0]?.template} as indecisive (${tests[0]?.date})`);
+  console.log(featureTests);
   return 'indecisive';
 }
 
@@ -95,12 +110,17 @@ function getRelevantTests(pipeline: EnrichedPipeline, templates: string[]) {
     .map((name) => {
       const job = pipeline.jobs.find((job) => job.name === name);
       return (
-        job?.tests.map((test) => ({
-          job: job.name,
-          result: test.result,
-          template: templates.find((name) => test.classname.includes(name)),
-          feature: getFeature(job.name, test.classname),
-        })) ?? []
+        job?.tests
+          // TODO: Find a way how to treat Framework specific tests here:
+          .filter((it) => !it.classname.includes('Next.js'))
+          .map((test) => ({
+            ...test,
+            job: job.name,
+            result: test.result,
+            template: templates.find((name) => test.classname.includes(name)),
+            feature: getFeature(job.name, test.classname),
+            date: pipeline.created_at,
+          })) ?? []
       );
     })
     .flat();
@@ -110,7 +130,11 @@ function getFeature(jobName: string, className: string) {
   if (jobName === 'e2e-sandboxes') {
     const feature = className.split(' › ')[2];
     if (feature == null) return 'core';
-    if (feature.includes('addon')) return feature;
+
+    if (feature.includes('addon')) {
+      if (className.includes('source snippet')) return `${feature}/source-snippets`;
+      return feature;
+    }
     return 'core';
   }
   if (jobName === 'test-runner-sandboxes') {

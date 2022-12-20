@@ -25,10 +25,11 @@ export type TestResult =
        */
       status: 'no-data';
       date: Date;
+      ciLink?: string;
     }
   | {
       date: Date;
-      storybookVersion: string;
+      storybookVersion?: string;
       /** Link to the pipeline in circle ci. */
       ciLink: string;
       /**

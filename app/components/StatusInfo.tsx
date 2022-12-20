@@ -29,40 +29,50 @@ const Feature = styled.div`
   display: flex;
   gap: 0.5rem;
   align-items: center;
-  text-transform: capitalize;
 
   & svg {
     color: var(--status-failure);
+  }
+
+  &.unsupported svg {
+    color: var(--status-unsupported);
   }
 `;
 
 export const StatusInfo = memo((result: TestResult) => {
   const day = getFormattedDate(result.date);
 
+  const templateLink =
+    result.ciLink != null ? (
+      <div className="template-link">
+        See{' '}
+        <Link href={result.ciLink} target="_blank">
+          pipeline
+        </Link>{' '}
+        in CI
+      </div>
+    ) : null;
+
   if (result.status === 'no-data') {
     return (
       <StatusInfoWrapper>
         <div className="template-date">{day}</div>
         <div>There is no data for this day</div>
+
+        {templateLink}
       </StatusInfoWrapper>
     );
   }
 
-  const { storybookVersion, features, ciLink, status } = result;
+  const { storybookVersion, features, status } = result;
   return (
     <StatusInfoWrapper>
       <div className="template-date">{day}</div>
       <>
         {status === 'indecisive' && <div>There are inconclusive results for this day</div>}
         <div className="template-name">Storybook version: {storybookVersion}</div>
-        <div className="template-link">
-          See{' '}
-          <Link href={ciLink} target="_blank">
-            pipeline
-          </Link>{' '}
-          in CI
-        </div>
-        {status === 'failure' && <FeaturesBlock features={features} />}
+        {templateLink}
+        <FeaturesBlock features={features} />
       </>
     </StatusInfoWrapper>
   );
@@ -72,9 +82,9 @@ export const FeaturesBlock = ({ features }: { features: TFeature[] }) => {
   return (
     <FeaturesBlockWrapper>
       {features
-        .filter(({ status }) => status === 'failure')
-        .map(({ name }) => (
-          <Feature key={name}>
+        .filter(({ status }) => status === 'failure' || status === 'unsupported')
+        .map(({ name, status }) => (
+          <Feature key={name} className={status}>
             <Icon icon={'cross'} />
             <div>{name}</div>
           </Feature>

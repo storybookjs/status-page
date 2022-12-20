@@ -37,15 +37,29 @@ export const Success: Story = {
     status: 'success',
   },
 };
+
 export const Failure: Story = {
   args: testResult,
 };
+
 export const Indecisive: Story = {
   args: {
     ...testResult,
     status: 'indecisive',
   },
 };
+
+export const Unsupported: Story = {
+  args: {
+    ...testResult,
+    features: [
+      { category: 'addon', name: 'addon docs', status: 'unsupported' },
+      { category: 'addon', name: 'addon controls', status: 'unsupported' },
+    ],
+    status: 'success',
+  },
+};
+
 export const NoData: Story = {
   args: {
     ...testResult,
