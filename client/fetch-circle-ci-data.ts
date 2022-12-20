@@ -1,14 +1,9 @@
 import { EnrichedPipeline, getDailyPipelines } from '~/services/circle-ci';
 import { addDays } from 'date-fns';
 import { getLatestTestResults } from '~/services/test-results';
+import { getStorybookVersions } from './storybook-versions';
 
-export const fetchRawCircleCiData = async ({
-  useMock = false,
-  branch = 'next-release',
-}: {
-  useMock?: boolean;
-  branch?: string;
-} = {}): Promise<EnrichedPipeline[]> => {
+export const fetchRawCircleCiData = async ({ useMock = false, branch = 'next-release' } = {}): Promise<EnrichedPipeline[]> => {
   if (useMock) {
     console.log('Reading mock data');
     try {
@@ -20,6 +15,7 @@ export const fetchRawCircleCiData = async ({
     }
   }
 
+  console.log(`Fetching data for the ${branch} branch`);
   return getDailyPipelines(branch, addDays(new Date(), -90));
 };
 
@@ -33,8 +29,10 @@ export const getProcessedTestResults = async (pipelines: EnrichedPipeline[]) => 
   return testResults;
 };
 
-export const fetchCircleCiData = async () => {
-  const pipelines = await fetchRawCircleCiData();
+export const fetchCircleCiData = async ({ storybookVersion }: { storybookVersion: string }) => {
+  const { next } = await getStorybookVersions();
+  const branch = storybookVersion === next ? 'next-release' : 'next-release'; // TODO: change to main-release once that is ready
+  const pipelines = await fetchRawCircleCiData({ branch });
 
   return getProcessedTestResults(pipelines);
 };

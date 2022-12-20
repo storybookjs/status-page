@@ -1,5 +1,3 @@
-'use client';
-
 import { Heading } from '@storybook/design-system';
 import { styled } from '@storybook/theming';
 import { GetStaticProps } from 'next';
@@ -10,7 +8,10 @@ import { TemplateTests } from '~/model/types';
 import { AppLayout, PageProps } from '~/components/layout/AppLayout';
 import templateMocks from '~/mock/template-tests.json';
 import layoutMocks from '~/mock/layout.json';
-import { fetchCircleCiData } from '../scripts/fetch-circle-ci-data';
+import versionsMock from '~/mock/storybook-versions.json';
+import { fetchCircleCiData } from '../client/fetch-circle-ci-data';
+import { getStorybookVersions, StorybookVersions } from '~/client/storybook-versions';
+import { getDxData } from '~/client/dx-data';
 
 const Container = styled.div`
   margin-top: 40px;
@@ -48,8 +49,6 @@ export default function StatusPage({ pageProps, templateData }: Props) {
   );
 }
 
-const LAYOUT_DATA_ENDPOINT = 'https://storybook-dx.netlify.app/.netlify/functions/dx-data';
-
 const MOCK_DATA = {
   pageProps: layoutMocks,
   templateData: templateMocks,
@@ -58,14 +57,34 @@ const MOCK_DATA = {
 // DO NOT COMMIT THIS AS TRUE
 const USE_MOCKS = false;
 
-export const getStaticProps: GetStaticProps = async () => {
-  if (USE_MOCKS) {
-    return { props: MOCK_DATA };
+export const getStaticProps: GetStaticProps = async ({ params = {} }) => {
+  let { version: storybookVersion } = params as { version: string };
+
+  if (!storybookVersion) {
+    let sbVersions: StorybookVersions;
+    if (USE_MOCKS) {
+      sbVersions = versionsMock;
+    } else {
+      sbVersions = await getStorybookVersions();
+    }
+
+    storybookVersion = sbVersions.latest;
   }
 
-  const res = await fetch(LAYOUT_DATA_ENDPOINT);
-  const pageProps = (await res.json()) as PageProps;
+  if (USE_MOCKS) {
+    return {
+      props: {
+        ...MOCK_DATA,
+        pageProps: {
+          ...MOCK_DATA.pageProps,
+          storybookVersion,
+        },
+      },
+    };
+  }
 
-  const templateData = await fetchCircleCiData();
-  return { props: { pageProps, templateData } };
+  const dxData = await getDxData();
+
+  const templateData = await fetchCircleCiData({ storybookVersion });
+  return { props: { pageProps: { ...dxData, storybookVersion }, templateData } };
 };

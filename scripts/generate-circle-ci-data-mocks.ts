@@ -1,7 +1,7 @@
 import { writeFile } from 'node:fs/promises';
 import { format } from 'prettier';
 import { parseArgs } from 'node:util';
-import { fetchRawCircleCiData, getProcessedTestResults } from './fetch-circle-ci-data';
+import { fetchRawCircleCiData, getProcessedTestResults } from '../client/fetch-circle-ci-data';
 
 (async () => {
   const args = parseArgs({

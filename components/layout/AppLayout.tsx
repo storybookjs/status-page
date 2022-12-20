@@ -9,7 +9,7 @@ import { GlobalStyles } from '~/styles/GlobalStyles';
 
 type FooterProps = React.ComponentProps<typeof MarketingFooter>;
 
-export type PageProps = Partial<HeaderProps> & Pick<FooterProps, 'subscriberCount'>;
+export type PageProps = Partial<HeaderProps> & Pick<FooterProps, 'subscriberCount'> & { storybookVersion: string };
 
 export interface AppLayoutProps {
   children: React.ReactNode;

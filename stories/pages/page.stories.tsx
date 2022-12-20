@@ -1,6 +1,6 @@
 import { StoryObj, Meta } from '@storybook/react';
 
-import StatusPage from '~/pages/index';
+import StatusPage from '~/pages/[version]';
 import layoutMocks from '~/mock/layout.json';
 import templateMocks from '~/mock/template-tests.json';
 import { TemplateTests } from '~/model/types';
@@ -10,7 +10,10 @@ const meta = {
   title: 'Pages/Status',
   component: StatusPage,
   args: {
-    pageProps: layoutMocks,
+    pageProps: {
+      ...layoutMocks,
+      storybookVersion: '7.0',
+    },
     templateData: templateMocks.map((template) => ({
       ...template,
       results: template.results.map((result) => ({ ...result, date: new Date(result.date) })),
