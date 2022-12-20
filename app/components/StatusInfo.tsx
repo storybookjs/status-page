@@ -85,7 +85,7 @@ export const FeaturesBlock = ({ features }: { features: TFeature[] }) => {
         .filter(({ status }) => status === 'failure' || status === 'unsupported')
         .map(({ name, status }) => (
           <Feature key={name} className={status}>
-            <Icon icon={'cross'} />
+            <Icon icon={status === 'unsupported' ? 'subtract' : 'close'} />
             <div>{name}</div>
           </Feature>
         ))}
