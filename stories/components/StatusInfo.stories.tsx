@@ -24,20 +24,20 @@ const testResult: TestResult = {
   ciLink: 'http://app.circleci.com/pipelines/github/storybookjs/storybook/12345/workflows/12345',
   date: TODAY,
   features: [],
-  status: 'failure',
+  status: 'success',
   storybookVersion: '7.0.0-alpha.51',
 };
 
 export const Success: Story = {
   args: {
     ...testResult,
-    status: 'success',
   },
 };
 
 export const Failure: Story = {
   args: {
     ...testResult,
+    status: 'failure',
     features: [
       { category: 'addon', name: 'addon docs', status: 'failure' },
       { category: 'addon', name: 'addon controls', status: 'failure' },
@@ -59,7 +59,6 @@ export const Unsupported: Story = {
       { category: 'addon', name: 'addon docs', status: 'unsupported' },
       { category: 'addon', name: 'addon controls', status: 'unsupported' },
     ],
-    status: 'success',
   },
 };
 

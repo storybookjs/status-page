@@ -79,6 +79,10 @@ export const StatusInfo = memo((result: TestResult) => {
 });
 
 export const FeaturesBlock = ({ features }: { features: TFeature[] }) => {
+  if (features.length === 0) {
+    return null;
+  }
+
   return (
     <FeaturesBlockWrapper>
       {features
