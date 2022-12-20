@@ -6,7 +6,12 @@ import { getLatestTestResults } from '../app/services/test-results';
 import { parseArgs } from 'node:util';
 
 (async () => {
-  const args = parseArgs({ options: { useMock: { type: 'boolean', default: false } } });
+  const args = parseArgs({
+    options: {
+      useMock: { type: 'boolean', default: false },
+      storeCircleCI: { type: 'boolean', default: false },
+    },
+  });
 
   let pipelines: EnrichedPipeline[];
 
@@ -14,7 +19,9 @@ import { parseArgs } from 'node:util';
     pipelines = await getDailyPipelines('next-release', addDays(new Date(), -30));
 
     console.log('Writing data to ./app/mock/data.json');
-    await writeFile('./app/mock/data.json', JSON.stringify(pipelines));
+    if (args.values.storeCircleCI) {
+      await writeFile('./app/mock/data.json', JSON.stringify(pipelines));
+    }
   } else {
     console.log('Reading mock data');
     pipelines = await JSON.parse(await readFile('./app/mock/data.json', { encoding: 'utf-8' }));
