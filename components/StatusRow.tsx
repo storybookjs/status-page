@@ -3,7 +3,7 @@ import { useElementSize } from 'usehooks-ts';
 import type { TemplateTests, TestResult } from '~/model/types';
 import { WithTooltip, Badge } from '@storybook/design-system';
 import { styled } from '@storybook/theming';
-import { getFormattedDate } from '~/util';
+import { getFormattedDate } from '~/util/index';
 import { StatusInfo } from './StatusInfo';
 
 type BadgeProps = ComponentProps<typeof Badge>;

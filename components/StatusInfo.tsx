@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import type { TestResult, Feature as TFeature } from '~/model/types';
-import { getFormattedDate } from '~/util';
+import { getFormattedDate } from '~/util/index';
 import { Icon } from '@storybook/design-system';
 import { styled } from '@storybook/theming';
 import { Link } from './Link';

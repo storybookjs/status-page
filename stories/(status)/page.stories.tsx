@@ -1,6 +1,6 @@
 import { StoryObj, Meta } from '@storybook/react';
 
-import StatusPage from '~/(status)/page';
+import StatusPage from 'app/(status)/page';
 
 const meta = {
   // eslint-disable-next-line storybook/no-title-property-in-meta

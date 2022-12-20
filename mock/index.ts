@@ -2,7 +2,7 @@ import { addDays } from 'date-fns';
 
 import { Feature, StorybookTemplate, TemplateTests, TestResult } from "~/model/types";
 import { startOfDay } from 'date-fns';
-import { range } from '~/util';
+import { range } from '~/util/index';
 
 const TODAY = new Date(1669383837565);
 const testResult: Extract<TestResult, { status: 'success' | 'failure' | 'indecisive' }> = {

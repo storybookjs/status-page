@@ -3,8 +3,8 @@
 import { Heading } from '@storybook/design-system';
 import { styled } from '@storybook/theming';
 import Head from 'next/head';
-import { Link } from '../components/Link';
-import { StatusRowGroup } from '../components/StatusRowGroup';
+import { Link } from '~/components/Link';
+import { StatusRowGroup } from '~/components/StatusRowGroup';
 // TODO: replace with actual data, use mocks for now
 import mocks from '~/mock/template-tests.json';
 import { TemplateTests } from '~/model/types';

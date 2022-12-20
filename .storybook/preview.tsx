@@ -1,8 +1,8 @@
 import React from 'react';
 import { loadFontsForStorybook } from '@storybook/design-system';
-import { GlobalStyles } from '../app/styles/GlobalStyles';
-import { AppLayout, AppLayoutProps } from '../app/components/layout/AppLayout';
-import layoutMock from '../app/mock/layout.json';
+import { GlobalStyles } from '~/styles/GlobalStyles';
+import { AppLayout, AppLayoutProps } from '~/components/layout/AppLayout';
+import layoutMock from '~/mock/layout.json';
 import { Decorator } from '@storybook/nextjs';
 
 loadFontsForStorybook();
