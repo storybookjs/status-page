@@ -18,7 +18,7 @@ const Container = styled.div`
 
 type Props = {
   pageProps: any;
-  templateData: any;
+  templateData: TemplateTests[];
 };
 
 export default function StatusPage({ pageProps, templateData }: Props) {
