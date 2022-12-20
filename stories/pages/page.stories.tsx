@@ -17,7 +17,6 @@ const meta = {
     })) as TemplateTests[],
   },
   parameters: {
-    withLayout: true,
     layout: 'fullscreen',
   },
 } as Meta<typeof StatusPage>;
