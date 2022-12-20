@@ -5,21 +5,14 @@ import { format } from 'prettier';
 import { getLatestTestResults } from '~/services/test-results';
 import { parseArgs } from 'node:util';
 
-(async () => {
-  const args = parseArgs({
-    options: {
-      useMock: { type: 'boolean', default: false },
-      storeCircleCI: { type: 'boolean', default: false },
-    },
-  });
-
+export const fetchCircleCiData = async (useMock = false, storeCircleCI = false) => {
   let pipelines: EnrichedPipeline[];
 
-  if (!args.values.useMock) {
+  if (!useMock) {
     pipelines = await getDailyPipelines('next-release', addDays(new Date(), -30));
 
     console.log('Writing data to ./app/mock/data.json');
-    if (args.values.storeCircleCI) {
+    if (storeCircleCI) {
       await writeFile('./app/mock/data.json', JSON.stringify(pipelines));
     }
   } else {
@@ -33,8 +26,20 @@ import { parseArgs } from 'node:util';
     now: () => new Date(),
   });
 
-  console.log('Applying prettier on transformed data');
-  const prettyTestResults = format(JSON.stringify(testResults), { parser: 'json' });
+  return testResults;
+};
 
-  await writeFile('./app/mock/template-tests.json', prettyTestResults);
-})();
+if (require.main === module) {
+  (async () => {
+    const args = parseArgs({
+      options: {
+        useMock: { type: 'boolean', default: false },
+        storeCircleCI: { type: 'boolean', default: false },
+      },
+    });
+    const testResults = fetchCircleCiData(args.values.useMock, args.values.storeCircleCI);
+    console.log('Applying prettier on transformed data');
+    const prettyTestResults = format(JSON.stringify(testResults), { parser: 'json' });
+    await writeFile('./app/mock/template-tests.json', prettyTestResults);
+  })();
+}

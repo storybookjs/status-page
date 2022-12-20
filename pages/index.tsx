@@ -10,6 +10,7 @@ import { TemplateTests } from '~/model/types';
 import { AppLayout } from '~/components/layout/AppLayout';
 import templateMocks from '~/mock/template-tests.json';
 import layoutMocks from '~/mock/layout.json';
+import { fetchCircleCiData } from '../scripts/fetch-circle-ci-data';
 
 const Container = styled.div`
   margin-top: 40px;
@@ -55,7 +56,7 @@ const MOCK_DATA = {
   templateData: templateMocks,
 };
 
-const useMocks = true;
+const useMocks = false;
 
 export const getStaticProps: GetStaticProps = async () => {
   if (useMocks) {
@@ -65,7 +66,6 @@ export const getStaticProps: GetStaticProps = async () => {
   const res = await fetch(LAYOUT_DATA_ENDPOINT);
   const pageProps = await res.json();
 
-  // TODO: provide templateData
-  const templateData = {};
+  const templateData = await fetchCircleCiData();
   return { props: { pageProps, templateData } };
 };
