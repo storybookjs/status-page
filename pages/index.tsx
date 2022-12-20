@@ -2,20 +2,27 @@
 
 import { Heading } from '@storybook/design-system';
 import { styled } from '@storybook/theming';
+import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import { Link } from '~/components/Link';
 import { StatusRowGroup } from '~/components/StatusRowGroup';
-// TODO: replace with actual data, use mocks for now
-import mocks from '~/mock/template-tests.json';
 import { TemplateTests } from '~/model/types';
+import { AppLayout } from '~/components/layout/AppLayout';
+import templateMocks from '~/mock/template-tests.json';
+import layoutMocks from '~/mock/layout.json';
 
 const Container = styled.div`
   margin-top: 40px;
 `;
 
-export default function StatusPage() {
+type Props = {
+  pageProps: any;
+  templateData: any;
+};
+
+export default function StatusPage({ pageProps, templateData }: Props) {
   return (
-    <>
+    <AppLayout pageProps={pageProps}>
       <Head>
         <title>Status page | Storybook</title>
       </Head>
@@ -30,13 +37,35 @@ export default function StatusPage() {
         {/* TODO use real data here instead */}
         <StatusRowGroup
           data={
-            mocks.map((template) => ({
+            templateData.map((template) => ({
               ...template,
               results: template.results.map((result) => ({ ...result, date: new Date(result.date) })),
             })) as TemplateTests[]
           }
         />
       </Container>
-    </>
+    </AppLayout>
   );
 }
+
+const LAYOUT_DATA_ENDPOINT = 'https://storybook-dx.netlify.app/.netlify/functions/dx-data';
+
+const MOCK_DATA = {
+  pageProps: layoutMocks,
+  templateData: templateMocks,
+};
+
+const useMocks = true;
+
+export const getStaticProps: GetStaticProps = async () => {
+  if (useMocks) {
+    return { props: MOCK_DATA };
+  }
+
+  const res = await fetch(LAYOUT_DATA_ENDPOINT);
+  const pageProps = await res.json();
+
+  // TODO: provide templateData
+  const templateData = {};
+  return { props: { pageProps, templateData } };
+};

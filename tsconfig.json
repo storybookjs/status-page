@@ -17,12 +17,13 @@
     "baseUrl": ".",
     "paths": {
       "~/components/*": ["components/*"],
+      "~/pages/*": ["pages/*"],
       "~/mock/*": ["mock/*"],
       "~/model/*": ["model/*"],
       "~/services/*": ["services/*"],
       "~/client/*": ["client/*"],
       "~/styles/*": ["styles/*"],
-      "~/util/*": ["util/*"],
+      "~/util/*": ["util/*"]
     },
     "plugins": [
       {

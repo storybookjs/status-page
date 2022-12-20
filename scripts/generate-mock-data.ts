@@ -1,8 +1,8 @@
 import { readFile, writeFile } from 'node:fs/promises';
-import { EnrichedPipeline, getDailyPipelines } from '../app/services/circle-ci';
+import { EnrichedPipeline, getDailyPipelines } from '~/services/circle-ci';
 import { addDays } from 'date-fns';
 import { format } from 'prettier';
-import { getLatestTestResults } from '../app/services/test-results';
+import { getLatestTestResults } from '~/services/test-results';
 import { parseArgs } from 'node:util';
 
 (async () => {
