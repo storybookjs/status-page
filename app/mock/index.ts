@@ -20,7 +20,7 @@ export const createMock = ({
   name?: string;
   lastStatus?: TestResult['status'];
 }) => {
-  return {
+  return satisfies<TemplateTests>()({
     id: 'foo',
     name,
     results: range(0, 90)
@@ -38,5 +38,12 @@ export const createMock = ({
           status,
         });
       }),
-  } satisfies TemplateTests;
+  });
 };
+
+/**
+ * Mimicking the satisfies operator until we can upgrade to TS4.9
+ */
+export function satisfies<A>() {
+  return <T extends A>(x: T) => x;
+}
