@@ -65,7 +65,13 @@ export const SuccessHovered: Story = {
 };
 
 export const Failure: Story = {
-  args: createMock({ lastStatus: 'failure' }),
+  args: createMock({
+    lastStatus: 'failure',
+    features: [
+      { category: 'addon', name: 'addon docs', status: 'failure' },
+      { category: 'addon', name: 'addon controls', status: 'failure' },
+    ],
+  }),
 };
 
 export const FailureHovered: Story = {

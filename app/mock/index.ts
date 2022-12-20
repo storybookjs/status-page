@@ -1,6 +1,6 @@
 import { addDays } from 'date-fns';
 
-import { TestResult } from '~/model/types';
+import { Feature, TestResult } from "~/model/types";
 import { startOfDay } from 'date-fns';
 import { range } from '~/util';
 
@@ -8,10 +8,7 @@ const TODAY = new Date(1669383837565);
 const testResult: Extract<TestResult, { status: 'success' | 'failure' | 'indecisive' }> = {
   ciLink: 'http://app.circleci.com/pipelines/github/storybookjs/storybook/12345/workflows/12345',
   date: TODAY,
-  features: [
-    { category: 'addon', name: 'addon docs', status: 'failure' },
-    { category: 'addon', name: 'addon controls', status: 'failure' },
-  ],
+  features: [],
   status: 'success',
   storybookVersion: '7.0.0-alpha.51',
 };
@@ -19,9 +16,11 @@ const testResult: Extract<TestResult, { status: 'success' | 'failure' | 'indecis
 export const createMock = ({
   name = 'React Vite (Typescript)',
   lastStatus = 'success',
+  features = [],
 }: {
   name?: string;
   lastStatus?: TestResult['status'];
+  features?: Feature[];
 }) => {
   return {
     id: 'foo',
@@ -30,6 +29,7 @@ export const createMock = ({
       .map(() => testResult)
       .map((res, index) => ({
         ...res,
+        features,
         date: addDays(startOfDay(TODAY), -(89 - index)),
         // just to have predictable but different data
         status:
