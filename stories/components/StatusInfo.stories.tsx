@@ -23,29 +23,45 @@ const TODAY = new Date(1669383837565);
 const testResult: TestResult = {
   ciLink: 'http://app.circleci.com/pipelines/github/storybookjs/storybook/12345/workflows/12345',
   date: TODAY,
-  features: [
-    { category: 'addon', name: 'addon docs', status: 'failure' },
-    { category: 'addon', name: 'addon controls', status: 'failure' },
-  ],
-  status: 'failure',
+  features: [],
+  status: 'success',
   storybookVersion: '7.0.0-alpha.51',
 };
 
 export const Success: Story = {
   args: {
     ...testResult,
-    status: 'success',
   },
 };
+
 export const Failure: Story = {
-  args: testResult,
+  args: {
+    ...testResult,
+    status: 'failure',
+    features: [
+      { category: 'addon', name: 'addon docs', status: 'failure' },
+      { category: 'addon', name: 'addon controls', status: 'failure' },
+    ],
+  },
 };
+
 export const Indecisive: Story = {
   args: {
     ...testResult,
     status: 'indecisive',
   },
 };
+
+export const Unsupported: Story = {
+  args: {
+    ...testResult,
+    features: [
+      { category: 'addon', name: 'addon docs', status: 'unsupported' },
+      { category: 'addon', name: 'addon controls', status: 'unsupported' },
+    ],
+  },
+};
+
 export const NoData: Story = {
   args: {
     ...testResult,

@@ -15,6 +15,7 @@ export const globalStyle = css`
     --status-no-data: #e9e9e9;
     --status-success: #1ad769;
     --status-failure: #ff4949;
+    --status-unsupported: orange;
     --status-indecisive: #8e8d8d;
 
     --background-secondary: #f3faff;
