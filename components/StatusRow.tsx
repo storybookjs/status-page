@@ -46,6 +46,9 @@ const TemplateName = styled.div`
 const HeartBeatChart = styled.svg`
   width: 100%;
   overflow: hidden;
+  & > g {
+    outline: none;
+  }
 `;
 
 const HeartBeat = styled.rect`
