@@ -2,9 +2,13 @@
   "name": "storybook-status-page",
   "version": "0.1.0",
   "private": true,
+  "repository": "storybookjs/status-page",
+  "author": "Storybook Team",
+  "homepage": "https://storybook.js.org/status",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "NEXT_PUBLIC_BASE_PATH=/status bash scripts/move-public-files.sh",
     "start": "next start",
     "test": "vitest",
     "lint": "next lint",
