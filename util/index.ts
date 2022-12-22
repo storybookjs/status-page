@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 
-export const getFormattedDate = (date: Date | string) => {
-  return format(typeof date === 'string' ? new Date(date) : date, 'dd LLL yyyy');
+export const getFormattedDate = (date: Date | string, short?: boolean) => {
+  return format(typeof date === 'string' ? new Date(date) : date, short ? 'MMM. do' : 'yyyy-MM-dd');
 };
 
 export function range(from: number, to: number) {

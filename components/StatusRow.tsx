@@ -1,39 +1,30 @@
-import { ComponentProps, memo } from 'react';
+import { memo, useState } from 'react';
 import { useElementSize } from 'usehooks-ts';
 import type { TemplateTests, TestResult } from '~/model/types';
-import { WithTooltip, Badge } from '@storybook/design-system';
+import { styles, TooltipNote, WithTooltip } from '@storybook/design-system';
 import { styled } from '@storybook/theming';
 import { getFormattedDate } from '~/util/index';
 import { StatusInfo } from './StatusInfo';
-
-type BadgeProps = ComponentProps<typeof Badge>;
-
-const statusByResult: Record<TestResult['status'], { type: BadgeProps['status']; label: string }> = {
-  'no-data': {
-    type: 'neutral',
-    label: 'No recent data',
-  },
-  success: { type: 'positive', label: 'Operational' },
-  failure: { type: 'negative', label: 'Issues' },
-  indecisive: { type: 'warning', label: 'Inconclusive results' },
-};
-
-const viewBoxByDayView = {
-  90: '0 0 448 34',
-  60: '150 0 298 34',
-  30: '300 0 148 34',
-};
+import { StatusBadge } from './StatusBadge';
 
 const ResultBox = styled.section`
   border: 1px solid var(--border-subtle);
   padding: var(--spacing-l);
   border-radius: 4px;
   color: var(--text-secondary);
+
+  // TODO: do proper mobile styling
+  @media (max-width: ${styles.breakpoint}px) {
+    * {
+      font-size: 14px !important;
+    }
+  }
 `;
 
 const ResultHeading = styled.div`
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-s);
 `;
 
 const TemplateName = styled.div`
@@ -43,30 +34,39 @@ const TemplateName = styled.div`
   color: #333333;
 `;
 
-const HeartBeatChart = styled.svg`
+const HeartBeatChart = styled.div`
   width: 100%;
-  overflow: hidden;
-  & > g {
-    outline: none;
-  }
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(3px, 1fr));
+  align-items: center;
+  gap: 0.25rem;
 `;
 
-const HeartBeat = styled.rect`
+const HeartBeat = styled.span<{ isSelected?: boolean; scrubMode?: boolean }>`
   cursor: pointer;
+  display: inline-block;
+  height: ${(props) => (props.isSelected ? '40px' : '34px')};
+  margin-top: -3px;
+  margin-bottom: -3px;
+  width: 100%;
+  opacity: ${(props) => (props.scrubMode && !props.isSelected ? 0.5 : 1)};
+  &:hover {
+    opacity: 1;
+  }
   &[data-status='success'] {
-    color: var(--status-success);
+    background-color: var(--status-success);
   }
 
   &[data-status='failure'] {
-    color: var(--status-failure);
+    background-color: var(--status-failure);
   }
 
   &[data-status='indecisive'] {
-    color: var(--status-indecisive);
+    background-color: var(--status-indecisive);
   }
 
   &[data-status='no-data'] {
-    color: var(--status-no-data);
+    background-color: var(--status-no-data);
   }
 `;
 
@@ -77,6 +77,8 @@ const Container = styled.article`
 
 export const StatusRow = memo(({ results, name }: TemplateTests) => {
   const [chartRef, { width }] = useElementSize();
+  const [selectedHeartBeat, setSelectedHeartBeat] = useState<TestResult>();
+  const [hoveredHeartBeat, setHoveredHeartBeat] = useState<TestResult>();
 
   // Not that it will ever happen, but just in case so we don't break the website because of malformed data.
   if (!results?.length) {
@@ -84,44 +86,46 @@ export const StatusRow = memo(({ results, name }: TemplateTests) => {
   }
 
   const mostRecentStatus = results.at(-1)?.status || 'no-data';
-  const { label: statusLabel, type: statusType } = statusByResult[mostRecentStatus];
 
-  // by default width is 0, so we assume the default view which is 90 days
+  // by default width is 0, so we assume the default view which is 90 days. Will look weird on mobile but 🤷
   const daysToDisplay = width === 0 || width >= 850 ? 90 : width >= 600 ? 60 : 30;
 
-  // svg always render 90 days, but changes viewBox to show 90, 60 or 30 days data based on container size
-  const viewBox = viewBoxByDayView[daysToDisplay];
+  const infoToDisplay = selectedHeartBeat && (hoveredHeartBeat || selectedHeartBeat);
+
+  const resultsToDisplay = results.slice(-daysToDisplay);
 
   return (
     <ResultBox ref={chartRef} className="result-box">
       <Container>
         <ResultHeading>
+          <StatusBadge status={mostRecentStatus}></StatusBadge>
           <TemplateName>{name}</TemplateName>
-          <Badge status={statusType}>{statusLabel}</Badge>
         </ResultHeading>
-
-        <HeartBeatChart preserveAspectRatio="none" height={34} viewBox={viewBox}>
-          {results.map((result, index) => {
+        <HeartBeatChart>
+          {resultsToDisplay.map((result) => {
             const { date, status } = result;
-            const day = getFormattedDate(date);
+            const day = getFormattedDate(date, true);
+            const storybookVersion = 'storybookVersion' in result && result.storybookVersion ? `${result.storybookVersion} - ` : '';
             return (
-              <WithTooltip key={day} tagName="g" role="" tooltip={<StatusInfo {...result} />} trigger="hover">
+              <WithTooltip
+                key={day}
+                hasChrome={false}
+                tooltip={<TooltipNote note={`${storybookVersion}${day}`} />}
+                aria-label={`Status for ${day}`}
+                onClick={() => setSelectedHeartBeat(result)}
+              >
                 <HeartBeat
-                  key={day}
-                  height={34}
-                  width={3}
-                  y={0}
-                  x={index * 5}
-                  fill="currentColor"
+                  isSelected={result === selectedHeartBeat}
+                  scrubMode={!!selectedHeartBeat}
+                  onMouseEnter={() => setHoveredHeartBeat(result)}
+                  onMouseLeave={() => setHoveredHeartBeat(undefined)}
                   data-status={status}
-                  aria-label={`Status for ${day} is: ${status}`}
-                >
-                  {day}
-                </HeartBeat>
+                />
               </WithTooltip>
             );
           })}
         </HeartBeatChart>
+        {infoToDisplay && <StatusInfo {...infoToDisplay} />}
       </Container>
     </ResultBox>
   );

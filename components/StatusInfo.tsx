@@ -1,43 +1,68 @@
-import { memo } from 'react';
-import type { TestResult, Feature as TFeature } from '~/model/types';
+import { ComponentProps, memo } from 'react';
+import type { TestResult } from '~/model/types';
 import { getFormattedDate } from '~/util/index';
-import { Icon } from '@storybook/design-system';
+import { Icon, styles } from '@storybook/design-system';
 import { styled } from '@storybook/theming';
 import { Link } from './Link';
+import { StatusBadge } from './StatusBadge';
 
-const StatusInfoWrapper = styled.article`
-  display: grid;
-  flex-direction: row;
-  font-weight: bold;
-  font-size: 0.9rem;
+const HeartBeatDetails = styled.div`
+  display: flex;
+  flex-direction: column;
   color: var(--text-primary);
-  gap: 0.25rem;
-  padding: 0.75rem;
+  gap: var(--spacing-s);
+  min-height: 150px;
 `;
 
-const FeaturesBlockWrapper = styled.div`
-  display: grid;
-  margin-top: 0.5rem;
-  gap: 0.25rem;
-  & > * {
-    background: var(--background-secondary);
-    padding: 0.5rem;
+const StyledIcon = styled(Icon)`
+  color: var(--text-secondary);
+`;
+
+const StatusInfoWrapper = styled.article`
+  display: flex;
+  gap: 25px;
+
+  @media (max-width: ${styles.breakpoint}px) {
+    flex-direction: column;
+    gap: 0;
   }
 `;
 
-const Feature = styled.div`
+const IconLabelWrapper = styled.div`
   display: flex;
   gap: 0.5rem;
   align-items: center;
-
-  & svg {
-    color: var(--status-failure);
-  }
-
-  &.unsupported svg {
-    color: var(--status-unsupported);
-  }
 `;
+
+const FeatureStatus = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: var(--spacing-s);
+`;
+
+const FeatureName = styled.div`
+  text-transform: capitalize;
+`;
+
+const FeatureGrid = styled.div`
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: var(--spacing-l);
+`;
+
+const Label = styled.div`
+  color: var(--text-primary);
+`;
+
+const IconLabel = ({ icon, label }: { icon: ComponentProps<typeof Icon>['icon']; label: string }) => {
+  return (
+    <IconLabelWrapper>
+      <StyledIcon icon={icon} />
+      <Label>{label}</Label>
+    </IconLabelWrapper>
+  );
+};
 
 export const StatusInfo = memo((result: TestResult) => {
   const day = getFormattedDate(result.date);
@@ -45,54 +70,46 @@ export const StatusInfo = memo((result: TestResult) => {
   const templateLink =
     result.ciLink != null ? (
       <div className="template-link">
-        See{' '}
         <Link href={result.ciLink} target="_blank">
-          pipeline
+          View build in CI
         </Link>{' '}
-        in CI
       </div>
     ) : null;
 
   if (result.status === 'no-data') {
     return (
-      <StatusInfoWrapper>
-        <div className="template-date">{day}</div>
-        <div>There is no data for this day</div>
+      <HeartBeatDetails>
+        <StatusInfoWrapper>
+          <IconLabel icon={'calendar'} label={day} />
 
-        {templateLink}
-      </StatusInfoWrapper>
+          {templateLink}
+        </StatusInfoWrapper>
+        <div>There is no data for this day</div>
+      </HeartBeatDetails>
     );
   }
 
   const { storybookVersion, features, status } = result;
   return (
-    <StatusInfoWrapper>
-      <div className="template-date">{day}</div>
-      <>
-        {status === 'indecisive' && <div>There are inconclusive results for this day</div>}
-        {storybookVersion && <div className="template-name">Storybook version: {storybookVersion}</div>}
+    <HeartBeatDetails>
+      <StatusInfoWrapper>
+        <IconLabel icon={'calendar'} label={day} />
+        {storybookVersion && <IconLabel icon={'storybook'} label={`v${storybookVersion}`} />}
         {templateLink}
-        <FeaturesBlock features={features} />
-      </>
-    </StatusInfoWrapper>
+      </StatusInfoWrapper>
+      {status === 'indecisive' && <div>There are inconclusive results for this day</div>}
+      {features && (
+        <FeatureGrid>
+          {features.map((feature) => {
+            return (
+              <FeatureStatus key={feature.name}>
+                <StatusBadge status={feature.status}></StatusBadge>
+                <FeatureName>{feature.name.replace('addon-', '').replace('-', ' ').replace('docs/', '').trim()}</FeatureName>
+              </FeatureStatus>
+            );
+          })}
+        </FeatureGrid>
+      )}
+    </HeartBeatDetails>
   );
 });
-
-export const FeaturesBlock = ({ features }: { features: TFeature[] }) => {
-  if (features.length === 0) {
-    return null;
-  }
-
-  return (
-    <FeaturesBlockWrapper>
-      {features
-        .filter(({ status }) => status === 'failure' || status === 'unsupported')
-        .map(({ name, status }) => (
-          <Feature key={name} className={status}>
-            <Icon icon={status === 'unsupported' ? 'subtract' : 'close'} />
-            <div>{name}</div>
-          </Feature>
-        ))}
-    </FeaturesBlockWrapper>
-  );
-};

@@ -64,6 +64,7 @@
     "postcss-loader": "^7.0.1",
     "prettier": "^2.8.0",
     "storybook": "7.0.0-beta.13",
+    "storybook-addon-designs": "v7.0.0-beta.2",
     "style-loader": "^3.3.1",
     "tsx": "^3.12.1",
     "vite": "^3.2.4",
