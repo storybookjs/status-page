@@ -89,6 +89,10 @@ export const IndecisiveHovered: Story = {
     await hoverOnHeartbeat(context);
     const canvas = within(context.canvasElement);
 
+    const element = canvas.queryByText('bla')
+    //@ts-ignore
+    await expect(element.textContent).toBe('bla')
+
     // @ts-expect-error TODO: investigate what is going on here. Missing dep from pnpm?
     await expect(await canvas.findByText('Storybook version: 7.0.0-alpha.51')).toBeInTheDocument();
   },
