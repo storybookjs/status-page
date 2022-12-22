@@ -8,29 +8,33 @@ import { StatusBadge } from './StatusBadge';
 
 const HeartBeatDetails = styled.div`
   display: flex;
+  font-size: 14px;
+  line-height: 20px;
   flex-direction: column;
   color: var(--text-primary);
-  gap: var(--spacing-s);
-  min-height: 180px;
+  min-height: 140px;
 `;
 
 const StyledIcon = styled(Icon)`
   color: var(--text-secondary);
+  margin-bottom: 2px;
 `;
 
 const StatusInfoWrapper = styled.article`
   display: flex;
   gap: 25px;
+  margin-top: 12px;
+  margin-bottom: 12px;
 
   @media (max-width: ${styles.breakpoint}px) {
     flex-direction: column;
-    gap: 0;
+    gap: 5px;
   }
 `;
 
 const IconLabelWrapper = styled.div`
   display: flex;
-  gap: 0.5rem;
+  gap: 6px;
   align-items: center;
 `;
 
@@ -38,7 +42,7 @@ const FeatureStatus = styled.div`
   display: flex;
   align-items: center;
   justify-content: start;
-  gap: var(--spacing-s);
+  gap: 6px;
 `;
 
 const FeatureName = styled.div`
@@ -48,7 +52,14 @@ const FeatureName = styled.div`
 const FeatureGrid = styled.div`
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
-  column-gap: var(--spacing-l);
+  column-gap: 30px;
+  row-gap: 5px;
+
+  @media (max-width: ${styles.breakpoint}px) {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
 `;
 
 const Label = styled.div`
@@ -103,7 +114,7 @@ export const StatusInfo = memo((result: TestResult) => {
           {features.map((feature) => {
             return (
               <FeatureStatus key={feature.name}>
-                <StatusBadge status={feature.status}></StatusBadge>
+                <StatusBadge style={{ marginBottom: '2px' }} status={feature.status}></StatusBadge>
                 <FeatureName>{feature.name.replace('addon-', '').replace('-', ' ').replace('docs/', '').trim()}</FeatureName>
               </FeatureStatus>
             );

@@ -9,7 +9,7 @@ import { StatusBadge } from './StatusBadge';
 
 const ResultBox = styled.section`
   border: 1px solid var(--border-subtle);
-  padding: var(--spacing-l);
+  padding: 20px 30px 25px;
   border-radius: 4px;
   color: var(--text-secondary);
 
@@ -24,56 +24,65 @@ const ResultBox = styled.section`
 const ResultHeading = styled.div`
   display: flex;
   align-items: center;
-  gap: var(--spacing-s);
+  gap: 6px;
+  margin-bottom: 8px;
 `;
 
 const TemplateName = styled.div`
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
-  line-height: 24px;
-  color: #333333;
+  line-height: 20px;
+  color: var(--text-primary);
 `;
 
 const HeartBeatChart = styled.div`
   width: 100%;
-  height: 40px;
+  height: 28px;
   display: grid;
+  align-items: stretch;
   grid-template-columns: repeat(auto-fit, minmax(3px, 1fr));
-  align-items: center;
-  gap: 0.25rem;
+  gap: 4px;
+
+  button {
+    outline: none;
+  }
 `;
 
-const HeartBeat = styled.span<{ isSelected?: boolean; scrubMode?: boolean }>`
+const HeartBeat = styled.div<{ isSelected?: boolean; scrubMode?: boolean }>`
   cursor: pointer;
-  display: inline-block;
-  height: ${(props) => (props.isSelected ? '40px' : '34px')};
-  margin-top: -3px;
-  margin-bottom: -3px;
+  position: relative;
+  background: currentColor;
+  height: ${(props) => (props.isSelected ? '100%' : 'calc(100% - 4px)')};
   width: 100%;
-  opacity: ${(props) => (props.scrubMode && !props.isSelected ? 0.5 : 1)};
-  &:hover {
+  opacity: ${(props) => (props.scrubMode && !props.isSelected ? 0.6 : 1)};
+
+  button:hover &,
+  button:focus &,
+  button:focus-visible & {
     opacity: 1;
+    height: ${(props) => (props.isSelected ? '100%' : 'calc(100% - 2px)')};
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 5px 0px;
+  }
+  &:before {
+    content: '';
+    position: absolute;
+    inset: 0 -2px;
   }
   &[data-status='success'] {
-    background-color: var(--status-success);
+    color: var(--status-success);
   }
 
   &[data-status='failure'] {
-    background-color: var(--status-failure);
+    color: var(--status-failure);
   }
 
   &[data-status='indecisive'] {
-    background-color: var(--status-indecisive);
+    color: var(--status-indecisive);
   }
 
   &[data-status='no-data'] {
-    background-color: var(--status-no-data);
+    color: var(--status-no-data);
   }
-`;
-
-const Container = styled.article`
-  display: grid;
-  gap: var(--spacing-s);
 `;
 
 export const StatusRow = memo(({ results, name }: TemplateTests) => {
@@ -97,9 +106,9 @@ export const StatusRow = memo(({ results, name }: TemplateTests) => {
 
   return (
     <ResultBox ref={chartRef} className="result-box">
-      <Container>
+      <article>
         <ResultHeading>
-          <StatusBadge status={mostRecentStatus}></StatusBadge>
+          <StatusBadge style={{ marginBottom: '2px' }} status={mostRecentStatus}></StatusBadge>
           <TemplateName>{name}</TemplateName>
         </ResultHeading>
         <HeartBeatChart>
@@ -127,7 +136,7 @@ export const StatusRow = memo(({ results, name }: TemplateTests) => {
           })}
         </HeartBeatChart>
         {infoToDisplay && <StatusInfo {...infoToDisplay} />}
-      </Container>
+      </article>
     </ResultBox>
   );
 });

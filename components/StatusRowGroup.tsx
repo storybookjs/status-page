@@ -5,6 +5,9 @@ import type { TemplateTests } from '~/model/types';
 import { StatusRow } from './StatusRow';
 
 const ResultGrid = styled.div`
+  border-radius: 5px;
+  box-shadow: var(--border-subtle) 0px 2px 5px 0px;
+
   .result-box {
     border: 1px solid var(--border-subtle);
     border-radius: 0px;
@@ -12,8 +15,8 @@ const ResultGrid = styled.div`
 
   .result-box:first-of-type {
     border-top-width: 1px;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
   }
 
   .result-box:not(:first-of-type) {
@@ -21,12 +24,12 @@ const ResultGrid = styled.div`
   }
 
   .result-box:first-child:last-of-type {
-    border-radius: 4px;
+    border-radius: 5px;
   }
 
   .result-box:last-of-type {
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
   }
 `;
 
