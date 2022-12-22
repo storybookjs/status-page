@@ -46,6 +46,8 @@ const HeartBeat = styled.span<{ isSelected?: boolean; scrubMode?: boolean }>`
   cursor: pointer;
   display: inline-block;
   height: ${(props) => (props.isSelected ? '40px' : '34px')};
+  margin-top: -3px;
+  margin-bottom: -3px;
   width: 100%;
   opacity: ${(props) => (props.scrubMode && !props.isSelected ? 0.5 : 1)};
   &:hover {
@@ -109,6 +111,7 @@ export const StatusRow = memo(({ results, name }: TemplateTests) => {
                 key={day}
                 hasChrome={false}
                 tooltip={<TooltipNote note={`${storybookVersion}${day}`} />}
+                aria-label={`Status for ${day}`}
                 onClick={() => setSelectedHeartBeat(result)}
               >
                 <HeartBeat
@@ -117,7 +120,6 @@ export const StatusRow = memo(({ results, name }: TemplateTests) => {
                   onMouseEnter={() => setHoveredHeartBeat(result)}
                   onMouseLeave={() => setHoveredHeartBeat(undefined)}
                   data-status={status}
-                  aria-label={`Status for ${day} is: ${status}`}
                 />
               </WithTooltip>
             );

@@ -11,7 +11,7 @@ const HeartBeatDetails = styled.div`
   flex-direction: column;
   color: var(--text-primary);
   gap: var(--spacing-s);
-  min-height: 180px;
+  min-height: 150px;
 `;
 
 const StyledIcon = styled(Icon)`
@@ -47,11 +47,8 @@ const FeatureName = styled.div`
 
 const FeatureGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(315px, 1fr));
-
-  @media (max-width: ${styles.breakpoint}px) {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  }
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: var(--spacing-l);
 `;
 
 const Label = styled.div`
@@ -107,7 +104,7 @@ export const StatusInfo = memo((result: TestResult) => {
             return (
               <FeatureStatus key={feature.name}>
                 <StatusBadge status={feature.status}></StatusBadge>
-                <FeatureName>{feature.name.replace('addon-', '').replace('docs/', '').trim()}</FeatureName>
+                <FeatureName>{feature.name.replace('addon-', '').replace('-', ' ').replace('docs/', '').trim()}</FeatureName>
               </FeatureStatus>
             );
           })}

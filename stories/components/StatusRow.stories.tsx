@@ -37,7 +37,6 @@ const meta = {
     design: {
       type: 'figspec',
       url: 'https://www.figma.com/file/ur4kydUbRqdDyfoZWzdiIw/Storybook-app?node-id=7326%3A139859&t=PN99IM8A6UifDbmF-3',
-      accessToken: 'figd_TIqXw4oFqF3VdoGHri3I_Yz9mmAugFFYqbPB9pw6',
     },
   },
   excludeStories: ['createMock'],
@@ -50,7 +49,7 @@ type PlayFunction = Pick<Story, 'play'>['play'];
 
 const hoverOnHeartbeat: PlayFunction = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
-  const hearbeat = await canvas.getByText('27 Oct 2022');
+  const hearbeat = await canvas.getByLabelText('Status for Nov. 25th');
   await userEvent.click(hearbeat);
 };
 
@@ -65,7 +64,7 @@ export const SuccessHovered: Story = {
     const canvas = within(context.canvasElement);
 
     // @ts-expect-error TODO: investigate what is going on here. Missing dep from pnpm?
-    await expect(await canvas.findByText('Storybook version: 7.0.0-alpha.51')).toBeInTheDocument();
+    await expect(await canvas.findByText('v7.0.0-alpha.51')).toBeInTheDocument();
   },
 };
 
@@ -80,7 +79,7 @@ export const FailureHovered: Story = {
     const canvas = within(context.canvasElement);
 
     // @ts-expect-error TODO: investigate what is going on here. Missing dep from pnpm?
-    await expect(await canvas.findByText('Storybook version: 7.0.0-alpha.51')).toBeInTheDocument();
+    await expect(await canvas.findByText('v7.0.0-alpha.51')).toBeInTheDocument();
   },
 };
 
@@ -95,7 +94,7 @@ export const IndecisiveHovered: Story = {
     const canvas = within(context.canvasElement);
 
     // @ts-expect-error TODO: investigate what is going on here. Missing dep from pnpm?
-    await expect(await canvas.findByText('Storybook version: 7.0.0-alpha.51')).toBeInTheDocument();
+    await expect(await canvas.findByText('v7.0.0-alpha.51')).toBeInTheDocument();
   },
 };
 
