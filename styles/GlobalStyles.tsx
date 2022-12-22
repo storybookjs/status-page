@@ -12,6 +12,7 @@ export const globalStyle = css`
   }
 
   :root {
+    --color-secondary: #1ea7fd;
     --status-no-data: #dddddd;
     --status-success: #66bf3c;
     --status-failure: #ff4400;
@@ -25,8 +26,8 @@ export const globalStyle = css`
     --background-secondary: #f3faff;
 
     --text-primary: #333333;
-    --text-secondary: #757575;
-    --border-subtle: #e0e0e0;
+    --text-secondary: #666666;
+    --border-subtle: rgba(0, 0, 0, 0.1);
 
     --spacing-xs: 0.25rem;
     --spacing-s: 0.5rem;
