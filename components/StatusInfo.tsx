@@ -1,7 +1,7 @@
 import { ComponentProps, memo } from 'react';
 import type { TestResult } from '~/model/types';
 import { getFormattedDate } from '~/util/index';
-import { Icon } from '@storybook/design-system';
+import { Icon, styles } from '@storybook/design-system';
 import { styled } from '@storybook/theming';
 import { Link } from './Link';
 import { StatusBadge } from './StatusBadge';
@@ -11,6 +11,7 @@ const HeartBeatDetails = styled.div`
   flex-direction: column;
   color: var(--text-primary);
   gap: var(--spacing-s);
+  min-height: 180px;
 `;
 
 const StyledIcon = styled(Icon)`
@@ -20,6 +21,11 @@ const StyledIcon = styled(Icon)`
 const StatusInfoWrapper = styled.article`
   display: flex;
   gap: 25px;
+
+  @media (max-width: ${styles.breakpoint}px) {
+    flex-direction: column;
+    gap: 0;
+  }
 `;
 
 const IconLabelWrapper = styled.div`
@@ -42,6 +48,10 @@ const FeatureName = styled.div`
 const FeatureGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(315px, 1fr));
+
+  @media (max-width: ${styles.breakpoint}px) {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
 `;
 
 const Label = styled.div`
@@ -97,7 +107,7 @@ export const StatusInfo = memo((result: TestResult) => {
             return (
               <FeatureStatus key={feature.name}>
                 <StatusBadge status={feature.status}></StatusBadge>
-                <FeatureName>{feature.name.replace('addon-', '').trim()}</FeatureName>
+                <FeatureName>{feature.name.replace('addon-', '').replace('docs/', '').trim()}</FeatureName>
               </FeatureStatus>
             );
           })}

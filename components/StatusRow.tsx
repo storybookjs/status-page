@@ -1,23 +1,24 @@
 import { memo, useState } from 'react';
 import { useElementSize } from 'usehooks-ts';
 import type { TemplateTests, TestResult } from '~/model/types';
-import { TooltipNote, WithTooltip } from '@storybook/design-system';
+import { styles, TooltipNote, WithTooltip } from '@storybook/design-system';
 import { styled } from '@storybook/theming';
 import { getFormattedDate } from '~/util/index';
 import { StatusInfo } from './StatusInfo';
 import { StatusBadge } from './StatusBadge';
-
-const viewBoxByDayView = {
-  90: '0 0 448 34',
-  60: '150 0 298 34',
-  30: '300 0 148 34',
-};
 
 const ResultBox = styled.section`
   border: 1px solid var(--border-subtle);
   padding: var(--spacing-l);
   border-radius: 4px;
   color: var(--text-secondary);
+
+  // TODO: do proper mobile styling
+  @media (max-width: ${styles.breakpoint}px) {
+    * {
+      font-size: 14px !important;
+    }
+  }
 `;
 
 const ResultHeading = styled.div`
@@ -33,28 +34,37 @@ const TemplateName = styled.div`
   color: #333333;
 `;
 
-const HeartBeatChart = styled.svg`
+const HeartBeatChart = styled.div`
   width: 100%;
-  overflow: hidden;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(3px, 1fr));
+  align-items: center;
+  gap: 0.25rem;
 `;
 
-const HeartBeat = styled.rect<{ scrubMode?: boolean }>`
+const HeartBeat = styled.span<{ isSelected?: boolean; scrubMode?: boolean }>`
   cursor: pointer;
-  opacity: ${(props) => (props.scrubMode ? 0.5 : 1)};
+  display: inline-block;
+  height: ${(props) => (props.isSelected ? '40px' : '34px')};
+  width: 100%;
+  opacity: ${(props) => (props.scrubMode && !props.isSelected ? 0.5 : 1)};
+  &:hover {
+    opacity: 1;
+  }
   &[data-status='success'] {
-    color: var(--status-success);
+    background-color: var(--status-success);
   }
 
   &[data-status='failure'] {
-    color: var(--status-failure);
+    background-color: var(--status-failure);
   }
 
   &[data-status='indecisive'] {
-    color: var(--status-indecisive);
+    background-color: var(--status-indecisive);
   }
 
   &[data-status='no-data'] {
-    color: var(--status-no-data);
+    background-color: var(--status-no-data);
   }
 `;
 
@@ -75,15 +85,12 @@ export const StatusRow = memo(({ results, name }: TemplateTests) => {
 
   const mostRecentStatus = results.at(-1)?.status || 'no-data';
 
-  // by default width is 0, so we assume the default view which is 90 days
+  // by default width is 0, so we assume the default view which is 90 days. Will look weird on mobile but 🤷
   const daysToDisplay = width === 0 || width >= 850 ? 90 : width >= 600 ? 60 : 30;
 
-  // svg always render 90 days, but changes viewBox to show 90, 60 or 30 days data based on container size
-  const viewBox = viewBoxByDayView[daysToDisplay];
+  const infoToDisplay = selectedHeartBeat && (hoveredHeartBeat || selectedHeartBeat);
 
-  const infoToDisplay = hoveredHeartBeat || selectedHeartBeat;
-
-  console.log({ selectedHeartBeat });
+  const resultsToDisplay = results.slice(-daysToDisplay);
 
   return (
     <ResultBox ref={chartRef} className="result-box">
@@ -92,28 +99,26 @@ export const StatusRow = memo(({ results, name }: TemplateTests) => {
           <StatusBadge status={mostRecentStatus}></StatusBadge>
           <TemplateName>{name}</TemplateName>
         </ResultHeading>
-        <HeartBeatChart preserveAspectRatio="none" height={34} viewBox={viewBox}>
-          {results.map((result, index) => {
+        <HeartBeatChart>
+          {resultsToDisplay.map((result) => {
             const { date, status } = result;
             const day = getFormattedDate(date, true);
-            const storybookVersion = 'storybookVersion' in result ? `${result.storybookVersion} - ` : '';
+            const storybookVersion = 'storybookVersion' in result && result.storybookVersion ? `${result.storybookVersion} - ` : '';
             return (
-              <WithTooltip key={day} hasChrome={false} tooltip={<TooltipNote note={`${storybookVersion}${day}`} />} tagName="g">
+              <WithTooltip
+                key={day}
+                hasChrome={false}
+                tooltip={<TooltipNote note={`${storybookVersion}${day}`} />}
+                onClick={() => setSelectedHeartBeat(result)}
+              >
                 <HeartBeat
-                  height={result === selectedHeartBeat ? 40 : 34}
-                  width={3}
+                  isSelected={result === selectedHeartBeat}
                   scrubMode={!!selectedHeartBeat}
-                  y={0}
-                  x={index * 5}
-                  fill="currentColor"
                   onMouseEnter={() => setHoveredHeartBeat(result)}
                   onMouseLeave={() => setHoveredHeartBeat(undefined)}
-                  onClick={() => setSelectedHeartBeat(result)}
                   data-status={status}
                   aria-label={`Status for ${day} is: ${status}`}
-                >
-                  {day}
-                </HeartBeat>
+                />
               </WithTooltip>
             );
           })}
