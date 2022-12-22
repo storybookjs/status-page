@@ -34,6 +34,11 @@ const meta = {
     viewport: {
       viewports,
     },
+    design: {
+      type: 'figspec',
+      url: 'https://www.figma.com/file/ur4kydUbRqdDyfoZWzdiIw/Storybook-app?node-id=7326%3A139859&t=PN99IM8A6UifDbmF-3',
+      accessToken: 'figd_TIqXw4oFqF3VdoGHri3I_Yz9mmAugFFYqbPB9pw6',
+    },
   },
   excludeStories: ['createMock'],
 } as Meta<typeof StatusRow>;
@@ -45,8 +50,8 @@ type PlayFunction = Pick<Story, 'play'>['play'];
 
 const hoverOnHeartbeat: PlayFunction = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
-  const hearbeat = await canvas.getByText('25 Nov 2022');
-  await userEvent.hover(hearbeat);
+  const hearbeat = await canvas.getByText('27 Oct 2022');
+  await userEvent.click(hearbeat);
 };
 
 export const Success: Story = {

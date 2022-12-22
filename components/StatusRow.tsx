@@ -1,22 +1,11 @@
-import { ComponentProps, memo } from 'react';
+import { memo, useState } from 'react';
 import { useElementSize } from 'usehooks-ts';
 import type { TemplateTests, TestResult } from '~/model/types';
-import { WithTooltip, Badge } from '@storybook/design-system';
+import { TooltipNote, WithTooltip } from '@storybook/design-system';
 import { styled } from '@storybook/theming';
 import { getFormattedDate } from '~/util/index';
 import { StatusInfo } from './StatusInfo';
-
-type BadgeProps = ComponentProps<typeof Badge>;
-
-const statusByResult: Record<TestResult['status'], { type: BadgeProps['status']; label: string }> = {
-  'no-data': {
-    type: 'neutral',
-    label: 'No recent data',
-  },
-  success: { type: 'positive', label: 'Operational' },
-  failure: { type: 'negative', label: 'Issues' },
-  indecisive: { type: 'warning', label: 'Inconclusive results' },
-};
+import { StatusBadge } from './StatusBadge';
 
 const viewBoxByDayView = {
   90: '0 0 448 34',
@@ -33,7 +22,8 @@ const ResultBox = styled.section`
 
 const ResultHeading = styled.div`
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-s);
 `;
 
 const TemplateName = styled.div`
@@ -46,13 +36,11 @@ const TemplateName = styled.div`
 const HeartBeatChart = styled.svg`
   width: 100%;
   overflow: hidden;
-  & > g {
-    outline: none;
-  }
 `;
 
-const HeartBeat = styled.rect`
+const HeartBeat = styled.rect<{ scrubMode?: boolean }>`
   cursor: pointer;
+  opacity: ${(props) => (props.scrubMode ? 0.5 : 1)};
   &[data-status='success'] {
     color: var(--status-success);
   }
@@ -77,6 +65,8 @@ const Container = styled.article`
 
 export const StatusRow = memo(({ results, name }: TemplateTests) => {
   const [chartRef, { width }] = useElementSize();
+  const [selectedHeartBeat, setSelectedHeartBeat] = useState<TestResult>();
+  const [hoveredHeartBeat, setHoveredHeartBeat] = useState<TestResult>();
 
   // Not that it will ever happen, but just in case so we don't break the website because of malformed data.
   if (!results?.length) {
@@ -84,7 +74,6 @@ export const StatusRow = memo(({ results, name }: TemplateTests) => {
   }
 
   const mostRecentStatus = results.at(-1)?.status || 'no-data';
-  const { label: statusLabel, type: statusType } = statusByResult[mostRecentStatus];
 
   // by default width is 0, so we assume the default view which is 90 days
   const daysToDisplay = width === 0 || width >= 850 ? 90 : width >= 600 ? 60 : 30;
@@ -92,27 +81,34 @@ export const StatusRow = memo(({ results, name }: TemplateTests) => {
   // svg always render 90 days, but changes viewBox to show 90, 60 or 30 days data based on container size
   const viewBox = viewBoxByDayView[daysToDisplay];
 
+  const infoToDisplay = hoveredHeartBeat || selectedHeartBeat;
+
+  console.log({ selectedHeartBeat });
+
   return (
     <ResultBox ref={chartRef} className="result-box">
       <Container>
         <ResultHeading>
+          <StatusBadge status={mostRecentStatus}></StatusBadge>
           <TemplateName>{name}</TemplateName>
-          <Badge status={statusType}>{statusLabel}</Badge>
         </ResultHeading>
-
         <HeartBeatChart preserveAspectRatio="none" height={34} viewBox={viewBox}>
           {results.map((result, index) => {
             const { date, status } = result;
-            const day = getFormattedDate(date);
+            const day = getFormattedDate(date, true);
+            const storybookVersion = 'storybookVersion' in result ? `${result.storybookVersion} - ` : '';
             return (
-              <WithTooltip key={day} tagName="g" role="" tooltip={<StatusInfo {...result} />} trigger="hover">
+              <WithTooltip key={day} hasChrome={false} tooltip={<TooltipNote note={`${storybookVersion}${day}`} />} tagName="g">
                 <HeartBeat
-                  key={day}
-                  height={34}
+                  height={result === selectedHeartBeat ? 40 : 34}
                   width={3}
+                  scrubMode={!!selectedHeartBeat}
                   y={0}
                   x={index * 5}
                   fill="currentColor"
+                  onMouseEnter={() => setHoveredHeartBeat(result)}
+                  onMouseLeave={() => setHoveredHeartBeat(undefined)}
+                  onClick={() => setSelectedHeartBeat(result)}
                   data-status={status}
                   aria-label={`Status for ${day} is: ${status}`}
                 >
@@ -122,6 +118,7 @@ export const StatusRow = memo(({ results, name }: TemplateTests) => {
             );
           })}
         </HeartBeatChart>
+        {infoToDisplay && <StatusInfo {...infoToDisplay} />}
       </Container>
     </ResultBox>
   );

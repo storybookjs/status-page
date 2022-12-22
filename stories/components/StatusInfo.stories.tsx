@@ -7,7 +7,7 @@ const meta = {
   component: StatusInfo,
   decorators: [
     (Story) => (
-      <div style={{ width: 350 }}>
+      <div style={{ width: 750 }}>
         <Story />
       </div>
     ),
@@ -16,14 +16,41 @@ const meta = {
 
 export default meta;
 
-// TODO seems the new StoryObj with meta bugs with memo components
 type Story = StoryObj<typeof StatusInfo>;
 
 const TODAY = new Date(1669383837565);
 const testResult: TestResult = {
   ciLink: 'http://app.circleci.com/pipelines/github/storybookjs/storybook/12345/workflows/12345',
   date: TODAY,
-  features: [],
+  features: [
+    { category: 'addon', name: 'addon-actions', status: 'success' },
+    {
+      category: 'addon',
+      name: 'addon-backgrounds',
+      status: 'success',
+    },
+    {
+      category: 'addon',
+      name: 'addon-controls',
+      status: 'success',
+    },
+    {
+      category: 'addon',
+      name: 'addon-docs/source-snippets',
+      status: 'success',
+    },
+    { category: 'addon', name: 'addon-docs', status: 'success' },
+    {
+      category: 'addon',
+      name: 'addon-interactions',
+      status: 'success',
+    },
+    {
+      category: 'addon',
+      name: 'addon-viewport',
+      status: 'success',
+    },
+  ],
   status: 'success',
   storybookVersion: '7.0.0-alpha.51',
 };
@@ -38,10 +65,7 @@ export const Failure: Story = {
   args: {
     ...testResult,
     status: 'failure',
-    features: [
-      { category: 'addon', name: 'addon docs', status: 'failure' },
-      { category: 'addon', name: 'addon controls', status: 'failure' },
-    ],
+    features: [...testResult.features, { category: 'core', name: 'core', status: 'failure' }],
   },
 };
 
@@ -49,16 +73,14 @@ export const Indecisive: Story = {
   args: {
     ...testResult,
     status: 'indecisive',
+    features: [],
   },
 };
 
 export const Unsupported: Story = {
   args: {
     ...testResult,
-    features: [
-      { category: 'addon', name: 'addon docs', status: 'unsupported' },
-      { category: 'addon', name: 'addon controls', status: 'unsupported' },
-    ],
+    features: [...testResult.features, { category: 'addon', name: 'addon controls', status: 'unsupported' }],
   },
 };
 

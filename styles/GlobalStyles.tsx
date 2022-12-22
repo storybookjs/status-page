@@ -12,15 +12,19 @@ export const globalStyle = css`
   }
 
   :root {
-    --status-no-data: #e9e9e9;
-    --status-success: #1ad769;
-    --status-failure: #ff4949;
+    --status-no-data: #dddddd;
+    --status-success: #66bf3c;
+    --status-failure: #ff4400;
     --status-unsupported: orange;
     --status-indecisive: #8e8d8d;
 
+    --badge-unsupported: #dddddd;
+    --badge-success: linear-gradient(-69deg, #22c991 0%, #61d034 100%);
+    --badge-failure: linear-gradient(-67deg, #ea7d44 0%, #ff4400 100%);
+
     --background-secondary: #f3faff;
 
-    --text-primary: #444444;
+    --text-primary: #333333;
     --text-secondary: #757575;
     --border-subtle: #e0e0e0;
 
