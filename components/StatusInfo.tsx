@@ -11,7 +11,7 @@ const HeartBeatDetails = styled.div`
   flex-direction: column;
   color: var(--text-primary);
   gap: var(--spacing-s);
-  min-height: 150px;
+  min-height: 180px;
 `;
 
 const StyledIcon = styled(Icon)`

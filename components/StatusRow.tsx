@@ -36,6 +36,7 @@ const TemplateName = styled.div`
 
 const HeartBeatChart = styled.div`
   width: 100%;
+  height: 40px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(3px, 1fr));
   align-items: center;
