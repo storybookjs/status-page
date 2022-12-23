@@ -36,14 +36,24 @@ function getTestResultFromDay(enrichedDay: ReturnType<typeof enrichDayWithData>,
   const templateResult = enrichedDay.templates.find((it) => it.template === template);
   if (templateResult == null || ciLink == null) return { status: 'no-data', date: enrichedDay.date, ciLink };
 
+  const metadata = getMetadata(enrichedDay.pipeline, template);
+
   const features = templateResult.features;
   return {
     date: enrichedDay.date,
     ciLink,
-    storybookVersion: undefined,
+    storybookVersion: metadata?.version,
     features: features,
     status: getStatusOfTestResult(features),
   };
+}
+
+function getMetadata(pipeline: EnrichedPipeline, template: string): { version: string } | undefined {
+  const buildJob = pipeline.jobs.find((it) => it.name === 'build-sandboxes');
+  if (buildJob == null) return;
+  const metaDataTest = buildJob.tests.find((it) => it.name.includes(`${template} - metadata`));
+  if (metaDataTest == null) return;
+  return JSON.parse(metaDataTest.message);
 }
 
 function enrichDayWithData(date: Date, pipelines: EnrichedPipeline[]) {
@@ -87,7 +97,8 @@ function getFeaturesOfTemplate(name: string, tests: ReturnType<typeof getRelevan
 }
 
 function getStatusOfFeature(feature: string, tests: ReturnType<typeof getRelevantTests>): Feature['status'] {
-  const featureTests = tests.filter((it) => it.feature === feature);
+  // system-err tests are filled with metadata
+  const featureTests = tests.filter((it) => it.feature === feature && it.result !== 'system-err');
   if (featureTests.length === 0) return 'unsupported';
   if (featureTests.every((it) => it.result === 'success' || it.result === 'system-out')) return 'success';
   if (featureTests.some((it) => it.result === 'system-out')) {
@@ -101,7 +112,7 @@ function getStatusOfFeature(feature: string, tests: ReturnType<typeof getRelevan
   }
 
   console.log(`Marked feature ${feature} for ${tests[0]?.template} as indecisive (${tests[0]?.date})`);
-  console.log(featureTests);
+  console.log(featureTests.filter((it) => !['success', 'failure', 'skipped'].includes(it.result)));
   return 'indecisive';
 }
 

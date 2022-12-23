@@ -8,12 +8,13 @@ import { fetchRawCircleCiData, getProcessedTestResults } from './fetch-circle-ci
     options: {
       useMock: { type: 'boolean', default: false },
       storeCircleCI: { type: 'boolean', default: false },
+      branch: { type: 'string', default: 'next-release' },
     },
   });
 
-  const { useMock, storeCircleCI } = args.values;
+  const { useMock, storeCircleCI, branch } = args.values;
 
-  const pipelines = await fetchRawCircleCiData(useMock);
+  const pipelines = await fetchRawCircleCiData({ useMock, branch });
 
   if (storeCircleCI) {
     console.log('Writing data to ./mock/data.json');

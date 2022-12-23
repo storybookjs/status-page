@@ -5,10 +5,10 @@ export async function getDailyPipelines(branch = 'next-release', since?: Date): 
   async function getNextPageRecursively(
     pipelines: Pipeline[] = [],
     enrichedPipelines: Promise<EnrichedPipeline>[] = [],
-    pageToken?: string | undefined
+    pageToken?: string | undefined | null
   ): Promise<EnrichedPipeline[]> {
     const createdAt = new Date(pipelines[pipelines.length - 1]?.created_at ?? new Date().getTime());
-    if (createdAt < (since ?? addDays(new Date(), -90))) {
+    if (createdAt < (since ?? addDays(new Date(), -90)) || pageToken === null) {
       return await Promise.all(enrichedPipelines);
     }
 
@@ -17,7 +17,10 @@ export async function getDailyPipelines(branch = 'next-release', since?: Date): 
       branch,
       'page-token': pageToken,
     });
-    const scheduledPipelines = nextPipelines.data.items.filter((pipeline) => pipeline.trigger.type === 'scheduled_pipeline');
+
+    const scheduledPipelines = nextPipelines.data.items.filter(
+      (pipeline) => !branch.includes('release') || pipeline.trigger.type === 'scheduled_pipeline'
+    );
     const newEnrichedPipelines = scheduledPipelines.map(enrichPipeline);
 
     return getNextPageRecursively(

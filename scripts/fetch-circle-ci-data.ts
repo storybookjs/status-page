@@ -2,7 +2,13 @@ import { EnrichedPipeline, getDailyPipelines } from '~/services/circle-ci';
 import { addDays } from 'date-fns';
 import { getLatestTestResults } from '~/services/test-results';
 
-export const fetchRawCircleCiData = async (useMock = false): Promise<EnrichedPipeline[]> => {
+export const fetchRawCircleCiData = async ({
+  useMock = false,
+  branch = 'next-release',
+}: {
+  useMock?: boolean;
+  branch?: string;
+} = {}): Promise<EnrichedPipeline[]> => {
   if (useMock) {
     console.log('Reading mock data');
     try {
@@ -14,7 +20,7 @@ export const fetchRawCircleCiData = async (useMock = false): Promise<EnrichedPip
     }
   }
 
-  return getDailyPipelines('next-release', addDays(new Date(), -30));
+  return getDailyPipelines(branch, addDays(new Date(), -90));
 };
 
 export const getProcessedTestResults = async (pipelines: EnrichedPipeline[]) => {
