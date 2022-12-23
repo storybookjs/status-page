@@ -93,9 +93,8 @@ function getLastUpdatedAt(array: TemplateTests[]): Date | undefined {
 function groupByRenderer(array: TemplateTests[]) {
   const map = new Map<string, TemplateTests[]>();
   for (const templateTests of array) {
-    const renderer = templateTests.config?.expected.renderer ?? 'Unknown renderer';
-    const value = map.get(renderer);
-    map.set(renderer, [...(value == null ? [] : value), templateTests]);
+    const renderer = templateTests.config?.expected.renderer ?? 'Unknown Renderer';
+    map.set(renderer, [...(map.get(renderer) ?? []), templateTests]);
   }
   return map;
 }

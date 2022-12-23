@@ -23,8 +23,19 @@ export const createMock = ({
   featureStatus?: Feature['status'];
 }) => {
   return satisfies<TemplateTests>()({
-    id: 'foo',
+    id: 'react-vite/default-ts',
     name,
+    config: {
+      name: 'React Vite (TS)',
+      script: 'yarn create vite . --template react-ts',
+      expected: {
+        framework: '@storybook/react-vite',
+        renderer: '@storybook/react',
+        builder: '@storybook/builder-vite',
+      },
+      id: 'react-vite/default-ts',
+      version: '7.0.0-beta.13',
+    },
     results: range(0, 90)
       .map(() => testResult)
       .map((res, index) => {
