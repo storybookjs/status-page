@@ -18,9 +18,7 @@ export async function getDailyPipelines(branch = 'next-release', since?: Date): 
       'page-token': pageToken,
     });
 
-    const scheduledPipelines = nextPipelines.data.items.filter(
-      (pipeline) => !branch.includes('release') || pipeline.trigger.type === 'scheduled_pipeline'
-    );
+    const scheduledPipelines = nextPipelines.data.items.filter((pipeline) => pipeline.trigger.type === 'scheduled_pipeline');
     const newEnrichedPipelines = scheduledPipelines.map(enrichPipeline);
 
     return getNextPageRecursively(

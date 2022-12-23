@@ -85,7 +85,7 @@ const HeartBeat = styled.div<{ isSelected?: boolean; scrubMode?: boolean }>`
   }
 `;
 
-export const StatusRow = memo(({ results, name }: TemplateTests) => {
+export const StatusRow = memo(({ results, config, id }: TemplateTests) => {
   const [chartRef, { width }] = useElementSize();
   const [selectedHeartBeat, setSelectedHeartBeat] = useState<TestResult>();
   const [hoveredHeartBeat, setHoveredHeartBeat] = useState<TestResult>();
@@ -109,7 +109,7 @@ export const StatusRow = memo(({ results, name }: TemplateTests) => {
       <article>
         <ResultHeading>
           <StatusBadge style={{ marginBottom: '2px' }} status={mostRecentStatus}></StatusBadge>
-          <TemplateName>{name}</TemplateName>
+          <TemplateName>{config?.name ?? id}</TemplateName>
         </ResultHeading>
         <HeartBeatChart>
           {resultsToDisplay.map((result) => {

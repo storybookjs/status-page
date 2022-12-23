@@ -3,10 +3,12 @@ import { memo } from 'react';
 import type { TemplateTests } from '~/model/types';
 // import { StatusBar } from './StatusBar';
 import { StatusRow } from './StatusRow';
+import { StatusBar } from '~/components/StatusBar';
 
 const ResultGrid = styled.div`
   border-radius: 5px;
   box-shadow: var(--border-subtle) 0px 2px 5px 0px;
+  margin-bottom: 16px;
 
   .result-box {
     border: 1px solid var(--border-subtle);
@@ -55,11 +57,45 @@ export const StatusRowGroup = memo(({ data }: { data: TemplateTests[] }) => {
   // } as const;
 
   return (
-    <ResultGrid>
-      {/* <StatusBar  {...statusBarProps} /> */}
-      {data.map((result, index) => (
-        <StatusRow key={result.id + index} {...result} />
+    <>
+      {Array.from(groupByRenderer(data).entries()).map(([renderer, templates]) => (
+        <ResultGrid key={renderer}>
+          <StatusBar
+            renderer={renderer.replace('@storybook/', '').replace('-', ' ')}
+            status={getStatusOfGroup(templates)}
+            configurationCount={templates.length}
+            lastUpdatedAt={getLastUpdatedAt(data)}
+          />
+          {templates.map((result, index) => (
+            <StatusRow key={result.id + index} {...result} />
+          ))}
+        </ResultGrid>
       ))}
-    </ResultGrid>
+    </>
   );
 });
+
+function getLatestDecisiveResult(template: TemplateTests) {
+  return [...template.results].reverse().find((it) => ['success', 'failure'].includes(it.status));
+}
+
+function getStatusOfGroup(templates: TemplateTests[]) {
+  return templates.every((template) => getLatestDecisiveResult(template)?.status === 'success') ? 'success' : 'failure';
+}
+
+function getLastUpdatedAt(array: TemplateTests[]): Date | undefined {
+  return array
+    .map((template) => getLatestDecisiveResult(template)?.date)
+    .filter((template): template is NonNullable<typeof template> => template != null)
+    .sort((a, b) => a.getTime() - b.getTime())[0];
+}
+
+function groupByRenderer(array: TemplateTests[]) {
+  const map = new Map<string, TemplateTests[]>();
+  for (const templateTests of array) {
+    const renderer = templateTests.config?.expected.renderer ?? 'Unknown renderer';
+    const value = map.get(renderer);
+    map.set(renderer, [...(value == null ? [] : value), templateTests]);
+  }
+  return map;
+}

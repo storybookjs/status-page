@@ -1,6 +1,44 @@
+// TODO coming from SB monorepo, maybe we should get it from npm?
+export interface TemplateConfig {
+  /**
+   * Storybook version
+   */
+  version: string;
+  /**
+   * Readable name for the template, which will be used for feedback and the status page
+   */
+  name: string;
+  /**
+   * Script used to generate the base project of a template.
+   * The Storybook CLI will then initialize Storybook on top of that template.
+   * This is used to generate projects which are pushed to https://github.com/storybookjs/repro-templates-temp
+   */
+  script: string;
+  /**
+   * Used to assert various things about the generated template.
+   * If the template is generated with a different expected framework, it will fail, detecting a possible regression.
+   */
+  expected: {
+    framework: string;
+    renderer: string;
+    builder: string;
+  };
+
+  expectedFailures?: Array<{
+    feature: string;
+    issues: string[];
+  }>;
+
+  unsupportedFeatures?: Array<{
+    feature: string;
+    issues: string[];
+  }>;
+}
+
 export interface StorybookTemplate {
   name: string;
   id: string;
+  config?: TemplateConfig;
 }
 
 export interface Feature {
