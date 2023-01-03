@@ -63,7 +63,6 @@ export const SuccessHovered: Story = {
     await hoverOnHeartbeat(context);
     const canvas = within(context.canvasElement);
 
-    // @ts-expect-error TODO: investigate what is going on here. Missing dep from pnpm?
     await expect(await canvas.findByText('v7.0.0-alpha.51')).toBeInTheDocument();
   },
 };
@@ -78,7 +77,6 @@ export const FailureHovered: Story = {
     await hoverOnHeartbeat(context);
     const canvas = within(context.canvasElement);
 
-    // @ts-expect-error TODO: investigate what is going on here. Missing dep from pnpm?
     await expect(await canvas.findByText('v7.0.0-alpha.51')).toBeInTheDocument();
   },
 };
@@ -93,7 +91,6 @@ export const IndecisiveHovered: Story = {
     await hoverOnHeartbeat(context);
     const canvas = within(context.canvasElement);
 
-    // @ts-expect-error TODO: investigate what is going on here. Missing dep from pnpm?
     await expect(await canvas.findByText('v7.0.0-alpha.51')).toBeInTheDocument();
   },
 };
@@ -108,7 +105,6 @@ export const NoDataHovered: Story = {
     await hoverOnHeartbeat(context);
     const canvas = within(context.canvasElement);
 
-    // @ts-expect-error TODO: investigate what is going on here. Missing dep from pnpm?
     await expect(await canvas.findByText('There is no data for this day')).toBeInTheDocument();
   },
 };

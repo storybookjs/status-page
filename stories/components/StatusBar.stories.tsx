@@ -10,7 +10,7 @@ const meta = {
   args: {
     renderer: 'React',
     status: 'success',
-    lastUpdatedAt: '2022-12-20T15:42:22.768Z',
+    lastUpdatedAt: new Date('2022-12-20T15:42:22.768Z'),
     configurationCount: 3,
     featureCount: 10,
   },
