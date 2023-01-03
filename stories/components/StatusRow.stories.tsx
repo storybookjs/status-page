@@ -105,11 +105,7 @@ export const NoDataSelected: Story = {
     await selectHeartbeat(context);
     const canvas = within(context.canvasElement);
 
-    await expect(
-      await canvas.findByText(
-        'There is no data for this day. This means that either this configuration was only included in CI for later dates, or that it is not tested in CI anymore in favor of more modern configurations.'
-      )
-    ).toBeInTheDocument();
+    await expect(await canvas.findByText('There is no data for this day.')).toBeInTheDocument();
   },
 };
 
@@ -123,11 +119,7 @@ export const BuildFailedSelected: Story = {
     await selectHeartbeat(context);
     const canvas = within(context.canvasElement);
 
-    await expect(
-      await canvas.findByText(
-        '⚠️ Oh no! This build failed, which means the tests were not run for this configuration. Check CI to understand what could have caused this issue.'
-      )
-    ).toBeInTheDocument();
+    await expect(await canvas.findByText(/The build failed before tests could run/)).toBeInTheDocument();
   },
 };
 
