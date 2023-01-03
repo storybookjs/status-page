@@ -24,6 +24,7 @@ export const globalStyle = css`
     --badge-failure: linear-gradient(-67deg, #ea7d44 0%, #ff4400 100%);
 
     --background-secondary: #f3faff;
+    --background-error: #fff5cf;
 
     --text-primary: #333333;
     --text-secondary: #666666;
