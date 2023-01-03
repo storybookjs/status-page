@@ -11,11 +11,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const mocks = [
-  createMock({ name: 'React Vite (Typescript)' }),
-  createMock({ name: 'Angular Webpack5 (Typescript)' }),
-  createMock({ name: 'Vue Vite (Javascript)' }),
-];
+const mocks = [createMock({ name: 'React Vite (TS)' }), createMock({ name: 'React Webpack5 (TS)' }), createMock({ name: 'Next.js' })];
 
 export const Single: Story = {
   args: {
@@ -23,13 +19,7 @@ export const Single: Story = {
   },
 };
 
-export const Two: Story = {
-  args: {
-    data: [mocks[0], mocks[1]],
-  },
-};
-
-export const Three: Story = {
+export const Multiple: Story = {
   args: {
     data: mocks,
   },

@@ -14,7 +14,7 @@ const testResult: Extract<TestResult, { status: 'success' | 'failure' | 'indecis
 };
 
 export const createMock = ({
-  name = 'React Vite (Typescript)',
+  name = 'React Vite (TS)',
   lastStatus = 'success',
   featureStatus,
   ciLink = true,
@@ -28,7 +28,7 @@ export const createMock = ({
     id: 'react-vite/default-ts',
     name,
     config: {
-      name: 'React Vite (TS)',
+      name,
       script: 'yarn create vite . --template react-ts',
       expected: {
         framework: '@storybook/react-vite',
