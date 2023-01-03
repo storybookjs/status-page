@@ -25,6 +25,7 @@ const RendererInfo = styled.div`
 const Name = styled.div`
   font-weight: ${typography.weight.bold};
   font-size: ${typography.size.s3}px;
+  text-transform: capitalize;
   line-height: 1;
   margin-bottom: 2px;
   margin-top: 1px;
@@ -51,32 +52,34 @@ const CountWrapper = styled.div<{ isFailure: boolean }>`
 type Props = {
   renderer: string;
   status: 'success' | 'failure';
-  lastUpdatedAt: Date | string;
+  lastUpdatedAt?: Date;
   configurationCount?: number;
   featureCount?: number;
   failureCount?: number;
 };
 
-export const StatusBar = ({ renderer, status, lastUpdatedAt, configurationCount = 0, featureCount = 0, failureCount = 0 }: Props) => {
+export const StatusBar = ({ renderer, status, lastUpdatedAt, configurationCount, featureCount, failureCount }: Props) => {
   return (
     <Wrapper className="result-box">
       <RendererInfo>
         <StatusBadge large status={status} />
         <div>
           <Name>{renderer}</Name>
-          <Details>Updated {getRelativeDate(lastUpdatedAt)} ago</Details>
+          {lastUpdatedAt && <Details>Updated {getRelativeDate(lastUpdatedAt)} ago</Details>}
         </div>
       </RendererInfo>
       <Metrics>
         <Cardinal noPlural={configurationCount === 1} size="small" count={configurationCount} text="Configuration" />
-        <Cardinal noPlural={featureCount === 1} size="small" count={featureCount} text="Feature" />
-        <Cardinal
-          noPlural={failureCount === 1}
-          size="small"
-          count={failureCount}
-          text="Failure"
-          CountWrapper={(props) => <CountWrapper isFailure={failureCount > 0} {...props} />}
-        />
+        {featureCount && <Cardinal noPlural={featureCount === 1} size="small" count={featureCount} text="Feature" />}
+        {failureCount && (
+          <Cardinal
+            noPlural={failureCount === 1}
+            size="small"
+            count={failureCount}
+            text="Failure"
+            CountWrapper={(props) => <CountWrapper isFailure={failureCount > 0} {...props} />}
+          />
+        )}
       </Metrics>
     </Wrapper>
   );

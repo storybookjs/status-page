@@ -1,5 +1,5 @@
 import { EnrichedPipeline, getDailyPipelines } from './circle-ci';
-import { Feature, TemplateTests, TestResult } from '../model/types';
+import { Feature, TemplateConfig, TemplateTests, TestResult } from '../model/types';
 import { range } from '../util';
 import { addDays, isSameDay } from 'date-fns';
 
@@ -21,6 +21,7 @@ export async function getLatestTestResults(ctx: Context): Promise<TemplateTests[
   return allTemplates.map((template) => ({
     id: template,
     name: template,
+    config: getLatestTemplateConfig(days, template),
     results: days.map((day) => getTestResultFromDay(day, template)),
   }));
 }
@@ -36,19 +37,33 @@ function getTestResultFromDay(enrichedDay: ReturnType<typeof enrichDayWithData>,
   const templateResult = enrichedDay.templates.find((it) => it.template === template);
   if (templateResult == null || ciLink == null) return { status: 'no-data', date: enrichedDay.date, ciLink };
 
-  const metadata = getMetadata(enrichedDay.pipeline, template);
+  const config = getTemplateConfig(enrichedDay.pipeline, template);
 
   const features = templateResult.features;
   return {
     date: enrichedDay.date,
     ciLink,
-    storybookVersion: metadata?.version,
+    storybookVersion: config?.version,
     features: features,
     status: getStatusOfTestResult(features),
   };
 }
 
-function getMetadata(pipeline: EnrichedPipeline, template: string): { version: string } | undefined {
+/**
+ * Get the latest template configuration from all pipelines.
+ */
+function getLatestTemplateConfig(enrichedDays: ReturnType<typeof enrichDayWithData>[], template: string): TemplateConfig | undefined {
+  for (const { pipeline } of [...enrichedDays].reverse()) {
+    if (pipeline != null) {
+      const config = getTemplateConfig(pipeline, template);
+      if (config != null) {
+        return config;
+      }
+    }
+  }
+}
+
+function getTemplateConfig(pipeline: EnrichedPipeline, template: string): TemplateConfig | undefined {
   const buildJob = pipeline.jobs.find((it) => it.name === 'build-sandboxes');
   if (buildJob == null) return;
   const metaDataTest = buildJob.tests.find((it) => it.name.includes(`${template} - metadata`));

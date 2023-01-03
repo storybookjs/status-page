@@ -8,20 +8,26 @@ let count = 0;
 fetcher.configure({
   baseUrl: 'https://circleci.com/api/v2',
   use: [
-    async (url, init, next) => {
-      try {
+    (url, init, next) =>
+      retryPromise(async () => {
         const response = await next(url, init);
         console.log(`#${++count}: ${url} ${response.status} @ ${new Date().toISOString()}`);
+        if (!response.ok) throw response;
         return response;
-      } catch (e) {
-        // retry
-        const response = await next(url, init);
-        console.log(`#${++count}: RETRIED ${url} ${response.status} @ ${new Date().toISOString()}`);
-        return response;
-      }
-    },
+      }),
   ],
 });
+
+async function retryPromise<T>(fn: () => Promise<T>, retriesLeft = 10, interval = 200): Promise<T> {
+  try {
+    return await fn();
+  } catch (error) {
+    if (retriesLeft === 0) throw error;
+    console.log(`Retrying in ${interval}ms ...`);
+    await new Promise((res) => setTimeout(res, interval));
+    return await retryPromise(fn, --retriesLeft, interval);
+  }
+}
 
 export const getPipelines = fetcher.path('/project/{project-slug}/pipeline').method('get').create();
 export const getWorkflows = fetcher.path('/pipeline/{pipeline-id}/workflow').method('get').create();
