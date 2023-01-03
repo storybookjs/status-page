@@ -49,7 +49,7 @@ type PlayFunction = Pick<Story, 'play'>['play'];
 
 const selectHeartbeat: PlayFunction = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
-  const hearbeat = await canvas.getByLabelText('Status for Nov. 25th');
+  const hearbeat = await canvas.getByLabelText(/Status for Nov. 25th/);
   await userEvent.click(hearbeat);
 };
 
