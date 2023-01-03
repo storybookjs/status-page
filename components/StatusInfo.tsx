@@ -95,7 +95,18 @@ export const StatusInfo = memo((result: TestResult) => {
 
           {templateLink}
         </StatusInfoWrapper>
-        <div>There is no data for this day</div>
+        {!templateLink && (
+          <div>
+            There is no data for this day. This means that either this configuration was only included in CI for later dates, or that it is
+            not tested in CI anymore in favor of more modern configurations.
+          </div>
+        )}
+        {templateLink && (
+          <div>
+            ⚠️ Oh no! This build failed, which means the tests were not run for this configuration. Check CI to understand what could have
+            caused this issue.{' '}
+          </div>
+        )}
       </HeartBeatDetails>
     );
   }
