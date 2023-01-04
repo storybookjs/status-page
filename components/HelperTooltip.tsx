@@ -67,6 +67,12 @@ const ColoredIcon = styled(Icon)<{ color: string }>`
   color: ${(props) => props.color};
 `;
 
+const TooltipIcon = styled(ColoredIcon)`
+  display: block;
+  width: 12px;
+  height: 12px;
+`;
+
 const TooltipWrapper = styled.div`
   padding: 12px 12px 12px 18px;
   max-width: 90vw;
@@ -121,7 +127,7 @@ export const HelperTooltip = ({ script, expected }: Pick<TemplateConfig, 'script
         );
       }}
     >
-      <ColoredIcon icon="question" color="var(--text-secondary)" />
+      <TooltipIcon icon="question" color="var(--text-secondary)" />
     </WithTooltip>
   );
 };
