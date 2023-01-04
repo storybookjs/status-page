@@ -32,7 +32,7 @@ function getCiLink(pipeline?: EnrichedPipeline): string | undefined {
 
 function getTestResultFromDay(enrichedDay: ReturnType<typeof enrichDayWithData>, template: string): TestResult {
   const ciLink = getCiLink(enrichedDay.pipeline);
-  if (enrichedDay.status === 'incomplete') return { status: 'no-data', date: enrichedDay.date, ciLink };
+  if (enrichedDay.status === 'incomplete') return { status: 'no-data', date: enrichedDay.date };
 
   const templateResult = enrichedDay.templates.find((it) => it.template === template);
   if (templateResult == null || ciLink == null) return { status: 'no-data', date: enrichedDay.date, ciLink };
