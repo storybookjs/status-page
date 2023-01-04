@@ -25,7 +25,7 @@ export default meta;
 
 type Story = StoryObj<typeof HelperTooltip>;
 
-export const Success: Story = {
+export const Default: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const tooltip = await canvas.getByRole('button');
