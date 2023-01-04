@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo, useMemo, useState } from 'react';
 import { useElementSize } from 'usehooks-ts';
 import type { TemplateTests, TestResult } from '~/model/types';
 import { styles, TooltipNote, WithTooltip } from '@storybook/design-system';
@@ -6,6 +6,7 @@ import { styled } from '@storybook/theming';
 import { getFormattedDate } from '~/util/index';
 import { StatusInfo } from './StatusInfo';
 import { StatusBadge } from './StatusBadge';
+import { HelperTooltip } from './HelperTooltip';
 
 const ResultBox = styled.section<{ isFailure?: boolean }>`
   border: 1px solid var(--border-subtle);
@@ -86,10 +87,13 @@ const HeartBeat = styled.div<{ isSelected?: boolean; scrubMode?: boolean }>`
   }
 `;
 
+const getReproScript = (template: string) => `yarn task --task e2e-tests --template ${template}`;
+
 export const StatusRow = memo(({ results, config, id }: TemplateTests) => {
   const [chartRef, { width }] = useElementSize();
   const [selectedHeartBeat, setSelectedHeartBeat] = useState<TestResult>();
   const [hoveredHeartBeat, setHoveredHeartBeat] = useState<TestResult>();
+  const templateScript = useMemo(() => getReproScript(id), [id]);
 
   // Not that it will ever happen, but just in case so we don't break the website because of malformed data.
   if (!results?.length) {
@@ -111,6 +115,7 @@ export const StatusRow = memo(({ results, config, id }: TemplateTests) => {
         <ResultHeading>
           <StatusBadge style={{ marginBottom: '2px' }} status={mostRecentStatus}></StatusBadge>
           <TemplateName>{config?.name ?? id}</TemplateName>
+          {config && <HelperTooltip script={templateScript} expected={config?.expected} />}
         </ResultHeading>
         <HeartBeatChart>
           {resultsToDisplay.map((result) => {
