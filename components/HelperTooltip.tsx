@@ -1,5 +1,6 @@
 import { Icon, WithTooltip, styles, Highlight, CodeSnippets } from '@storybook/design-system';
 import { styled } from '@storybook/theming';
+import { Link } from './Link';
 import { TemplateConfig } from '~/model/types';
 
 const Title = styled.div`
@@ -86,7 +87,13 @@ export const HelperTooltip = ({ script, expected }: Pick<TemplateConfig, 'script
 
   const buildScriptBody = (
     <>
-      <div>To reproduce the results of this test, run the following script from the Storybook repository.</div>
+      <div>
+        To reproduce the results of this test, run the following script from the{' '}
+        <Link href="https://github.com/storybookjs/storybook" target="_blank">
+          Storybook repository
+        </Link>
+        .
+      </div>
       <StyledCodeSnippets
         snippets={[{ id: '1', renderTabLabel: () => '', Snippet: () => <Highlight language="bash">{script}</Highlight> }]}
       ></StyledCodeSnippets>
