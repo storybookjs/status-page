@@ -14,26 +14,27 @@ const testResult: Extract<TestResult, { status: 'success' | 'failure' | 'indecis
 };
 
 export const createMock = ({
-  name = 'React Vite (Typescript)',
+  name = 'React Vite (TS)',
   lastStatus = 'success',
   featureStatus,
+  ciLink = true,
 }: {
   name?: string;
   lastStatus?: TestResult['status'];
   featureStatus?: Feature['status'];
+  ciLink?: boolean;
 }) => {
   return satisfies<TemplateTests>()({
     id: 'react-vite/default-ts',
     name,
     config: {
-      name: 'React Vite (TS)',
+      name,
       script: 'yarn create vite . --template react-ts',
       expected: {
         framework: '@storybook/react-vite',
         renderer: '@storybook/react',
         builder: '@storybook/builder-vite',
       },
-      id: 'react-vite/default-ts',
       version: '7.0.0-beta.13',
     },
     results: range(0, 90)
@@ -79,6 +80,7 @@ export const createMock = ({
           date: addDays(startOfDay(TODAY), -(89 - index)),
           // just to have predictable but different data
           status,
+          ...(ciLink === false && { ciLink: undefined }),
         };
       }),
   });

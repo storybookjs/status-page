@@ -47,9 +47,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 type PlayFunction = Pick<Story, 'play'>['play'];
 
-const hoverOnHeartbeat: PlayFunction = async ({ canvasElement }) => {
+const selectHeartbeat: PlayFunction = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
-  const hearbeat = await canvas.getByLabelText('Status for Nov. 25th');
+  const hearbeat = await canvas.getByLabelText(/Status for Nov. 25th/);
   await userEvent.click(hearbeat);
 };
 
@@ -57,10 +57,10 @@ export const Success: Story = {
   args: createMock({ lastStatus: 'success' }),
 };
 
-export const SuccessHovered: Story = {
+export const SuccessSelected: Story = {
   ...Success,
   play: async (context) => {
-    await hoverOnHeartbeat(context);
+    await selectHeartbeat(context);
     const canvas = within(context.canvasElement);
 
     await expect(await canvas.findByText('v7.0.0-alpha.51')).toBeInTheDocument();
@@ -71,10 +71,10 @@ export const Failure: Story = {
   args: createMock({ lastStatus: 'failure' }),
 };
 
-export const FailureHovered: Story = {
+export const FailureSelected: Story = {
   ...Failure,
   play: async (context) => {
-    await hoverOnHeartbeat(context);
+    await selectHeartbeat(context);
     const canvas = within(context.canvasElement);
 
     await expect(await canvas.findByText('v7.0.0-alpha.51')).toBeInTheDocument();
@@ -85,10 +85,10 @@ export const Indecisive: Story = {
   args: createMock({ lastStatus: 'indecisive' }),
 };
 
-export const IndecisiveHovered: Story = {
+export const IndecisiveSelected: Story = {
   ...Indecisive,
   play: async (context) => {
-    await hoverOnHeartbeat(context);
+    await selectHeartbeat(context);
     const canvas = within(context.canvasElement);
 
     await expect(await canvas.findByText('v7.0.0-alpha.51')).toBeInTheDocument();
@@ -96,16 +96,30 @@ export const IndecisiveHovered: Story = {
 };
 
 export const NoData: Story = {
-  args: createMock({ lastStatus: 'no-data' }),
+  args: createMock({ lastStatus: 'no-data', ciLink: false }),
 };
 
-export const NoDataHovered: Story = {
+export const NoDataSelected: Story = {
   ...NoData,
   play: async (context) => {
-    await hoverOnHeartbeat(context);
+    await selectHeartbeat(context);
     const canvas = within(context.canvasElement);
 
-    await expect(await canvas.findByText('There is no data for this day')).toBeInTheDocument();
+    await expect(await canvas.findByText('There is no data for this day.')).toBeInTheDocument();
+  },
+};
+
+export const BuildFailed: Story = {
+  args: createMock({ lastStatus: 'no-data', ciLink: true }),
+};
+
+export const BuildFailedSelected: Story = {
+  ...BuildFailed,
+  play: async (context) => {
+    await selectHeartbeat(context);
+    const canvas = within(context.canvasElement);
+
+    await expect(await canvas.findByText(/The build failed before tests could run/)).toBeInTheDocument();
   },
 };
 

@@ -35,7 +35,7 @@ function getTestResultFromDay(enrichedDay: ReturnType<typeof enrichDayWithData>,
   if (enrichedDay.status === 'incomplete') return { status: 'no-data', date: enrichedDay.date, ciLink };
 
   const templateResult = enrichedDay.templates.find((it) => it.template === template);
-  if (templateResult == null || ciLink == null) return { status: 'no-data', date: enrichedDay.date, ciLink };
+  if (templateResult == null || ciLink == null) return { status: 'no-data', date: enrichedDay.date };
 
   const config = getTemplateConfig(enrichedDay.pipeline, template);
 

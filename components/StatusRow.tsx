@@ -7,11 +7,12 @@ import { getFormattedDate } from '~/util/index';
 import { StatusInfo } from './StatusInfo';
 import { StatusBadge } from './StatusBadge';
 
-const ResultBox = styled.section`
+const ResultBox = styled.section<{ isFailure?: boolean }>`
   border: 1px solid var(--border-subtle);
   padding: 20px 30px 25px;
   border-radius: 4px;
   color: var(--text-secondary);
+  background-color: ${(props) => (props.isFailure ? 'var(--background-error)' : 'white')};
 
   // TODO: do proper mobile styling
   @media (max-width: ${styles.breakpoint}px) {
@@ -105,7 +106,7 @@ export const StatusRow = memo(({ results, config, id }: TemplateTests) => {
   const resultsToDisplay = results.slice(-daysToDisplay);
 
   return (
-    <ResultBox ref={chartRef} className="result-box">
+    <ResultBox ref={chartRef} className="result-box" isFailure={infoToDisplay?.status === 'failure'}>
       <article>
         <ResultHeading>
           <StatusBadge style={{ marginBottom: '2px' }} status={mostRecentStatus}></StatusBadge>
@@ -121,7 +122,7 @@ export const StatusRow = memo(({ results, config, id }: TemplateTests) => {
                 key={day}
                 hasChrome={false}
                 tooltip={<TooltipNote note={`${storybookVersion}${day}`} />}
-                aria-label={`Status for ${day}`}
+                aria-label={`Status for ${day}: ${status}`}
                 onClick={() => setSelectedHeartBeat(result)}
               >
                 <HeartBeat

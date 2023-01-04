@@ -95,7 +95,16 @@ export const StatusInfo = memo((result: TestResult) => {
 
           {templateLink}
         </StatusInfoWrapper>
-        <div>There is no data for this day</div>
+        {!templateLink && <div>There is no data for this day.</div>}
+        {templateLink && (
+          <div>
+            No tests run. The build failed before tests could run.{' '}
+            <Link href={result.ciLink} target="_blank">
+              Check CI to learn more
+            </Link>
+            .
+          </div>
+        )}
       </HeartBeatDetails>
     );
   }
