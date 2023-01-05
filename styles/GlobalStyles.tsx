@@ -5,6 +5,10 @@ import { css, Global } from '@storybook/theming';
 const { bodyStyles } = global;
 
 export const globalStyle = css`
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     ${bodyStyles}
 

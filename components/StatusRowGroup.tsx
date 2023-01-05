@@ -3,6 +3,7 @@ import { memo } from 'react';
 import type { TemplateTests } from '~/model/types';
 import { StatusRow } from './StatusRow';
 import { StatusBar } from './StatusBar';
+import { communityRenderers, coreRenderers } from '../utils/renderers';
 
 const ResultGrid = styled.div`
   border-radius: 5px;
@@ -37,10 +38,10 @@ const ResultGrid = styled.div`
 export const StatusRowGroup = memo(({ data }: { data: TemplateTests[] }) => {
   return (
     <>
-      {Array.from(groupByRenderer(data).entries()).map(([renderer, templates]) => (
-        <ResultGrid key={renderer}>
+      {Array.from(groupByRenderer(sortByRenderer(data)).entries()).map(([renderer, templates]) => (
+        <ResultGrid key={renderer} id={getRendererId(renderer)}>
           <StatusBar
-            renderer={renderer.replace('@storybook/', '').replace('-', ' ')}
+            renderer={getRendererId(renderer)?.replace('-', ' ')}
             status={getStatusOfGroup(templates)}
             configurationCount={templates.length}
             lastUpdatedAt={getLastUpdatedAt(data)}
@@ -76,8 +77,19 @@ function getLastUpdatedAt(array: TemplateTests[]): Date | undefined {
 function groupByRenderer(array: TemplateTests[]) {
   const map = new Map<string, TemplateTests[]>();
   for (const templateTests of array) {
-    const renderer = templateTests.config?.expected.renderer ?? 'Unknown Renderer';
+    const renderer = getRendererId(templateTests.config?.expected.renderer);
     map.set(renderer, [...(map.get(renderer) ?? []), templateTests]);
   }
   return map;
+}
+
+function sortByRenderer(templates: TemplateTests[]) {
+  const renderers = [...coreRenderers, ...communityRenderers];
+  const rendererIndex = (template: TemplateTests) => renderers.indexOf(getRendererId(template.config?.expected.renderer) ?? '');
+  return [...templates].sort((a, b) => rendererIndex(a) - rendererIndex(b));
+}
+
+function getRendererId(renderer?: string) {
+  const rendererId = renderer?.replace('@storybook/', '') ?? 'unknown-renderer';
+  return rendererId === 'vue3' ? 'vue' : rendererId;
 }
