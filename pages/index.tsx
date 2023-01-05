@@ -11,6 +11,7 @@ import layoutMocks from '~/mock/layout.json';
 import { fetchCircleCiData } from '~/client/fetch-circle-ci-data';
 import { getDxData } from '~/client/dx-data';
 import { RendererLink } from '~/components/RendererLink';
+import { communityRenderers, coreRenderers } from '../utils/renderers';
 
 const { breakpoint, color, typography } = styles;
 
@@ -49,9 +50,6 @@ type Props = {
   pageProps: PageProps;
   templateData: TemplateTests[];
 };
-
-const coreRenderers = ['react', 'vue', 'angular', 'web-components', 'svelte'];
-const communityRenderers = ['html', 'preact'];
 
 export default function StatusPage({ pageProps, templateData }: Props) {
   return (
