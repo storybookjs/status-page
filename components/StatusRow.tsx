@@ -128,7 +128,7 @@ export const StatusRow = memo(({ results, config, id }: TemplateTests) => {
                 hasChrome={false}
                 tooltip={<TooltipNote note={`${storybookVersion}${day}`} />}
                 aria-label={`Status for ${day}: ${status}`}
-                onClick={() => setSelectedHeartBeat(result)}
+                onClick={() => setSelectedHeartBeat(selectedHeartBeat === result ? undefined : result)}
               >
                 <HeartBeat
                   isSelected={result === selectedHeartBeat}
