@@ -38,7 +38,7 @@ export const StatusRowGroup = memo(({ data }: { data: TemplateTests[] }) => {
   return (
     <>
       {Array.from(groupByRenderer(data).entries()).map(([renderer, templates]) => (
-        <ResultGrid key={renderer}>
+        <ResultGrid key={renderer} id={renderer.replace('@storybook/', '')}>
           <StatusBar
             renderer={renderer.replace('@storybook/', '').replace('-', ' ')}
             status={getStatusOfGroup(templates)}

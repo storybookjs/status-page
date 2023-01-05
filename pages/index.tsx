@@ -1,4 +1,4 @@
-import { Heading } from '@storybook/design-system';
+import { Heading, styles } from '@storybook/design-system';
 import { styled } from '@storybook/theming';
 import { GetStaticProps } from 'next';
 import Head from 'next/head';
@@ -10,15 +10,48 @@ import templateMocks from '~/mock/template-tests.json';
 import layoutMocks from '~/mock/layout.json';
 import { fetchCircleCiData } from '~/client/fetch-circle-ci-data';
 import { getDxData } from '~/client/dx-data';
+import { RendererLink } from '~/components/RendererLink';
+
+const { breakpoint, color, typography } = styles;
 
 const Container = styled.div`
   margin-top: 40px;
+`;
+
+const Sidebar = styled.div`
+  padding-top: 40px;
+  position: sticky;
+  top: 0;
+  height: 100%;
+  flex: 0 1 275px;
+  @media (max-width: ${breakpoint * 1.333 - 1}px) {
+    display: none;
+  }
+`;
+
+const TOCHeader = styled.div`
+  color: ${color.mediumdark};
+  font-size: 13px;
+  line-height: 24px;
+  font-weight: ${typography.weight.extrabold};
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  :first-child {
+    margin-top: 4px;
+  }
+  &:not(:first-child) {
+    margin-top: 24px;
+  }
+  margin-bottom: 12px;
 `;
 
 type Props = {
   pageProps: PageProps;
   templateData: TemplateTests[];
 };
+
+const coreRenderers = ['react', 'vue', 'angular', 'web-components', 'svelte'];
+const communityRenderers = ['html', 'preact'];
 
 export default function StatusPage({ pageProps, templateData }: Props) {
   return (
@@ -33,16 +66,29 @@ export default function StatusPage({ pageProps, templateData }: Props) {
           or notices disruptions, you can reach out on <Link href="https://discord.gg/storybook">discord</Link>.
         </p>
       </header>
-      <Container>
-        <StatusRowGroup
-          data={
-            templateData.map((template) => ({
-              ...template,
-              results: template.results.map((result) => ({ ...result, date: new Date(result.date) })),
-            })) as TemplateTests[]
-          }
-        />
-      </Container>
+      <div style={{ display: 'flex', position: 'relative' }}>
+        <Sidebar>
+          <TOCHeader>Core</TOCHeader>
+          {coreRenderers.map((renderer) => (
+            <RendererLink key={renderer} renderer={renderer} />
+          ))}
+
+          <TOCHeader>Community</TOCHeader>
+          {communityRenderers.map((renderer) => (
+            <RendererLink key={renderer} renderer={renderer} />
+          ))}
+        </Sidebar>
+        <Container style={{ flex: 1 }}>
+          <StatusRowGroup
+            data={
+              templateData.map((template) => ({
+                ...template,
+                results: template.results.map((result) => ({ ...result, date: new Date(result.date) })),
+              })) as TemplateTests[]
+            }
+          />
+        </Container>
+      </div>
     </AppLayout>
   );
 }
