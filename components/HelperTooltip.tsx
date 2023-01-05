@@ -85,15 +85,13 @@ const WithPadding = styled.div`
   padding-top: 12px;
 `;
 
-export const HelperTooltip = ({
-  script: generatorScript,
-  reproScript,
-  expected,
-}: Pick<TemplateConfig, 'script' | 'expected'> & { reproScript: string }) => {
+export const HelperTooltip = ({ script, reproScript, expected }: Pick<TemplateConfig, 'script' | 'expected'> & { reproScript: string }) => {
   const librariesUsed = Object.keys(expected)
     .map((key) => key as keyof typeof expected)
     .map((key) => `${key}: ${expected[key]}`)
     .join('\n');
+
+  const generatorScript = script.replace(/{{beforeDir}}/g, '.');
 
   const configurationBody = (
     <>

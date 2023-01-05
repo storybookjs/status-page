@@ -12,7 +12,8 @@ const meta = {
     },
   },
   args: {
-    script: 'yarn task --task e2e-tests --template react-vite/default-ts',
+    script: 'yarn create vite {{beforeDir}} --template react',
+    reproScript: 'yarn task --task e2e-tests --template react-vite/default-ts',
     expected: {
       renderer: '@storybook/react',
       framework: '@storybook/react-vite',
