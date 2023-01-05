@@ -496,9 +496,6 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     children: 'Lorem ipsum',
-    pageProps: {
-      ...pageProps,
-      storybookVersion: '7.0',
-    },
+    pageProps,
   },
 };

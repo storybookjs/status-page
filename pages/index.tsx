@@ -4,13 +4,11 @@ import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import { Link } from '~/components/Link';
 import { StatusRowGroup } from '~/components/StatusRowGroup';
-import { TemplateTests } from '~/model/types';
+import { StorybookNpmTag, TemplateTests } from '~/model/types';
 import { AppLayout, PageProps } from '~/components/layout/AppLayout';
 import templateMocks from '~/mock/template-tests.json';
 import layoutMocks from '~/mock/layout.json';
-import versionsMock from '~/mock/storybook-versions.json';
-import { fetchCircleCiData } from '../client/fetch-circle-ci-data';
-import { getStorybookVersions, StorybookVersions } from '~/client/storybook-versions';
+import { fetchCircleCiData } from '~/client/fetch-circle-ci-data';
 import { getDxData } from '~/client/dx-data';
 
 const Container = styled.div`
@@ -58,33 +56,16 @@ const MOCK_DATA = {
 const USE_MOCKS = false;
 
 export const getStaticProps: GetStaticProps = async ({ params = {} }) => {
-  let { version: storybookVersion } = params as { version: string };
-
-  if (!storybookVersion) {
-    let sbVersions: StorybookVersions;
-    if (USE_MOCKS) {
-      sbVersions = versionsMock;
-    } else {
-      sbVersions = await getStorybookVersions();
-    }
-
-    storybookVersion = sbVersions.latest;
-  }
+  const { npmTag: storybookNpmTag } = params as { npmTag: StorybookNpmTag };
 
   if (USE_MOCKS) {
     return {
-      props: {
-        ...MOCK_DATA,
-        pageProps: {
-          ...MOCK_DATA.pageProps,
-          storybookVersion,
-        },
-      },
+      props: MOCK_DATA,
     };
   }
 
   const dxData = await getDxData();
 
-  const templateData = await fetchCircleCiData({ storybookVersion });
-  return { props: { pageProps: { ...dxData, storybookVersion }, templateData } };
+  const templateData = await fetchCircleCiData({ storybookNpmTag });
+  return { props: { pageProps: dxData, templateData } };
 };
