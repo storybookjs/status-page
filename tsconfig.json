@@ -21,6 +21,7 @@
       "~/mock/*": ["mock/*"],
       "~/model/*": ["model/*"],
       "~/services/*": ["services/*"],
+      "~/scripts/*": ["scripts/*"],
       "~/client/*": ["client/*"],
       "~/styles/*": ["styles/*"],
       "~/util/*": ["util/*"]

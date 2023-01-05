@@ -58,6 +58,7 @@
     "eslint-plugin-storybook": "^0.6.7",
     "husky": ">=7",
     "lint-staged": ">=10",
+    "mockdate": "^3.0.5",
     "node-fetch": "^3.3.0",
     "openapi-typescript": "^6.0.3",
     "openapi-typescript-fetch": "^1.1.3",

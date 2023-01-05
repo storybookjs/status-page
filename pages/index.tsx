@@ -1,16 +1,15 @@
-'use client';
-
 import { Heading } from '@storybook/design-system';
 import { styled } from '@storybook/theming';
 import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import { Link } from '~/components/Link';
 import { StatusRowGroup } from '~/components/StatusRowGroup';
-import { TemplateTests } from '~/model/types';
+import { StorybookNpmTag, TemplateTests } from '~/model/types';
 import { AppLayout, PageProps } from '~/components/layout/AppLayout';
 import templateMocks from '~/mock/template-tests.json';
 import layoutMocks from '~/mock/layout.json';
-import { fetchCircleCiData } from '../scripts/fetch-circle-ci-data';
+import { fetchCircleCiData } from '~/client/fetch-circle-ci-data';
+import { getDxData } from '~/client/dx-data';
 
 const Container = styled.div`
   margin-top: 40px;
@@ -48,8 +47,6 @@ export default function StatusPage({ pageProps, templateData }: Props) {
   );
 }
 
-const LAYOUT_DATA_ENDPOINT = 'https://storybook-dx.netlify.app/.netlify/functions/dx-data';
-
 const MOCK_DATA = {
   pageProps: layoutMocks,
   templateData: templateMocks,
@@ -58,14 +55,17 @@ const MOCK_DATA = {
 // DO NOT COMMIT THIS AS TRUE
 const USE_MOCKS = false;
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async ({ params = {} }) => {
+  const { npmTag: storybookNpmTag } = params as { npmTag: StorybookNpmTag };
+
   if (USE_MOCKS) {
-    return { props: MOCK_DATA };
+    return {
+      props: MOCK_DATA,
+    };
   }
 
-  const res = await fetch(LAYOUT_DATA_ENDPOINT);
-  const pageProps = (await res.json()) as PageProps;
+  const dxData = await getDxData();
 
-  const templateData = await fetchCircleCiData();
-  return { props: { pageProps, templateData } };
+  const templateData = await fetchCircleCiData({ storybookNpmTag });
+  return { props: { pageProps: dxData, templateData } };
 };

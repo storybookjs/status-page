@@ -82,3 +82,5 @@ export type TestResult =
 export interface TemplateTests extends StorybookTemplate {
   results: TestResult[];
 }
+
+export type StorybookNpmTag = 'next' | 'latest';

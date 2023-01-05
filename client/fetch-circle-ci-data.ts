@@ -1,14 +1,9 @@
 import { EnrichedPipeline, getDailyPipelines } from '~/services/circle-ci';
 import { addDays } from 'date-fns';
 import { getLatestTestResults } from '~/services/test-results';
+import { StorybookNpmTag } from '~/model/types';
 
-export const fetchRawCircleCiData = async ({
-  useMock = false,
-  branch = 'next-release',
-}: {
-  useMock?: boolean;
-  branch?: string;
-} = {}): Promise<EnrichedPipeline[]> => {
+export const fetchRawCircleCiData = async ({ useMock = false, branch = 'next-release' } = {}): Promise<EnrichedPipeline[]> => {
   if (useMock) {
     console.log('Reading mock data');
     try {
@@ -20,6 +15,7 @@ export const fetchRawCircleCiData = async ({
     }
   }
 
+  console.log(`Fetching data for the ${branch} branch`);
   return getDailyPipelines(branch, addDays(new Date(), -90));
 };
 
@@ -33,8 +29,10 @@ export const getProcessedTestResults = async (pipelines: EnrichedPipeline[]) => 
   return testResults;
 };
 
-export const fetchCircleCiData = async () => {
-  const pipelines = await fetchRawCircleCiData();
+export const fetchCircleCiData = async ({ storybookNpmTag }: { storybookNpmTag: StorybookNpmTag }) => {
+  // TODO: change to 'next-release' : 'main-release' once SB 7.0 is merged to main in the monorepo
+  const branch = storybookNpmTag === 'next' ? 'next-release' : 'next-release';
+  const pipelines = await fetchRawCircleCiData({ branch });
 
   return getProcessedTestResults(pipelines);
 };
