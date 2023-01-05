@@ -10,7 +10,10 @@ const meta = {
   title: 'Pages/Status',
   component: StatusPage,
   args: {
-    pageProps: layoutMocks,
+    pageProps: {
+      ...layoutMocks,
+      npmTag: 'next',
+    },
     templateData: templateMocks.map((template) => ({
       ...template,
       results: template.results.map((result) => ({ ...result, date: new Date(result.date) })),

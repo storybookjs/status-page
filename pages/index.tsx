@@ -94,13 +94,15 @@ export default function StatusPage({ pageProps, templateData }: Props) {
 const MOCK_DATA = {
   pageProps: layoutMocks,
   templateData: templateMocks,
+  npmTag: 'next',
 };
 
 // DO NOT COMMIT THIS AS TRUE
 const USE_MOCKS = false;
 
 export const getStaticProps: GetStaticProps = async ({ params = {} }) => {
-  const { npmTag: storybookNpmTag } = params as { npmTag: StorybookNpmTag };
+  // TODO: change default value from 'next' to 'latest' once SB 7.0 is merged to main in the monorepo
+  const { npmTag: storybookNpmTag = 'next' } = params as { npmTag: StorybookNpmTag };
 
   if (USE_MOCKS) {
     return {
@@ -111,5 +113,5 @@ export const getStaticProps: GetStaticProps = async ({ params = {} }) => {
   const dxData = await getDxData();
 
   const templateData = await fetchCircleCiData({ storybookNpmTag });
-  return { props: { pageProps: dxData, templateData } };
+  return { props: { pageProps: { ...dxData, npmTag: storybookNpmTag }, templateData } };
 };

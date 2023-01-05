@@ -1,6 +1,15 @@
-import { SubNav as MarketingSubNav, SubNavRight, SubNavTabs, SubNavLinkList } from '@storybook/components-marketing';
+import {
+  SubNav as MarketingSubNav,
+  SubNavRight,
+  SubNavTabs,
+  SubNavLinkList,
+  SubNavDivider,
+  SubNavMenus,
+  Menu,
+} from '@storybook/components-marketing';
 
 import LinkWrapper from 'next/link';
+import { StorybookNpmTag } from '~/model/types';
 
 const TOP_LEVEL_PAGE_TYPES = {
   STATUS: 'status',
@@ -13,6 +22,7 @@ export const PAGE_TYPES = {
 
 export interface SubNavProps {
   pageType: typeof PAGE_TYPES[keyof typeof PAGE_TYPES];
+  npmTag: StorybookNpmTag;
 }
 
 const subNavItems = (pageType: SubNavProps['pageType']) => [
@@ -38,10 +48,27 @@ const supportItems = [
   } as const,
 ];
 
-export const SubNav: React.FC<SubNavProps> = ({ pageType }) => {
+export const SubNav: React.FC<SubNavProps> = ({ pageType, npmTag }) => {
   return pageType !== PAGE_TYPES.NOT_FOUND ? (
     <MarketingSubNav>
       <SubNavTabs label="Status page nav" items={subNavItems(pageType)} />
+      <SubNavDivider />
+      <SubNavMenus>
+        <Menu
+          label={npmTag}
+          items={[
+            {
+              label: 'Versions',
+              items: [
+                // TODO: uncomment this once SB 7.0 is merged to main in the monorepo, then change url of next from '/' to '/next'
+                // { label: 'latest', link: { url: '/' } },
+                { label: 'next', link: { url: '/' } },
+              ],
+            },
+          ]}
+          primary
+        ></Menu>
+      </SubNavMenus>
       <SubNavRight>
         <SubNavLinkList label="Get support:" items={supportItems} />
       </SubNavRight>
