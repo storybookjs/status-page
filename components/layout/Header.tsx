@@ -4,6 +4,7 @@ import { styles } from '@storybook/design-system';
 import { styled } from '@storybook/theming';
 
 import { SubNav, SubNavProps } from './SubNav';
+import { StorybookNpmTag } from '~/model/types';
 
 type EyebrowProps = React.ComponentProps<typeof Eyebrow>;
 type NavProps = React.ComponentProps<typeof Nav>;
@@ -17,6 +18,7 @@ export interface HeaderProps {
   };
   latestVersion: NavProps['version'];
   pageType: SubNavProps['pageType'];
+  npmTag: StorybookNpmTag;
 }
 
 const HeaderWrapper = styled.header`
@@ -27,7 +29,7 @@ const HeaderWrapper = styled.header`
   }
 `;
 
-export const Header: React.FC<HeaderProps> = ({ githubStars, inverse, latestPost, latestVersion, pageType }) => {
+export const Header: React.FC<HeaderProps> = ({ githubStars, inverse, latestPost, latestVersion, pageType, npmTag }) => {
   return (
     <HeaderWrapper>
       <Eyebrow githubStarCount={githubStars} label={latestPost.title} link={latestPost.url} inverse={inverse} />
@@ -38,7 +40,7 @@ export const Header: React.FC<HeaderProps> = ({ githubStars, inverse, latestPost
         version={latestVersion}
         activeSection="docs"
       />
-      <SubNav pageType={pageType} />
+      <SubNav pageType={pageType} npmTag={npmTag} />
     </HeaderWrapper>
   );
 };

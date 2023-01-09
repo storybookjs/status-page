@@ -6,10 +6,11 @@ import { styled } from '@storybook/theming';
 import NextLink from 'next/link';
 import { Header, HeaderProps } from './Header';
 import { GlobalStyles } from '~/styles/GlobalStyles';
+import { StorybookNpmTag } from '~/model/types';
 
 type FooterProps = React.ComponentProps<typeof MarketingFooter>;
 
-export type PageProps = Partial<HeaderProps> & Pick<FooterProps, 'subscriberCount'>;
+export type PageProps = Partial<HeaderProps> & Pick<FooterProps, 'subscriberCount'> & { npmTag: StorybookNpmTag };
 
 export interface AppLayoutProps {
   children: React.ReactNode;
@@ -32,13 +33,13 @@ const Footer = styled(MarketingFooter)`
 
 export const AppLayout: React.FC<AppLayoutProps> = ({
   children,
-  pageProps: { githubStars, latestPost, latestVersion, subscriberCount },
+  pageProps: { githubStars, latestPost, latestVersion, subscriberCount, npmTag },
 }) => (
   <>
     <GlobalStyles />
     <LinksContextProvider value={navLinks}>
       {githubStars && latestPost && latestVersion && (
-        <Header githubStars={githubStars} latestPost={latestPost} latestVersion={latestVersion} pageType="status" />
+        <Header githubStars={githubStars} latestPost={latestPost} latestVersion={latestVersion} pageType="status" npmTag={npmTag} />
       )}
       <Main>{children}</Main>
       {subscriberCount && <Footer subscriberCount={subscriberCount} />}

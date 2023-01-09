@@ -19,5 +19,6 @@ type Story = StoryObj<typeof meta>;
 export const Status: Story = {
   args: {
     pageType: PAGE_TYPES.STATUS,
+    npmTag: 'next',
   },
 };

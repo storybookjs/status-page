@@ -3,6 +3,7 @@ import { StoryObj, Meta } from '@storybook/react';
 import { AppLayout } from '~/components/layout/AppLayout';
 
 const pageProps = {
+  npmTag: 'next',
   contributors: [
     {
       avatar: 'https://avatars.githubusercontent.com/u/50838?v=4',
