@@ -75,17 +75,34 @@ const TooltipIcon = styled(ColoredIcon)`
 
 const TooltipWrapper = styled.div`
   padding: 12px 12px 12px 18px;
-  max-width: 90vw;
+  max-width: 650px;
+  @media (max-width: ${styles.breakpoint}px) {
+    max-width: 90vw;
+  }
 `;
 
-export const HelperTooltip = ({ script, expected }: Pick<TemplateConfig, 'script' | 'expected'>) => {
+const WithPadding = styled.div`
+  padding-top: 12px;
+`;
+
+export const HelperTooltip = ({ script, reproScript, expected }: Pick<TemplateConfig, 'script' | 'expected'> & { reproScript: string }) => {
+  const librariesUsed = Object.keys(expected)
+    .map((key) => key as keyof typeof expected)
+    .map((key) => `${key}: ${expected[key]}`)
+    .join('\n');
+
+  const generatorScript = script.replace(/{{beforeDir}}/g, '.');
+
   const configurationBody = (
     <>
       <div>The following libraries were used in this build.</div>
       <StyledCodeSnippets
-        snippets={[
-          { id: '1', renderTabLabel: () => '', Snippet: () => <Highlight language="json">{JSON.stringify(expected, null, 2)}</Highlight> },
-        ]}
+        snippets={[{ id: '1', renderTabLabel: () => '', Snippet: () => <Highlight language="yaml">{librariesUsed}</Highlight> }]}
+        hideCopy
+      ></StyledCodeSnippets>
+      <WithPadding>And the following generator script.</WithPadding>
+      <StyledCodeSnippets
+        snippets={[{ id: '1', renderTabLabel: () => '', Snippet: () => <Highlight language="bash">{generatorScript}</Highlight> }]}
         hideCopy
       ></StyledCodeSnippets>
     </>
@@ -101,7 +118,7 @@ export const HelperTooltip = ({ script, expected }: Pick<TemplateConfig, 'script
         .
       </div>
       <StyledCodeSnippets
-        snippets={[{ id: '1', renderTabLabel: () => '', Snippet: () => <Highlight language="bash">{script}</Highlight> }]}
+        snippets={[{ id: '1', renderTabLabel: () => '', Snippet: () => <Highlight language="bash">{reproScript}</Highlight> }]}
       ></StyledCodeSnippets>
     </>
   );

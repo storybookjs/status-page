@@ -93,7 +93,7 @@ export const StatusRow = memo(({ results, config, id }: TemplateTests) => {
   const [chartRef, { width }] = useElementSize();
   const [selectedHeartBeat, setSelectedHeartBeat] = useState<TestResult>();
   const [hoveredHeartBeat, setHoveredHeartBeat] = useState<TestResult>();
-  const templateScript = useMemo(() => getReproScript(id), [id]);
+  const reproScript = useMemo(() => getReproScript(id), [id]);
 
   // Not that it will ever happen, but just in case so we don't break the website because of malformed data.
   if (!results?.length) {
@@ -115,7 +115,7 @@ export const StatusRow = memo(({ results, config, id }: TemplateTests) => {
         <ResultHeading>
           <StatusBadge style={{ marginBottom: '2px' }} status={mostRecentStatus}></StatusBadge>
           <TemplateName>{config?.name ?? id}</TemplateName>
-          {config && <HelperTooltip script={templateScript} expected={config?.expected} />}
+          {config && <HelperTooltip script={config?.script} reproScript={reproScript} expected={config?.expected} />}
         </ResultHeading>
         <HeartBeatChart>
           {resultsToDisplay.map((result) => {
