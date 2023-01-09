@@ -29,7 +29,7 @@ const subNavItems = (pageType: SubNavProps['pageType']) => [
   {
     key: '1',
     label: 'Support table',
-    href: '/status',
+    href: '/',
     LinkWrapper,
     isActive: pageType === PAGE_TYPES.STATUS,
   },
@@ -60,9 +60,9 @@ export const SubNav: React.FC<SubNavProps> = ({ pageType, npmTag }) => {
             {
               label: 'Versions',
               items: [
-                // TODO: uncomment this once SB 7.0 is merged to main in the monorepo, then change url of next from '/' to '/next'
-                // { label: 'latest', link: { url: '/' } },
-                { label: 'next', link: { url: '/' } },
+                // TODO: uncomment this once SB 7.0 is merged to main in the monorepo, then change url of next from '/status' to '/status/next'
+                // { label: 'latest', link: { url: '/status/latest' } },
+                { label: 'next', link: { url: '/status' } },
               ],
             },
           ]}
