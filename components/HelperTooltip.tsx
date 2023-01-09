@@ -103,6 +103,7 @@ export const HelperTooltip = ({ script, reproScript, expected }: Pick<TemplateCo
       <WithPadding>And the following generator script.</WithPadding>
       <StyledCodeSnippets
         snippets={[{ id: '1', renderTabLabel: () => '', Snippet: () => <Highlight language="bash">{generatorScript}</Highlight> }]}
+        hideCopy
       ></StyledCodeSnippets>
     </>
   );
