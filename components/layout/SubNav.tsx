@@ -28,7 +28,7 @@ export interface SubNavProps {
 const subNavItems = (pageType: SubNavProps['pageType']) => [
   {
     key: '1',
-    label: 'Support table',
+    label: 'Status',
     href: '/',
     LinkWrapper,
     isActive: pageType === PAGE_TYPES.STATUS,

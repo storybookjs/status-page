@@ -13,7 +13,7 @@ const ResultBox = styled.section<{ isFailure?: boolean }>`
   padding: 20px 30px 25px;
   border-radius: 4px;
   color: var(--text-secondary);
-  background-color: ${(props) => (props.isFailure ? 'var(--background-error)' : 'white')};
+  background-color: white;
 
   // TODO: do proper mobile styling
   @media (max-width: ${styles.breakpoint}px) {

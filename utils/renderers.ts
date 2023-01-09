@@ -1,2 +1,2 @@
-export const coreRenderers = ['react', 'vue', 'angular', 'web-components', 'svelte'];
-export const communityRenderers = ['html', 'preact'];
+export const coreRenderers = ['react', 'vue', 'angular', 'web-components'];
+export const communityRenderers = ['svelte', 'html', 'preact'];

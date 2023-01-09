@@ -60,8 +60,8 @@ export default function StatusPage({ pageProps, templateData }: Props) {
       <header>
         <Heading>Status page</Heading>
         <p>
-          This is Storybook&apos;s status page, where you can get updates on how our integrations are doing. If you are experiencing issues
-          or notices disruptions, you can reach out on <Link href="https://discord.gg/storybook">discord</Link>.
+          Welcome to Storybook&apos;s status page! Each status bar represents the daily CI status for a particular framework integration.
+          Click on a bar to see its details and the specific Storybook version that was tested.
         </p>
       </header>
       <div style={{ display: 'flex', position: 'relative' }}>
