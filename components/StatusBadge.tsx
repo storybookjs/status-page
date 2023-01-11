@@ -6,6 +6,7 @@ export const StatusBadge = styled.span<{ status: Feature['status'] | string; lar
   width: ${(props) => (props.large ? '30px' : '10px')};
   height: ${(props) => (props.large ? '30px' : '10px')};
   border-radius: 50%;
+  flex-shrink: 0;
   background: ${(props) => {
     switch (props.status) {
       case 'success':
