@@ -74,15 +74,12 @@ const TooltipIcon = styled(ColoredIcon)`
 `;
 
 const TooltipWrapper = styled.div`
-  padding: 12px 12px 12px 18px;
+  padding: 12px 12px 24px 24px;
   max-width: 650px;
   @media (max-width: ${styles.breakpoint}px) {
     max-width: 90vw;
+    padding: 12px 12px 16px 16px;
   }
-`;
-
-const WithPadding = styled.div`
-  padding-top: 12px;
 `;
 
 export const HelperTooltip = ({ script, reproScript, expected }: Pick<TemplateConfig, 'script' | 'expected'> & { reproScript: string }) => {
@@ -95,12 +92,11 @@ export const HelperTooltip = ({ script, reproScript, expected }: Pick<TemplateCo
 
   const configurationBody = (
     <>
-      <div>The following libraries were used in this build.</div>
+      <div>This build uses the following libraries and generator script.</div>
       <StyledCodeSnippets
         snippets={[{ id: '1', renderTabLabel: () => '', Snippet: () => <Highlight language="yaml">{librariesUsed}</Highlight> }]}
         hideCopy
       ></StyledCodeSnippets>
-      <WithPadding>And the following generator script.</WithPadding>
       <StyledCodeSnippets
         snippets={[{ id: '1', renderTabLabel: () => '', Snippet: () => <Highlight language="bash">{generatorScript}</Highlight> }]}
         hideCopy
@@ -111,11 +107,11 @@ export const HelperTooltip = ({ script, reproScript, expected }: Pick<TemplateCo
   const buildScriptBody = (
     <>
       <div>
-        To reproduce the results of this test, run the following script from the{' '}
+        To reproduce the results of this test, clone the{' '}
         <Link href="https://github.com/storybookjs/storybook" target="_blank">
           Storybook repository
-        </Link>
-        .
+        </Link>{' '}
+        and run the build script.
       </div>
       <StyledCodeSnippets
         snippets={[{ id: '1', renderTabLabel: () => '', Snippet: () => <Highlight language="bash">{reproScript}</Highlight> }]}
@@ -131,14 +127,14 @@ export const HelperTooltip = ({ script, reproScript, expected }: Pick<TemplateCo
         return (
           <TooltipWrapper>
             <ItemWithIconAndDescription
-              icon={<ColoredIcon icon="beaker" color="#66BF3C" />}
-              title="Configuration"
-              description={configurationBody}
-            />
-            <ItemWithIconAndDescription
               icon={<ColoredIcon icon="markup" color="#37D5D3" />}
               title="Build script"
               description={buildScriptBody}
+            />
+            <ItemWithIconAndDescription
+              icon={<ColoredIcon icon="beaker" color="#66BF3C" />}
+              title="Configuration"
+              description={configurationBody}
             />
           </TooltipWrapper>
         );
