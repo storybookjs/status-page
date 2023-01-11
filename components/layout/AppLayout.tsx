@@ -19,7 +19,6 @@ export interface AppLayoutProps {
 
 const navLinks: Links = {
   ...defaultLinks,
-  // @ts-expect-error TODO: add this in @storybook/components-marketing
   status: { url: '/', linkWrapper: NextLink },
 };
 
