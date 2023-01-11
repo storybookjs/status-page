@@ -1,12 +1,16 @@
 import { memo, useMemo, useState } from 'react';
 import { useElementSize } from 'usehooks-ts';
 import type { TemplateTests, TestResult } from '~/model/types';
-import { styles, TooltipNote, WithTooltip } from '@storybook/design-system';
+import { styles, TooltipNote, WithTooltip, Link } from '@storybook/design-system';
 import { styled } from '@storybook/theming';
 import { getFormattedDate } from '~/util/index';
 import { StatusInfo } from './StatusInfo';
 import { StatusBadge } from './StatusBadge';
 import { HelperTooltip } from './HelperTooltip';
+
+const ExpandCollapseButton = styled(Link)`
+  margin-left: auto;
+`;
 
 const ResultBox = styled.section<{ isFailure?: boolean }>`
   border: 1px solid var(--border-subtle);
@@ -100,7 +104,8 @@ export const StatusRow = memo(({ results, config, id }: TemplateTests) => {
     return <div>There was a problem processing this data. Please try again later.</div>;
   }
 
-  const mostRecentStatus = results.at(-1)?.status || 'no-data';
+  const mostRecentResult = results.at(-1);
+  const mostRecentStatus = mostRecentResult?.status || 'no-data';
 
   // by default width is 0, so we assume the default view which is 90 days. Will look weird on mobile but 🤷
   const daysToDisplay = width === 0 || width >= 850 ? 90 : width >= 600 ? 60 : 30;
@@ -116,6 +121,9 @@ export const StatusRow = memo(({ results, config, id }: TemplateTests) => {
           <StatusBadge style={{ marginBottom: '2px' }} status={mostRecentStatus}></StatusBadge>
           <TemplateName>{config?.name ?? id}</TemplateName>
           {config && <HelperTooltip script={config?.script} reproScript={reproScript} expected={config?.expected} />}
+          <ExpandCollapseButton isButton onClick={() => setSelectedHeartBeat(selectedHeartBeat ? undefined : mostRecentResult)}>
+            {selectedHeartBeat ? 'Collapse' : 'Expand'}
+          </ExpandCollapseButton>
         </ResultHeading>
         <HeartBeatChart>
           {resultsToDisplay.map((result) => {
