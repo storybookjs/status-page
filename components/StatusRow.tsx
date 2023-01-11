@@ -10,6 +10,8 @@ import { HelperTooltip } from './HelperTooltip';
 
 const ExpandCollapseButton = styled(Link)`
   margin-left: auto;
+  font-size: 14px;
+  line-height: 20px;
 `;
 
 const ResultBox = styled.section<{ isFailure?: boolean }>`
