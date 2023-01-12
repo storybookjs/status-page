@@ -3,9 +3,9 @@ name: Build site
 on:
   workflow_dispatch:
   schedule:
-    # 12am UTC (4pm PST) every day
+    # 12am UTC every day
     # One hour after daily job https://app.circleci.com/settings/project/github/storybookjs/storybook/triggers
-    - cron: '0 16 * * *'
+    - cron: '0 0 * * *'
 
 jobs:
   compute:
