@@ -48,27 +48,34 @@ const supportItems = [
   } as const,
 ];
 
+// TODO: remove this flag once SB 7.0 is merged to main in the monorepo
+const showVersionPicker = false;
+
 export const SubNav: React.FC<SubNavProps> = ({ pageType, npmTag }) => {
   return pageType !== PAGE_TYPES.NOT_FOUND ? (
     <MarketingSubNav>
       <SubNavTabs label="Status page nav" items={subNavItems(pageType)} />
-      <SubNavDivider />
-      <SubNavMenus>
-        <Menu
-          label={npmTag}
-          items={[
-            {
-              label: 'Versions',
-              items: [
-                // TODO: uncomment this once SB 7.0 is merged to main in the monorepo, then change url of next from '/status' to '/status/next'
-                // { label: 'latest', link: { url: '/status/latest' } },
-                { label: 'next', link: { url: '/status' } },
-              ],
-            },
-          ]}
-          primary
-        ></Menu>
-      </SubNavMenus>
+      {showVersionPicker && (
+        <>
+          <SubNavDivider />
+          <SubNavMenus>
+            <Menu
+              label={npmTag}
+              items={[
+                {
+                  label: 'Versions',
+                  items: [
+                    // TODO: uncomment this once SB 7.0 is merged to main in the monorepo, then change url of next from '/status' to '/status/next'
+                    // { label: 'latest', link: { url: '/status/latest' } },
+                    { label: 'next', link: { url: '/status' } },
+                  ],
+                },
+              ]}
+              primary
+            ></Menu>
+          </SubNavMenus>
+        </>
+      )}
       <SubNavRight>
         <SubNavLinkList label="Get support:" items={supportItems} />
       </SubNavRight>
