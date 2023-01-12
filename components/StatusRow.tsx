@@ -111,6 +111,7 @@ export const StatusRow = memo(({ results, config, id }: TemplateTests) => {
 
   // by default width is 0, so we assume the default view which is 90 days. Will look weird on mobile but 🤷
   const daysToDisplay = width === 0 || width >= 850 ? 90 : width >= 600 ? 60 : 30;
+  const shouldShowActionButtons = daysToDisplay > 30;
 
   const infoToDisplay = selectedHeartBeat && (hoveredHeartBeat || selectedHeartBeat);
 
@@ -122,10 +123,14 @@ export const StatusRow = memo(({ results, config, id }: TemplateTests) => {
         <ResultHeading>
           <StatusBadge style={{ marginBottom: '2px' }} status={mostRecentStatus}></StatusBadge>
           <TemplateName>{config?.name ?? id}</TemplateName>
-          {config && <HelperTooltip script={config?.script} reproScript={reproScript} expected={config?.expected} />}
-          <ExpandCollapseButton isButton onClick={() => setSelectedHeartBeat(selectedHeartBeat ? undefined : mostRecentResult)}>
-            {selectedHeartBeat ? 'Collapse' : 'Expand'}
-          </ExpandCollapseButton>
+          {shouldShowActionButtons && config && (
+            <HelperTooltip script={config?.script} reproScript={reproScript} expected={config?.expected} />
+          )}
+          {shouldShowActionButtons && (
+            <ExpandCollapseButton isButton onClick={() => setSelectedHeartBeat(selectedHeartBeat ? undefined : mostRecentResult)}>
+              {selectedHeartBeat ? 'Collapse' : 'Expand'}
+            </ExpandCollapseButton>
+          )}
         </ResultHeading>
         <HeartBeatChart>
           {resultsToDisplay.map((result) => {
