@@ -60,8 +60,12 @@ export default function StatusPage({ pageProps, templateData }: Props) {
       <header>
         <Heading>Status page</Heading>
         <p>
-          Welcome to Storybook&apos;s status page! Each status bar represents the daily CI status for a particular framework integration.
-          Click on a bar to see its details and the specific Storybook version that was tested.
+          Welcome to Storybook’s status page! Each status bar represents the daily CI status for a particular framework integration on
+          Storybook’s{' '}
+          <Link href="https://github.com/storybookjs/storybook/tree/next" target="_blank">
+            next
+          </Link>{' '}
+          branch. Click on a bar to see its details and the specific Storybook version that was tested.
         </p>
       </header>
       <div style={{ display: 'flex', position: 'relative' }}>
