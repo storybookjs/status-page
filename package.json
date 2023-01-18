@@ -48,6 +48,7 @@
     "@storybook/nextjs": "7.0.0-beta.13",
     "@storybook/react": "7.0.0-beta.13",
     "@storybook/testing-library": "next",
+    "@types/gtag.js": "^0.0.12",
     "@types/prettier": "^2.7.1",
     "@typescript-eslint/eslint-plugin": "^5.47.0",
     "@typescript-eslint/parser": "^5.47.0",
