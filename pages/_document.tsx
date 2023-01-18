@@ -31,11 +31,11 @@ class MyDocument extends Document {
             content="Daily CI checks for all officially supported framework integrations on Storybook's next branch."
           />
           <meta property="twitter:image" content="https://storybook.js.org/images/social/open-graph.png" />
-          <link rel="apple-touch-icon" sizes="180x180" href="/day/apple-touch-icon.png" />
-          <link rel="icon" type="image/png" sizes="32x32" href="/day/favicon-32x32.png" />
-          <link rel="icon" type="image/png" sizes="16x16" href="/day/favicon-16x16.png" />
-          <link rel="manifest" href="/day/site.webmanifest" />
-          <link rel="shortcut icon" href="/day/favicon.svg" />
+          <link rel="apple-touch-icon" sizes="180x180" href="/status/apple-touch-icon.png" />
+          <link rel="icon" type="image/png" sizes="32x32" href="/status/favicon-32x32.png" />
+          <link rel="icon" type="image/png" sizes="16x16" href="/status/favicon-16x16.png" />
+          <link rel="manifest" href="/status/site.webmanifest" />
+          <link rel="shortcut icon" href="/status/favicon.svg" />
           <link rel="preconnect" href="https://fonts.gstatic.com/" crossOrigin="true" />
           <link href={fontUrl} rel="stylesheet" />
         </Head>
