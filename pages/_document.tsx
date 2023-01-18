@@ -11,24 +11,24 @@ class MyDocument extends Document {
           <meta name="title" content="Storybook status" />
           <meta
             name="description"
-            content="Daily CI checks for all officially supported framework integrations on Storybook's next branch."
+            content="Daily CI checks for all officially supported framework integrations on Storybook."
           />
 
           <meta property="og:type" content="website" />
-          <meta property="og:url" content="https://storybook.js.org/docs/react/why-storybook/" />
+          <meta property="og:url" content="https://storybook.js.org/status/" />
           <meta property="og:title" content="Storybook status" />
           <meta
             property="og:description"
-            content="Daily CI checks for all officially supported framework integrations on Storybook's next branch."
+            content="Daily CI checks for all officially supported framework integrations on Storybook."
           />
           <meta property="og:image" content="https://storybook.js.org/images/social/open-graph.png" />
 
           <meta property="twitter:card" content="summary_large_image" />
-          <meta property="twitter:url" content="https://storybook.js.org/docs/react/why-storybook/" />
+          <meta property="twitter:url" content="https://storybook.js.org/status/" />
           <meta property="twitter:title" content="Storybook status" />
           <meta
             property="twitter:description"
-            content="Daily CI checks for all officially supported framework integrations on Storybook's next branch."
+            content="Daily CI checks for all officially supported framework integrations on Storybook."
           />
           <meta property="twitter:image" content="https://storybook.js.org/images/social/open-graph.png" />
           <link rel="apple-touch-icon" sizes="180x180" href="/status/apple-touch-icon.png" />
