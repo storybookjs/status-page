@@ -8,7 +8,6 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "postbuild": "bash scripts/move-public-files.sh",
     "start": "next start",
     "test": "vitest",
     "lint": "next lint",
