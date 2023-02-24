@@ -10,7 +10,7 @@ fetcher.configure({
   use: [
     (url, init, next) =>
       retryPromise(async () => {
-        await new Promise((res) => setTimeout(res, 100));
+        await new Promise((res) => setTimeout(res, 500));
         const response = await next(url, init);
         console.log(`#${++count}: ${url} ${response.status} @ ${new Date().toISOString()}`);
         console.log(
@@ -27,7 +27,7 @@ fetcher.configure({
   ],
 });
 
-async function retryPromise<T>(fn: () => Promise<T>, retriesLeft = 10, interval = 200): Promise<T> {
+async function retryPromise<T>(fn: () => Promise<T>, retriesLeft = 20, interval = 250): Promise<T> {
   try {
     return await fn();
   } catch (error) {
