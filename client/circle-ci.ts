@@ -1,5 +1,5 @@
 import { paths } from '../open-api/circle-ci';
-import { Fetcher } from 'openapi-typescript-fetch';
+import { Fetcher, ApiError } from 'openapi-typescript-fetch';
 
 const fetcher = Fetcher.for<paths>();
 
@@ -12,6 +12,14 @@ fetcher.configure({
       retryPromise(async () => {
         const response = await next(url, init);
         console.log(`#${++count}: ${url} ${response.status} @ ${new Date().toISOString()}`);
+        console.log(
+          [
+            `x-ratelimit-limit: ${response.headers.get(`x-ratelimit-limit`)}`,
+            `x-ratelimit-remaining: ${response.headers.get('x-ratelimit-remaining')}`,
+            `x-ratelimit-reset: ${response.headers.get('x-ratelimit-reset')}`,
+            `x-cache: ${response.headers.get('x-cache')}`,
+          ].join(', ')
+        );
         if (!response.ok) throw response;
         return response;
       }),
@@ -23,6 +31,22 @@ async function retryPromise<T>(fn: () => Promise<T>, retriesLeft = 10, interval 
     return await fn();
   } catch (error) {
     if (retriesLeft === 0) throw error;
+    if (error instanceof ApiError) {
+      console.error({
+        status: error.status,
+        statusText: error.statusText,
+        url: error.url,
+        data: JSON.stringify(error.data),
+        headers: {
+          'x-ratelimit-limit': error.headers.get('x-ratelimit-limit'),
+          'x-ratelimit-remaining': error.headers.get('x-ratelimit-remaining'),
+          'x-ratelimit-reset': error.headers.get('x-ratelimit-reset'),
+          'retry-after': error.headers.get('retry-after'),
+        },
+      });
+    } else if (error instanceof Error) {
+      console.error(error);
+    }
     console.log(`Retrying in ${interval}ms ...`);
     await new Promise((res) => setTimeout(res, interval));
     return await retryPromise(fn, --retriesLeft, interval);
