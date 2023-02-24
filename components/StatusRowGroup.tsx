@@ -71,7 +71,7 @@ function getLastUpdatedAt(array: TemplateTests[]): Date | undefined {
   return array
     .map((template) => getLatestDecisiveResult(template)?.date)
     .filter((template): template is NonNullable<typeof template> => template != null)
-    .sort((a, b) => a.getTime() - b.getTime())[0];
+    .sort((a, b) => b.getTime() - a.getTime())[0];
 }
 
 function groupByRenderer(array: TemplateTests[]) {
