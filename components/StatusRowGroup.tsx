@@ -4,6 +4,7 @@ import type { TemplateTests } from '~/model/types';
 import { StatusRow } from './StatusRow';
 import { StatusBar } from './StatusBar';
 import { communityRenderers, coreRenderers } from '../utils/renderers';
+import { Link } from './Link';
 
 const ResultGrid = styled.div`
   border-radius: 5px;
@@ -36,6 +37,15 @@ const ResultGrid = styled.div`
 `;
 
 export const StatusRowGroup = memo(({ data }: { data: TemplateTests[] }) => {
+  if (data.length === 0) {
+    return (
+      <div>
+        😵‍💫 Oh no! Seems like the status data is missing for this tag. Please reach us on{' '}
+        <Link href="https://discord.gg/storybook">Discord</Link> so we can fix this as soon as possible.
+      </div>
+    );
+  }
+
   return (
     <>
       {Array.from(groupByRenderer(sortByRenderer(data)).entries()).map(([renderer, templates]) => (

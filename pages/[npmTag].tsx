@@ -13,12 +13,11 @@ export const getStaticPaths = () => {
           npmTag: 'next',
         },
       },
-      // TODO: uncomment this once we merge 7.0 to main branch in SB monorepo
-      // {
-      //   params: {
-      //     npmTag: 'latest',
-      //   },
-      // },
+      {
+        params: {
+          npmTag: 'latest',
+        },
+      },
     ],
     fallback: false,
   };
