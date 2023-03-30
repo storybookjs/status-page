@@ -8,7 +8,13 @@ interface Context {
   now: () => Date;
 }
 
-const testResultJobsNames = ['e2e-sandboxes', 'test-runner-sandboxes'];
+const testResultJobsNames = [
+  'test-runner-production',
+  'e2e-production',
+  // These job names got renamed, but we need to maintain them for some time to keep the data consistent
+  'test-runner-sandboxes',
+  'e2e-sandboxes',
+];
 
 export async function getLatestTestResults(ctx: Context): Promise<TemplateTests[]> {
   const pipelines: EnrichedPipeline[] = await ctx.getDailyPipelines('next');
@@ -153,7 +159,7 @@ function getRelevantTests(pipeline: EnrichedPipeline, templates: string[]) {
 }
 
 function getFeature(jobName: string, className: string) {
-  if (jobName === 'e2e-sandboxes') {
+  if (jobName === 'e2e-sandboxes' || jobName === 'e2e-production') {
     const feature = className.split(' › ')[2];
     if (feature == null) return 'core';
 
@@ -163,7 +169,7 @@ function getFeature(jobName: string, className: string) {
     }
     return 'core';
   }
-  if (jobName === 'test-runner-sandboxes') {
+  if (jobName === 'test-runner-sandboxes' || jobName === 'test-runner-production') {
     const feature = className.split(' ')[1];
     if (feature.includes('addons/')) return `addon-${feature.split('/')[1]}`;
     return 'core';
@@ -178,6 +184,6 @@ function getAllTemplatesNames(pipeline: EnrichedPipeline) {
 }
 
 function isPipelineCompleted(pipeline: EnrichedPipeline) {
-  const testResultsJobs = testResultJobsNames.map((name) => pipeline.jobs.find((it) => it.name === name));
+  const testResultsJobs = testResultJobsNames.map((name) => pipeline.jobs.find((it) => it.name === name)).filter(Boolean);
   return testResultsJobs.every((it) => it?.status === 'success' || it?.status === 'failed');
 }
