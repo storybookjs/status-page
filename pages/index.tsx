@@ -52,6 +52,8 @@ type Props = {
 };
 
 export default function StatusPage({ pageProps, templateData }: Props) {
+  const storybookBranch = pageProps.npmTag === 'next' ? 'next' : 'main';
+
   return (
     <AppLayout pageProps={pageProps}>
       <Head>
@@ -62,8 +64,8 @@ export default function StatusPage({ pageProps, templateData }: Props) {
         <p>
           Welcome to Storybook’s status page! Each status bar represents the daily CI status for a particular framework integration on
           Storybook’s{' '}
-          <Link href="https://github.com/storybookjs/storybook/tree/next" target="_blank">
-            next
+          <Link href={`https://github.com/storybookjs/storybook/tree/${storybookBranch}`} target="_blank">
+            {storybookBranch}
           </Link>{' '}
           branch. Click on a bar to see its details and the specific Storybook version that was tested.
         </p>
@@ -96,21 +98,28 @@ export default function StatusPage({ pageProps, templateData }: Props) {
 }
 
 const MOCK_DATA = {
-  pageProps: layoutMocks,
+  pageProps: {
+    ...layoutMocks,
+    npmTag: 'latest',
+  },
   templateData: templateMocks,
-  npmTag: 'next',
 };
 
 // DO NOT COMMIT THIS AS TRUE
 const USE_MOCKS = false;
 
 export const getStaticProps: GetStaticProps = async ({ params = {} }) => {
-  // TODO: change default value from 'next' to 'latest' once SB 7.0 is merged to main in the monorepo
-  const { npmTag: storybookNpmTag = 'next' } = params as { npmTag: StorybookNpmTag };
+  const { npmTag: storybookNpmTag = 'latest' } = params as { npmTag: StorybookNpmTag };
 
   if (USE_MOCKS) {
     return {
-      props: MOCK_DATA,
+      props: {
+        ...MOCK_DATA,
+        pageProps: {
+          ...MOCK_DATA.pageProps,
+          npmTag: storybookNpmTag,
+        },
+      },
     };
   }
 

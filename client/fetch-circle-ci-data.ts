@@ -30,9 +30,12 @@ export const getProcessedTestResults = async (pipelines: EnrichedPipeline[]) => 
 };
 
 export const fetchCircleCiData = async ({ storybookNpmTag }: { storybookNpmTag: StorybookNpmTag }) => {
-  // TODO: change to 'next-release' : 'main-release' once SB 7.0 is merged to main in the monorepo
-  const branch = storybookNpmTag === 'next' ? 'next-release' : 'next-release';
+  const branch = storybookNpmTag === 'next' ? 'next-release' : 'latest-release';
   const pipelines = await fetchRawCircleCiData({ branch });
+
+  if (pipelines.length === 0) {
+    console.log(`No pipelines found for the ${branch} branch!`);
+  }
 
   return getProcessedTestResults(pipelines);
 };
