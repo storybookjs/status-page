@@ -20,7 +20,7 @@ export async function getLatestTestResults(ctx: Context): Promise<TemplateTests[
   const pipelines: EnrichedPipeline[] = await ctx.getDailyPipelines('next');
   const now = ctx.now();
 
-  const last90Days = range(0, 90).map((i) => addDays(now, -89 + i));
+  const last90Days = range(0, 90).map((i) => addDays(now, -90 + i));
   const days = last90Days.map((day) => enrichDayWithData(day, pipelines));
   const allTemplates = Array.from(new Set(days.map((it) => it.templates?.map((it) => it.template).flat() ?? []).flat()));
 
