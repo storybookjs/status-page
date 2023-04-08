@@ -109,7 +109,7 @@ const MOCK_DATA = {
 const USE_MOCKS = false;
 
 export const getStaticProps: GetStaticProps = async ({ params = {} }) => {
-  const { npmTag: storybookNpmTag = 'latest' } = params as { npmTag: StorybookNpmTag };
+  const { npmTag: storybookNpmTag = 'next' } = params as { npmTag: StorybookNpmTag };
 
   if (USE_MOCKS) {
     return {
