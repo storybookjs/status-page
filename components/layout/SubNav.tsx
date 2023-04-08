@@ -60,8 +60,8 @@ export const SubNav: React.FC<SubNavProps> = ({ pageType, npmTag }) => {
             {
               label: 'Versions',
               items: [
-                { label: 'latest', link: { url: '/' } },
-                { label: 'next', link: { url: '/next' } },
+                { label: 'latest', link: { url: '/status' } },
+                { label: 'next', link: { url: '/status/next' } },
               ],
             },
           ]}
