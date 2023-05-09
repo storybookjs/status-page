@@ -180,7 +180,7 @@ function getFeature(jobName: string, className: string) {
 function getAllTemplatesNames(pipeline: EnrichedPipeline) {
   const buildJob = pipeline.jobs.find((it) => it.name === 'build-sandboxes');
   if (buildJob == null) return;
-  return buildJob.tests.map((test) => test.name.split(' - ')[1]);
+  return buildJob.tests.map((test) => test.name.split(' - ')[1]).filter((name) => !name.startsWith('internal/'));
 }
 
 function isPipelineCompleted(pipeline: EnrichedPipeline) {
