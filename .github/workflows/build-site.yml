@@ -5,7 +5,7 @@ on:
   schedule:
     # 12am UTC every day
     # One hour after daily job https://app.circleci.com/settings/project/github/storybookjs/storybook/triggers
-    - cron: '0 0 * * *'
+    - cron: '0 2 * * *'
 
 jobs:
   compute:
