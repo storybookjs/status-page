@@ -93,13 +93,56 @@ const HeartBeat = styled.div<{ isSelected?: boolean; scrubMode?: boolean }>`
   }
 `;
 
+const UptimeContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  font-size: 12px;
+`;
+
+const Spacer = styled.span`
+  background: var(--border-subtle);
+  flex: 1;
+  margin: 0 0.75rem;
+  height: 1px;
+`;
+
 const getReproScript = (template: string) => `yarn task --task e2e-tests --template ${template}`;
 
-export const StatusRow = memo(({ results, config, id }: TemplateTests) => {
+export const StatusRow = memo(({ results, config, id, showUptime }: TemplateTests & { showUptime?: boolean }) => {
   const [chartRef, { width }] = useElementSize();
   const [selectedHeartBeat, setSelectedHeartBeat] = useState<TestResult>();
   const [hoveredHeartBeat, setHoveredHeartBeat] = useState<TestResult>();
   const reproScript = useMemo(() => getReproScript(id), [id]);
+
+  const uptime = useMemo(() => {
+    if (!showUptime || !results?.length)
+      return {
+        percentage: '0%',
+        details: '',
+      };
+
+    const filteredResults = results.filter((result) => result.ciLink);
+    const successCount = filteredResults.filter((result) => result.status === 'success').length;
+    const percentage = ((successCount / filteredResults.length) * 100).toFixed(2) + '%';
+
+    const details = ['failure', 'indecisive', 'no-data'].reduce((acc, status) => {
+      const count = filteredResults.filter((result) => result.status === status).length;
+
+      if (count === 0) return acc;
+
+      const frequency = ((count / filteredResults.length) * 100).toFixed(2);
+
+      return `${acc} ● ${status}: ${frequency}%`;
+    }, `success: ${percentage}%`);
+
+    return {
+      details,
+      percentage,
+    };
+  }, [results, showUptime]);
 
   // Not that it will ever happen, but just in case so we don't break the website because of malformed data.
   if (!results?.length) {
@@ -158,6 +201,19 @@ export const StatusRow = memo(({ results, config, id }: TemplateTests) => {
         </HeartBeatChart>
         {infoToDisplay && <StatusInfo {...infoToDisplay} />}
       </article>
+      {showUptime && (
+        <UptimeContainer>
+          <div>
+            <span>{daysToDisplay}</span> days ago
+          </div>
+          <Spacer />
+          <WithTooltip hasChrome={false} placement="bottom" tooltip={<TooltipNote note={uptime.details} />} aria-label={uptime.details}>
+            <span>{uptime.percentage} uptime</span>
+          </WithTooltip>
+          <Spacer />
+          <div>Today</div>
+        </UptimeContainer>
+      )}
     </ResultBox>
   );
 });

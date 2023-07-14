@@ -67,6 +67,13 @@ export const SuccessSelected: Story = {
   },
 };
 
+export const WithUptime: Story = {
+  args: {
+    ...createMock({ lastStatus: 'success' }),
+    showUptime: true,
+  },
+};
+
 export const Failure: Story = {
   args: createMock({ lastStatus: 'failure' }),
 };
