@@ -2,6 +2,7 @@ import { styles } from '@storybook/design-system';
 import { styled } from '@storybook/theming';
 import { GetStaticProps } from 'next';
 import Head from 'next/head';
+import { useSearchParams } from 'next/navigation';
 import { Link } from '~/components/Link';
 import { StatusRowGroup } from '~/components/StatusRowGroup';
 import { StorybookNpmTag, TemplateTests } from '~/model/types';
@@ -85,6 +86,7 @@ export default function StatusPage({ pageProps, templateData }: Props) {
         </Sidebar>
         <Container style={{ flex: 1 }}>
           <StatusRowGroup
+            useSearchParams={useSearchParams}
             data={
               templateData.map((template) => ({
                 ...template,

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Meta, StoryObj } from '@storybook/react';
 import { createMock } from '~/mock/index';
 
@@ -5,14 +6,11 @@ import { StatusRowGroup } from '~/components/StatusRowGroup';
 
 const meta = {
   component: StatusRowGroup,
-  parameters: {
-    nextjs: {
-      router: {
-        query: {
-          uptime: 'false',
-        },
-      },
-    },
+  args: {
+    useSearchParams: () =>
+      ({
+        get: () => undefined,
+      } as any),
   },
 } as Meta<typeof StatusRowGroup>;
 
@@ -36,13 +34,11 @@ export const Multiple: Story = {
 
 export const WithUptime: Story = {
   ...Multiple,
-  parameters: {
-    nextjs: {
-      router: {
-        query: {
-          uptime: 'true',
-        },
-      },
-    },
+  args: {
+    ...Multiple.args,
+    useSearchParams: () =>
+      ({
+        get: () => 'true',
+      } as any),
   },
 };
