@@ -1,4 +1,4 @@
-import { Heading, styles } from '@storybook/design-system';
+import { styles } from '@storybook/design-system';
 import { styled } from '@storybook/theming';
 import { GetStaticProps } from 'next';
 import Head from 'next/head';
@@ -12,6 +12,7 @@ import { fetchCircleCiData } from '~/client/fetch-circle-ci-data';
 import { getDxData } from '~/client/dx-data';
 import { RendererLink } from '~/components/RendererLink';
 import { communityRenderers, coreRenderers } from '../utils/renderers';
+import { Heading } from '~/components/Heading';
 
 const { breakpoint, color, typography } = styles;
 
