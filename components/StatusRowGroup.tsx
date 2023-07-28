@@ -1,5 +1,7 @@
-import { styled } from '@storybook/theming';
 import { memo } from 'react';
+import { styled } from '@storybook/theming';
+import { useSearchParams as useSearchParamsHook } from 'next/navigation';
+
 import type { TemplateTests } from '~/model/types';
 import { StatusRow } from './StatusRow';
 import { StatusBar } from './StatusBar';
@@ -36,7 +38,10 @@ const ResultGrid = styled.div`
   }
 `;
 
-export const StatusRowGroup = memo(({ data }: { data: TemplateTests[] }) => {
+export const StatusRowGroup = memo(({ data, useSearchParams }: { data: TemplateTests[]; useSearchParams: typeof useSearchParamsHook }) => {
+  const searchParams = useSearchParams();
+  const showUptime = searchParams.get('uptime') === 'true';
+
   if (data.length === 0) {
     return (
       <div>
@@ -57,7 +62,7 @@ export const StatusRowGroup = memo(({ data }: { data: TemplateTests[] }) => {
             lastUpdatedAt={getLastUpdatedAt(data)}
           />
           {templates.map((result, index) => (
-            <StatusRow key={result.id + index} {...result} />
+            <StatusRow key={result.id + index} {...result} showUptime={showUptime} />
           ))}
         </ResultGrid>
       ))}
