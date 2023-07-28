@@ -51,9 +51,10 @@ const TOCHeader = styled.div`
 type Props = {
   pageProps: PageProps;
   templateData: TemplateTests[];
+  useSearchParamsMock: typeof useSearchParams;
 };
 
-export default function StatusPage({ pageProps, templateData }: Props) {
+export default function StatusPage({ pageProps, templateData, useSearchParamsMock }: Props) {
   const storybookBranch = pageProps.npmTag === 'next' ? 'next' : 'main';
 
   return (
@@ -86,7 +87,7 @@ export default function StatusPage({ pageProps, templateData }: Props) {
         </Sidebar>
         <Container style={{ flex: 1 }}>
           <StatusRowGroup
-            useSearchParams={useSearchParams}
+            useSearchParams={useSearchParamsMock || useSearchParams}
             data={
               templateData.map((template) => ({
                 ...template,

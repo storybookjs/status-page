@@ -18,6 +18,10 @@ const meta = {
       ...template,
       results: template.results.map((result) => ({ ...result, date: new Date(result.date) })),
     })) as TemplateTests[],
+    useSearchParamsMock: () =>
+      ({
+        get: () => undefined,
+      } as any),
   },
   parameters: {
     layout: 'fullscreen',
@@ -29,6 +33,15 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+
+export const WithUptime: Story = {
+  args: {
+    useSearchParamsMock: () =>
+      ({
+        get: () => 'true',
+      } as any),
+  },
+};
 
 export const Empty: Story = {
   args: {
