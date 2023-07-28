@@ -14,6 +14,10 @@ const ExpandCollapseButton = styled(Link)`
   line-height: 20px;
 `;
 
+const StyledSpan = styled.span`
+  color: var(--text-secondary);
+`;
+
 const ResultBox = styled.section<{ isFailure?: boolean }>`
   border: 1px solid var(--border-subtle);
   padding: 20px 30px 25px;
@@ -124,7 +128,9 @@ export const StatusRow = memo(({ results, config, id, showUptime }: TemplateTest
         details: '',
       };
 
-    const filteredResults = results.filter((result) => result.ciLink);
+    // we count uptime based on success and failure statuses, as indecisive might mean
+    // that an unrelated package is broken, or CI failed for another reason, so it can pollute the actual uptime
+    const filteredResults = results.filter((result) => (result.ciLink && result.status === 'failure') || result.status === 'success');
     const successCount = filteredResults.filter((result) => result.status === 'success').length;
     const percentage = ((successCount / filteredResults.length) * 100).toFixed(2) + '%';
 
@@ -204,14 +210,14 @@ export const StatusRow = memo(({ results, config, id, showUptime }: TemplateTest
       {showUptime && (
         <UptimeContainer>
           <div>
-            <span>{daysToDisplay}</span> days ago
+            <StyledSpan>{daysToDisplay}</StyledSpan> days ago
           </div>
           <Spacer />
           <WithTooltip hasChrome={false} placement="bottom" tooltip={<TooltipNote note={uptime.details} />} aria-label={uptime.details}>
-            <span>{uptime.percentage} uptime</span>
+            <StyledSpan>{uptime.percentage} uptime</StyledSpan>
           </WithTooltip>
           <Spacer />
-          <div>Today</div>
+          <StyledSpan>Today</StyledSpan>
         </UptimeContainer>
       )}
     </ResultBox>
