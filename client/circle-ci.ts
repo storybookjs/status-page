@@ -34,22 +34,22 @@ async function retryPromise<T>(fn: () => Promise<T>, retriesLeft = 20, interval 
   } catch (error) {
     if (retriesLeft === 0) throw error;
     if (error instanceof ApiError) {
-      console.error({
-        status: error.status,
-        statusText: error.statusText,
-        url: error.url,
-        data: JSON.stringify(error.data),
-        headers: {
-          'x-ratelimit-limit': error.headers.get('x-ratelimit-limit'),
-          'x-ratelimit-remaining': error.headers.get('x-ratelimit-remaining'),
-          'x-ratelimit-reset': error.headers.get('x-ratelimit-reset'),
-          'retry-after': error.headers.get('retry-after'),
-        },
-      });
+      // console.error({
+      //   status: error.status,
+      //   statusText: error.statusText,
+      //   url: error.url,
+      //   data: JSON.stringify(error.data),
+      //   headers: {
+      //     'x-ratelimit-limit': error.headers.get('x-ratelimit-limit'),
+      //     'x-ratelimit-remaining': error.headers.get('x-ratelimit-remaining'),
+      //     'x-ratelimit-reset': error.headers.get('x-ratelimit-reset'),
+      //     'retry-after': error.headers.get('retry-after'),
+      //   },
+      // });
     } else if (error instanceof Error) {
       console.error(error);
     }
-    console.log(`Retrying in ${interval}ms ...`);
+    // console.log(`Retrying in ${interval}ms ...`);
     await new Promise((res) => setTimeout(res, interval));
     return await retryPromise(fn, --retriesLeft, interval);
   }
