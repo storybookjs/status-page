@@ -11,7 +11,7 @@ fetcher.configure({
     (url, init, next) =>
       retryPromise(async () => {
         // This delay is to not put too make sure we don't put too much pressure in circle CI
-        await new Promise((res) => setTimeout(res, 500));
+        await new Promise((res) => setTimeout(res, 2000));
         const response = await next(url, init);
         // console.log(`#${++count}: ${url} ${response.status} @ ${new Date().toISOString()}`);
         // console.log(
@@ -34,6 +34,7 @@ async function retryPromise<T>(fn: () => Promise<T>, retriesLeft = 20, interval 
   } catch (error) {
     if (retriesLeft === 0) throw error;
     if (error instanceof ApiError) {
+      console.error(error.name);
       // console.error({
       //   status: error.status,
       //   statusText: error.statusText,

@@ -2,6 +2,7 @@ import { EnrichedPipeline, getDailyPipelines } from './circle-ci';
 import { Feature, TemplateConfig, TemplateTests, TestResult } from '../model/types';
 import { range } from '../util';
 import { addDays, isSameDay } from 'date-fns';
+import { AMOUNT_OF_DAYS_TO_FETCH } from '~/client/constants';
 
 interface Context {
   getDailyPipelines: typeof getDailyPipelines;
@@ -20,7 +21,7 @@ export async function getLatestTestResults(ctx: Context): Promise<TemplateTests[
   const pipelines: EnrichedPipeline[] = await ctx.getDailyPipelines('next');
   const now = ctx.now();
 
-  const last90Days = range(0, 90).map((i) => addDays(now, -90 + i));
+  const last90Days = range(0, AMOUNT_OF_DAYS_TO_FETCH).map((i) => addDays(now, -AMOUNT_OF_DAYS_TO_FETCH + i));
   const days = last90Days.map((day) => enrichDayWithData(day, pipelines));
   const allTemplates = Array.from(new Set(days.map((it) => it.templates?.map((it) => it.template).flat() ?? []).flat()));
 
