@@ -34,7 +34,6 @@ async function retryPromise<T>(fn: () => Promise<T>, retriesLeft = 20, interval 
   } catch (error) {
     if (retriesLeft === 0) throw error;
     if (error instanceof ApiError) {
-      console.error(error.name);
       // console.error({
       //   status: error.status,
       //   statusText: error.statusText,
