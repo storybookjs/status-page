@@ -3,7 +3,7 @@ import { Fetcher, ApiError } from 'openapi-typescript-fetch';
 
 const fetcher = Fetcher.for<paths>();
 
-// let count = 0;
+let count = 0;
 
 fetcher.configure({
   baseUrl: 'https://circleci.com/api/v2',
@@ -11,9 +11,9 @@ fetcher.configure({
     (url, init, next) =>
       retryPromise(async () => {
         // This delay is to not put too make sure we don't put too much pressure in circle CI
-        await new Promise((res) => setTimeout(res, 2000));
+        await new Promise((res) => setTimeout(res, 500));
         const response = await next(url, init);
-        // console.log(`#${++count}: ${url} ${response.status} @ ${new Date().toISOString()}`);
+        console.log(`#${++count}: ${url} ${response.status} @ ${new Date().toISOString()}`);
         // console.log(
         //   [
         //     `x-ratelimit-limit: ${response.headers.get(`x-ratelimit-limit`)}`,
@@ -49,7 +49,7 @@ async function retryPromise<T>(fn: () => Promise<T>, retriesLeft = 20, interval 
     } else if (error instanceof Error) {
       console.error(error);
     }
-    // console.log(`Retrying in ${interval}ms ...`);
+    console.log(`Retrying in ${interval}ms ...`);
     await new Promise((res) => setTimeout(res, interval));
     return await retryPromise(fn, --retriesLeft, interval);
   }
