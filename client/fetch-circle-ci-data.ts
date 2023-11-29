@@ -2,6 +2,7 @@ import { EnrichedPipeline, getDailyPipelines } from '~/services/circle-ci';
 import { addDays } from 'date-fns';
 import { getLatestTestResults } from '~/services/test-results';
 import { StorybookNpmTag } from '~/model/types';
+import { AMOUNT_OF_DAYS_TO_FETCH } from './constants';
 
 export const fetchRawCircleCiData = async ({ useMock = false, branch = 'next-release' } = {}): Promise<EnrichedPipeline[]> => {
   if (useMock) {
@@ -16,7 +17,7 @@ export const fetchRawCircleCiData = async ({ useMock = false, branch = 'next-rel
   }
 
   console.log(`Fetching data for the ${branch} branch`);
-  return getDailyPipelines(branch, addDays(new Date(), -90));
+  return getDailyPipelines(branch, addDays(new Date(), -AMOUNT_OF_DAYS_TO_FETCH));
 };
 
 export const getProcessedTestResults = async (pipelines: EnrichedPipeline[]) => {

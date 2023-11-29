@@ -2,6 +2,7 @@ import { EnrichedPipeline, getDailyPipelines } from './circle-ci';
 import { Feature, TemplateConfig, TemplateTests, TestResult } from '../model/types';
 import { range } from '../util';
 import { addDays, isSameDay } from 'date-fns';
+import { AMOUNT_OF_DAYS_TO_FETCH, SANDBOX_FILTER } from '~/client/constants';
 
 interface Context {
   getDailyPipelines: typeof getDailyPipelines;
@@ -20,11 +21,11 @@ export async function getLatestTestResults(ctx: Context): Promise<TemplateTests[
   const pipelines: EnrichedPipeline[] = await ctx.getDailyPipelines('next');
   const now = ctx.now();
 
-  const last90Days = range(0, 90).map((i) => addDays(now, -90 + i));
+  const last90Days = range(0, AMOUNT_OF_DAYS_TO_FETCH).map((i) => addDays(now, -AMOUNT_OF_DAYS_TO_FETCH + i));
   const days = last90Days.map((day) => enrichDayWithData(day, pipelines));
   const allTemplates = Array.from(new Set(days.map((it) => it.templates?.map((it) => it.template).flat() ?? []).flat()));
 
-  return allTemplates.map((template) => ({
+  return allTemplates.filter(SANDBOX_FILTER).map((template) => ({
     id: template,
     name: template,
     config: getLatestTemplateConfig(days, template),
@@ -81,7 +82,7 @@ function enrichDayWithData(date: Date, pipelines: EnrichedPipeline[]) {
   const pipeline = pipelines.find((it) => isSameDay(new Date(it.created_at), date));
   if (pipeline == null) return { status: 'incomplete' as const, date };
 
-  const templateNames = getAllTemplatesNames(pipeline);
+  const templateNames = getAllTemplatesNames(pipeline)?.filter(SANDBOX_FILTER);
   const isCompleted = isPipelineCompleted(pipeline);
   if (templateNames == null || !isCompleted) return { pipeline, status: 'incomplete' as const, date };
 

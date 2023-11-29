@@ -1,5 +1,6 @@
 import { addDays } from 'date-fns';
 import { getJobs, getPipelines, getTestData, getWorkflows, Pipeline } from '~/client/circle-ci';
+import { AMOUNT_OF_DAYS_TO_FETCH } from '~/client/constants';
 
 export async function getDailyPipelines(branch = 'next-release', since?: Date): Promise<EnrichedPipeline[]> {
   async function getNextPageRecursively(
@@ -8,7 +9,7 @@ export async function getDailyPipelines(branch = 'next-release', since?: Date): 
     pageToken?: string | undefined | null
   ): Promise<EnrichedPipeline[]> {
     const createdAt = new Date(pipelines[pipelines.length - 1]?.created_at ?? new Date().getTime());
-    if (createdAt < (since ?? addDays(new Date(), -90)) || pageToken === null) {
+    if (createdAt < (since ?? addDays(new Date(), -AMOUNT_OF_DAYS_TO_FETCH)) || pageToken === null) {
       return await Promise.all(enrichedPipelines);
     }
 
