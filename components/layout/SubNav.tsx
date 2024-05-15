@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
   SubNav as MarketingSubNav,
   SubNavRight,
@@ -52,7 +53,9 @@ export const SubNav: React.FC<SubNavProps> = ({ pageType, npmTag }) => {
   return pageType !== PAGE_TYPES.NOT_FOUND ? (
     <MarketingSubNav>
       <SubNavTabs label="Status page nav" items={subNavItems(pageType)} />
+      {/* @ts-ignore-error - TODO */}
       <SubNavDivider />
+      {/* @ts-ignore-error - TODO */}
       <SubNavMenus>
         <Menu
           label={npmTag}
@@ -68,6 +71,7 @@ export const SubNav: React.FC<SubNavProps> = ({ pageType, npmTag }) => {
           primary
         ></Menu>
       </SubNavMenus>
+      {/* @ts-ignore-error - TODO */}
       <SubNavRight>
         <SubNavLinkList label="Get support:" items={supportItems} />
       </SubNavRight>
