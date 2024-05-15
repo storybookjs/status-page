@@ -30,16 +30,11 @@ const Footer = styled(MarketingFooter)`
   margin-top: 80px;
 `;
 
-export const AppLayout: React.FC<AppLayoutProps> = ({
-  children,
-  pageProps: { githubStars, latestPost, latestVersion, subscriberCount, npmTag },
-}) => (
+export const AppLayout: React.FC<AppLayoutProps> = ({ children, pageProps: { githubStars, latestVersion, subscriberCount, npmTag } }) => (
   <>
     <GlobalStyles />
     <LinksContextProvider value={navLinks}>
-      {githubStars && latestPost && latestVersion && (
-        <Header githubStars={githubStars} latestPost={latestPost} latestVersion={latestVersion} pageType="status" npmTag={npmTag} />
-      )}
+      {githubStars && latestVersion && <Header githubStars={githubStars} latestVersion={latestVersion} pageType="status" npmTag={npmTag} />}
       <Main>{children}</Main>
       {subscriberCount && <Footer subscriberCount={subscriberCount} />}
     </LinksContextProvider>

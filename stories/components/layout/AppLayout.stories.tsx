@@ -269,10 +269,6 @@ const pageProps = {
   discordMemberCount: 15861,
   githubContributorCount: 1867,
   githubStars: 75256,
-  latestPost: {
-    title: 'Storybook for full-stack developers',
-    url: 'https://storybook.js.org/blog/storybook-for-full-stack-developers',
-  },
   latestVersion: '6.5',
   npmDownloads: 16719157,
   sponsors: [
