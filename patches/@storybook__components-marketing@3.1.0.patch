@@ -1,0 +1,16 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+deleted file mode 100644
+index be0caefba5e50a06da67a53b07e098236c8efa6f..0000000000000000000000000000000000000000
+diff --git a/dist/components/Search.js b/dist/components/Search.js
+index 536045254d32b683a855bfbc1b55ef01eca3544f..399b8ad2c8b636b2fbaab9ed5018927e2c7f2898 100644
+--- a/dist/components/Search.js
++++ b/dist/components/Search.js
+@@ -11,7 +11,7 @@ var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends")
+ 
+ var _react = _interopRequireDefault(require("react"));
+ 
+-var _shortcut = require("@storybook/api/shortcut");
++var _shortcut = require("@storybook/manager-api");
+ 
+ var _theming = require("@storybook/theming");
+ 
